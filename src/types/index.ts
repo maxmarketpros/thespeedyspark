@@ -101,7 +101,9 @@ export interface NavItem {
   href: string;
   children?: NavItem[];
   /** Render dropdown children in a multi-column grid (for long lists) */
-  columns?: 2;
+  columns?: 2 | 3;
+  /** Lucide icon key rendered next to the label in nav dropdowns (see Header.tsx icon map) */
+  icon?: string;
 }
 
 export interface ServiceAreaConfig {

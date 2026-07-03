@@ -1,9 +1,70 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Phone, Menu, X, ChevronDown } from "lucide-react";
+import {
+  Phone,
+  Menu,
+  X,
+  ChevronDown,
+  ArrowRight,
+  PlugZap,
+  Gauge,
+  Wrench,
+  Cable,
+  Lightbulb,
+  TreePine,
+  Fan,
+  Plug,
+  Wifi,
+  ShieldCheck,
+  BatteryCharging,
+  AlarmSmoke,
+  ClipboardCheck,
+  Hammer,
+  CircuitBoard,
+  LampCeiling,
+  Building2,
+  Store,
+  CarFront,
+  DoorOpen,
+  Network,
+  SquareParking,
+  Power,
+  Settings,
+  MapPin,
+  type LucideIcon,
+} from "lucide-react";
 import { businessConfig } from "@/config/business";
 import { mainNav } from "@/config/navigation";
 import { cn } from "@/lib/utils";
+
+/** Maps the `icon` keys in navigation.ts to lucide components */
+const navIcons: Record<string, LucideIcon> = {
+  "plug-zap": PlugZap,
+  gauge: Gauge,
+  wrench: Wrench,
+  cable: Cable,
+  lightbulb: Lightbulb,
+  "tree-pine": TreePine,
+  fan: Fan,
+  plug: Plug,
+  wifi: Wifi,
+  "shield-check": ShieldCheck,
+  "battery-charging": BatteryCharging,
+  "alarm-smoke": AlarmSmoke,
+  "clipboard-check": ClipboardCheck,
+  hammer: Hammer,
+  "circuit-board": CircuitBoard,
+  "lamp-ceiling": LampCeiling,
+  "building-2": Building2,
+  store: Store,
+  "car-front": CarFront,
+  "door-open": DoorOpen,
+  network: Network,
+  "square-parking": SquareParking,
+  power: Power,
+  settings: Settings,
+  "map-pin": MapPin,
+};
 
 function Container({
   children,
@@ -130,16 +191,22 @@ function MobileMenu({
                     >
                       View All {item.label}
                     </a>
-                    {item.children.map((child) => (
-                      <a
-                        key={child.href}
-                        href={child.href}
-                        onClick={onClose}
-                        className="py-2 text-base text-muted transition-colors hover:text-primary-600"
-                      >
-                        {child.label}
-                      </a>
-                    ))}
+                    {item.children.map((child) => {
+                      const Icon = child.icon ? navIcons[child.icon] : undefined;
+                      return (
+                        <a
+                          key={child.href}
+                          href={child.href}
+                          onClick={onClose}
+                          className="flex items-center gap-2.5 py-2 text-base text-muted transition-colors hover:text-primary-600"
+                        >
+                          {Icon && (
+                            <Icon className="h-4 w-4 shrink-0 text-primary-500" />
+                          )}
+                          {child.label}
+                        </a>
+                      );
+                    })}
                   </div>
                 )}
               </>
@@ -266,31 +333,70 @@ export function Header({ variant = "default" }: HeaderProps) {
                         {item.label}
                         <ChevronDown className="h-3.5 w-3.5" />
                       </a>
+                      {/* pt-3 keeps an unbroken hover path between trigger and panel */}
                       <div
                         className={cn(
-                          "absolute top-full left-0 rounded-xl bg-white py-2 shadow-card-hover transition-all duration-200",
-                          item.columns === 2
-                            ? "grid min-w-[440px] grid-cols-2 gap-x-1 px-2"
-                            : "min-w-[220px]",
+                          "absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-200",
                           openDropdown === item.label
                             ? "visible translate-y-0 opacity-100"
-                            : "invisible -translate-y-2 opacity-0"
+                            : "invisible -translate-y-2 opacity-0 pointer-events-none"
                         )}
                       >
-                        {item.children.map((child) => (
-                          <a
-                            key={child.href}
-                            href={child.href}
+                        <div className="overflow-hidden rounded-2xl border border-border/60 bg-white p-3 shadow-card-hover">
+                          <div
                             className={cn(
-                              "block py-2.5 text-sm text-foreground-light transition-colors hover:bg-surface hover:text-primary-600",
-                              item.columns === 2
-                                ? "rounded-lg px-3"
-                                : "px-4"
+                              "grid gap-x-2 gap-y-0.5",
+                              // Narrower at lg so centered panels clear the
+                              // viewport edges on 1024px screens
+                              item.columns === 3
+                                ? "w-[512px] grid-cols-3 xl:w-[560px]"
+                                : "w-[512px] grid-cols-2 xl:w-[600px]"
                             )}
                           >
-                            {child.label}
+                            {item.children.map((child) => {
+                              const Icon = child.icon
+                                ? navIcons[child.icon]
+                                : undefined;
+                              // Areas list is long, so it gets a compact
+                              // inline-pin row instead of an icon tile
+                              return item.columns === 3 ? (
+                                <a
+                                  key={child.href}
+                                  href={child.href}
+                                  className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm text-foreground-light transition-colors hover:bg-primary-50 hover:text-primary-700"
+                                >
+                                  {Icon && (
+                                    <Icon className="h-4 w-4 shrink-0 text-primary-500" />
+                                  )}
+                                  {child.label}
+                                </a>
+                              ) : (
+                                <a
+                                  key={child.href}
+                                  href={child.href}
+                                  className="group/item flex items-center gap-2.5 rounded-lg px-2 py-2 text-[13px] font-medium whitespace-nowrap text-foreground-light transition-colors hover:bg-primary-50 hover:text-primary-700 xl:gap-3 xl:px-2.5 xl:text-sm"
+                                >
+                                  {Icon && (
+                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 transition-colors group-hover/item:bg-primary-100 xl:h-9 xl:w-9">
+                                      <Icon className="h-4 w-4" />
+                                    </span>
+                                  )}
+                                  {child.label}
+                                </a>
+                              );
+                            })}
+                          </div>
+                          <a
+                            href={item.href}
+                            className="mt-2 flex items-center justify-center gap-1.5 rounded-lg border-t border-border/60 px-3 pt-3 pb-1 text-sm font-semibold text-primary-600 transition-colors hover:text-primary-700"
+                          >
+                            View All{" "}
+                            {item.label === "Service Areas"
+                              ? "Service Areas"
+                              : `${item.label} Services`}
+                            <ArrowRight className="h-4 w-4" />
                           </a>
-                        ))}
+                        </div>
                       </div>
                     </div>
                   ) : (
