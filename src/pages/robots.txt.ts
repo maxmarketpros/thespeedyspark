@@ -2,10 +2,10 @@ import type { APIRoute } from "astro";
 import { siteConfig } from "@/config/site";
 
 export const GET: APIRoute = () => {
+  // Do not Disallow /_astro/ — Googlebot needs the CSS/JS bundles to render
+  // pages, and blocked assets hurt mobile-friendliness evaluation.
   const body = `User-agent: *
 Allow: /
-
-Disallow: /_astro/
 
 Sitemap: ${siteConfig.url}/sitemap-index.xml
 `;

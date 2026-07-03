@@ -9,6 +9,8 @@ export default defineConfig({
   output: "static",
   trailingSlash: "ignore",
   build: { format: "directory" },
+  // Respect PORT when a tool assigns one (parallel dev servers); default 4321
+  server: { port: process.env.PORT ? Number(process.env.PORT) : 4321 },
   integrations: [
     react(),
     sitemap({

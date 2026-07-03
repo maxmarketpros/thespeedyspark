@@ -36,7 +36,7 @@ const PHOTOS = {
   16: { name: "live-panel-testing", width: 1400 },
   17: { name: "garage-equipment-install", width: 1400 },
   18: { name: "ev-charger-wall-install", width: 1920 },
-  19: { name: "ev-charging-homeowner", width: 1400 },
+  19: { name: "ev-charging-homeowner", width: 1920 },
   20: { name: "generator-maintenance-team", width: 1400 },
   21: { name: "commercial-generator-delivery", width: 1400 },
   22: { name: "solar-roof-aerial", width: 1920 },

@@ -72,12 +72,14 @@ export const imageManifest: Record<string, ImageSlotConfig> = {
     alt: "Electrician installing a wall-mounted EV charging station on a modern home",
     width: 1920,
     height: 1080,
+    // Keeps the charger and the electrician's hands in portrait crops
+    focalPoint: { x: 0.65, y: 0.45 },
   },
   "ev-charging-homeowner": {
     src: "/images/ev-charging-homeowner.jpg",
     alt: "Homeowner plugging an EV charging cable in at home in southern New Hampshire",
-    width: 1400,
-    height: 788,
+    width: 1920,
+    height: 1080,
     focalPoint: { x: 0.45, y: 0.4 },
   },
   // Aliases with EV-accurate framing (same files as live-panel-testing /
@@ -371,6 +373,30 @@ export const imageManifest: Record<string, ImageSlotConfig> = {
     width: 1920,
     height: 1080,
     focalPoint: { x: 0.5, y: 0.45 },
+  },
+  // Same file as ev-charging-homeowner — never render both on one page
+  "hero-ev": {
+    src: "/images/ev-charging-homeowner.jpg",
+    alt: "Homeowner charging an EV with a wall-mounted Level 2 charger at their Manchester NH home",
+    width: 1920,
+    height: 1080,
+    focalPoint: { x: 0.58, y: 0.45 },
+  },
+  // Same file as panel-testing-clamp-meter — never render both on one page
+  "hero-panel": {
+    src: "/images/panel-testing-clamp-meter.jpg",
+    alt: "Licensed NH electrician load-testing a breaker panel with a clamp meter during a 200-amp upgrade",
+    width: 1920,
+    height: 1080,
+    focalPoint: { x: 0.4, y: 0.45 },
+  },
+  // Same file as emergency-field-technician — never render both on one page
+  "hero-emergency": {
+    src: "/images/emergency-field-technician.jpg",
+    alt: "Emergency electrician in hi-vis gear diagnosing a fault in an outdoor electrical enclosure at a NH home",
+    width: 1920,
+    height: 1080,
+    focalPoint: { x: 0.3, y: 0.4 },
   },
 
   // ===== BRANDING =====

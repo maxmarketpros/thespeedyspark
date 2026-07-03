@@ -59,22 +59,14 @@ function Button({
 
 function Logo({ light }: { light: boolean }) {
   return (
-    <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label="The Speedy Sparky LLC — Home">
+    <a href="/" className="flex shrink-0 items-center" aria-label="The Speedy Sparky LLC — Home">
       <img
         src={light ? "/images/logo-white.png" : "/images/logo.png"}
         alt="The Speedy Sparky LLC logo"
-        width={56}
-        height={54}
-        className="h-12 w-auto md:h-14"
+        width={83}
+        height={80}
+        className="h-16 w-auto lg:h-20"
       />
-      <span
-        className={cn(
-          "text-lg font-bold leading-tight tracking-tight transition-colors md:text-xl",
-          light ? "text-white" : "text-foreground"
-        )}
-      >
-        The Speedy Sparky
-      </span>
     </a>
   );
 }
@@ -219,7 +211,7 @@ export function Header({ variant = "default" }: HeaderProps) {
     return (
       <header className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 shadow-header backdrop-blur-md">
         <Container>
-          <nav className="flex h-20 items-center justify-between">
+          <nav className="flex h-20 items-center justify-between lg:h-24">
             <Logo light={false} />
             <div className="flex items-center gap-3 sm:gap-5">
               <a
@@ -249,7 +241,7 @@ export function Header({ variant = "default" }: HeaderProps) {
         )}
       >
         <Container>
-          <nav className="flex h-20 items-center justify-between">
+          <nav className="flex h-20 items-center justify-between lg:h-24">
             <Logo light={!solid} />
 
             {/* Desktop Navigation */}

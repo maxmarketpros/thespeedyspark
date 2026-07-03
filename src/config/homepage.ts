@@ -31,7 +31,7 @@ export const homepageContent = {
           "Old knob-and-tube, overloaded 100-amp panels, ice-storm outages — we work on what NH actually has.",
       },
     ],
-    image: "roof-crew-bright-sky",
+    image: "ev-charger-wall-install",
     badge: { value: "10+", label: "Years in the Trade" },
   },
   services: {

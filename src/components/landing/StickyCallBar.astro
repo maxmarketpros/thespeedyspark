@@ -26,19 +26,13 @@ const emergency = variant === "emergency";
 >
   {
     emergency ? (
-      <div class="relative">
-        <span
-          class="lp-pulse-ring absolute inset-0 rounded-xl bg-accent-600/70"
-          aria-hidden="true"
-        />
-        <a
-          href={`tel:${businessConfig.phoneRaw}`}
-          class="relative flex w-full items-center justify-center gap-2.5 rounded-xl bg-accent-600 py-3.5 text-base font-bold text-white shadow-lg transition-colors active:bg-accent-700"
-        >
-          <Phone className="h-5 w-5" />
-          Tap to Call — {businessConfig.phone}
-        </a>
-      </div>
+      <a
+        href={`tel:${businessConfig.phoneRaw}`}
+        class="lp-siren-glow relative flex w-full items-center justify-center gap-2.5 rounded-xl bg-red-700 py-3.5 text-base font-bold text-white transition-colors active:bg-red-800"
+      >
+        <Phone className="h-5 w-5" />
+        Tap to Call — {businessConfig.phone}
+      </a>
     ) : showQuote ? (
       <div class="flex gap-2.5">
         <a

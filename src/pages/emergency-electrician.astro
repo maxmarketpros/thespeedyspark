@@ -3,7 +3,6 @@ import {
   Phone,
   Zap,
   Flame,
-  AlertTriangle,
   Droplets,
   CloudLightning,
   PowerOff,
@@ -13,6 +12,8 @@ import {
   Truck,
   ArrowRight,
   Star,
+  CheckCircle2,
+  Siren,
 } from "lucide-react";
 import Layout from "@/layouts/Layout.astro";
 import TrustBar from "@/components/landing/TrustBar.astro";
@@ -20,7 +21,11 @@ import StickyCallBar from "@/components/landing/StickyCallBar.astro";
 import LandingQuoteSection from "@/components/landing/LandingQuoteSection.astro";
 import RevealInit from "@/components/landing/RevealInit.astro";
 import FAQSection from "@/components/sections/FAQSection.astro";
+import SplitSection from "@/components/sections/SplitSection.astro";
 import Container from "@/components/ui/Container.astro";
+import Button from "@/components/ui/Button.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import ChecklistItem from "@/components/ui/ChecklistItem.astro";
 import ImageSlot from "@/components/ui/ImageSlot.astro";
 import ReviewCard from "@/components/ui/ReviewCard.astro";
 import GoogleReviewsPill from "@/components/ui/GoogleReviewsPill.astro";
@@ -53,10 +58,11 @@ const breadcrumbSchema = generateBreadcrumbSchema([
   { name: "Emergency Electrician", href: "/emergency-electrician" },
 ]);
 
-const dispatchFacts = [
-  "~25 min to most of southern NH",
-  "Up-front price before work starts",
-  "46 five-star reviews",
+const heroChips = [
+  "A real electrician answers",
+  "~25 min to most towns",
+  "Up-front price before work",
+  "Nights, weekends & holidays",
 ];
 
 const callNowIf = [
@@ -75,13 +81,13 @@ const callNowIf = [
   {
     icon: Volume2,
     title: "Buzzing From the Panel",
-    text: "Panels should be silent. Buzzing or crackling means a failing breaker or loose connection under load.",
+    text: "Panels should be silent — buzzing means a failing breaker or loose connection under load.",
     urgent: false,
   },
   {
     icon: PowerOff,
     title: "Partial or Total Power Loss",
-    text: "Half the house dark while the neighbors' lights are on points to a failing main or service issue.",
+    text: "Half the house dark while the neighbors' lights are on points to a failing main.",
     urgent: false,
   },
   {
@@ -101,18 +107,36 @@ const callNowIf = [
 const steps = [
   {
     icon: PhoneCall,
-    title: "You Call. We Answer.",
-    text: "No voicemail maze at 2 AM — you reach a real electrician who knows what to ask.",
+    title: "A Real Person Picks Up",
+    text: "No voicemail maze at 2 AM — a licensed electrician answers and knows what to ask.",
   },
   {
     icon: Headset,
     title: "Triage on the Phone",
-    text: "We walk you through making things safe immediately — which breaker to kill, what to unplug, when to step outside.",
+    text: "We walk you to safety immediately — which breaker to kill, what to unplug, when to step outside.",
   },
   {
     icon: Truck,
     title: "Fast Dispatch, Up-Front Price",
-    text: "Most of our 18-town service area is within 25 minutes of Manchester. You approve the price before repairs begin.",
+    text: "Most of our 18 towns are within about 25 minutes, and you approve the price before repairs begin.",
+  },
+];
+
+const whyChecklist = [
+  "A live electrician answers — 24/7, holidays included",
+  "Safety triage starts the moment you call",
+  "Up-front price approved before work begins",
+  "Fixed right the first time, at any hour",
+];
+
+const gallery = [
+  {
+    imageKey: "gfci-outlet-install",
+    caption: "Found it, fixed it, tested it — one visit",
+  },
+  {
+    imageKey: "wire-connection-work",
+    caption: "Repairs done to code, not taped over",
   },
 ];
 
@@ -121,31 +145,31 @@ const faqs = [
     id: "faq-em-lp-1",
     question: "Do you really answer at night and on holidays?",
     answer:
-      "Yes — 24 hours a day, 365 days a year. One of our favorite reviews is from a customer we helped at 11 pm on a blizzard-cold night. Emergencies are the reason the phone is always on.",
+      "Yes — 24 hours a day, 365 days a year. Emergencies are the reason the phone is always on.",
   },
   {
     id: "faq-em-lp-2",
     question: "How fast can you get here?",
     answer:
-      "Manchester and the surrounding towns — Bedford, Goffstown, Hooksett, Auburn — are usually reachable well within a half hour. Farther corners of our area like Salem, Milford, or Weare take a bit longer, and we'll give you an honest ETA when you call.",
+      "Manchester and the surrounding towns are usually well within a half hour. Farther corners like Salem, Milford, or Weare take a bit longer — you get an honest ETA when you call.",
   },
   {
     id: "faq-em-lp-3",
     question: "Does emergency service cost extra?",
     answer:
-      "After-hours dispatch carries a premium, and we tell you exactly what it is on the phone — before we roll. Repairs are still priced up front once we diagnose the problem, so you approve every dollar before work starts.",
+      "After-hours dispatch carries a premium, and we tell you exactly what it is on the phone — before we roll. Repairs are still priced up front, so you approve every dollar before work starts.",
   },
   {
     id: "faq-em-lp-4",
     question: "What should I do while I wait?",
     answer:
-      "Whatever we walked through on the phone — usually shutting off the affected breaker (or the main), unplugging anything on that circuit, and keeping people away from the area. If there's smoke or fire, get out and call 911 first, then us.",
+      "Whatever we walked through on the phone — usually shutting off the affected breaker and unplugging that circuit. If there's smoke or fire, get out and call 911 first, then us.",
   },
 ];
 
 const [featuredReview, ...sideReviews] = emergencyLandingReviews;
 
-const heroImg = imageManifest["emergency-field-technician"];
+const heroImg = imageManifest["hero-emergency"];
 const publicDir = fileURLToPath(new URL("../../public", import.meta.url));
 const heroPreload =
   heroImg && existsSync(publicDir + heroImg.src) ? heroImg.src : undefined;
@@ -158,7 +182,6 @@ const heroPreload =
   ogImage={meta.ogImage}
   ogTitle={meta.ogTitle}
   preloadImage={heroPreload}
-  headerVariant="landing"
 >
   <script
     type="application/ld+json"
@@ -171,115 +194,150 @@ const heroPreload =
     set:html={JSON.stringify(breadcrumbSchema)}
   />
 
-  {/* Hero — 2 AM */}
-  <section
-    class="relative isolate flex min-h-[72svh] items-center overflow-hidden bg-foreground pt-24 md:min-h-[88svh]"
-  >
+  {/* Hero — homepage-style full-bleed dark image, centered, call-first */}
+  <section class="relative flex min-h-screen items-center overflow-hidden">
     <ImageSlot
-      imageKey="emergency-field-technician"
+      imageKey="hero-emergency"
       fill
       priority
-      class="absolute inset-0 -z-10"
-      overlayClassName="bg-gradient-to-r from-foreground/95 via-foreground/80 to-foreground/40"
+      class="lp-bg-settle absolute inset-0 z-0"
+      overlayClassName="bg-gradient-to-b from-black/70 via-black/55 to-black/75"
       sizes="100vw"
     />
-    <div
-      class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-foreground to-transparent"
-      aria-hidden="true"
-    >
-    </div>
 
-    <Container class="relative pb-16 pt-6 md:pb-20">
-      <div class="lp-fade-up max-w-3xl">
-        <span
-          class="inline-flex items-center gap-2.5 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white ring-1 ring-white/20"
-        >
-          <span class="relative flex h-2 w-2">
-            <span
-              class="absolute inline-flex h-full w-full rounded-full bg-secondary-400 motion-safe:animate-ping"
-            >
-            </span>
-            <span class="relative inline-flex h-2 w-2 rounded-full bg-secondary-400"></span>
-          </span>
-          Answering Live — 24/7 · Manchester &amp; Southern NH
-        </span>
-
-        <h1
-          class="mt-6 text-4xl font-bold leading-tight text-white md:text-6xl"
-        >
-          Lights Out at 2 AM?
+    <Container class="relative z-10 py-32 text-center">
+      <span
+        class="lp-fade-up mb-4 inline-flex items-center gap-2.5 rounded-full bg-white/10 px-5 py-2 text-xs font-semibold uppercase tracking-widest text-white ring-1 ring-white/20 backdrop-blur-sm"
+      >
+        <span class="relative flex h-2 w-2">
           <span
-            class="block bg-gradient-to-r from-secondary-300 to-secondary-400 bg-clip-text pb-1 text-transparent"
+            class="absolute inline-flex h-full w-full rounded-full bg-red-500 motion-safe:animate-ping"
           >
-            We Answer. We Show Up.
           </span>
-        </h1>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-red-500"></span>
+        </span>
+        Answering Live — 24/7 · Manchester &amp; Southern NH
+      </span>
 
-        <p class="mt-5 max-w-xl text-lg text-white/85">
-          Sparks, burning smells, dead panels, storm damage — a licensed
-          electrician picks up the phone and gets moving, any hour of any day.
-        </p>
+      <h1
+        class="lp-fade-up mx-auto max-w-4xl text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl"
+        style="--enter-delay: 80ms"
+      >
+        Emergency Electrician
+        <span
+          class="block bg-gradient-to-r from-secondary-300 to-secondary-400 bg-clip-text pb-1 text-transparent"
+        >
+          in Manchester, NH
+        </span>
+      </h1>
 
-        <div class="mt-8 flex flex-col items-start gap-5">
-          <span class="relative inline-flex">
-            <span
-              class="lp-pulse-ring absolute inset-0 rounded-xl bg-accent-600/60"
-              aria-hidden="true"
-            >
-            </span>
-            <span
-              class="lp-pulse-ring absolute inset-0 rounded-xl bg-accent-600/60"
-              style="--enter-delay: 1s"
-              aria-hidden="true"
-            >
-            </span>
-            <a
-              href={`tel:${businessConfig.phoneRaw}`}
-              class="relative inline-flex items-center gap-3 rounded-xl bg-accent-600 px-8 py-5 text-xl font-bold text-white shadow-lg transition-colors hover:bg-accent-700"
-            >
-              <Phone className="h-6 w-6" />
-              Call {businessConfig.phone} — Live Now
-            </a>
-          </span>
+      <p
+        class="lp-fade-up mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/80 md:text-xl"
+        style="--enter-delay: 160ms"
+      >
+        Sparks, burning smells, half the house dark — call now and a licensed
+        electrician answers, walks you to safety, and gets moving any hour of
+        any day.
+      </p>
 
-          <a
-            href="#quote"
-            class="inline-flex items-center gap-1.5 text-sm font-semibold text-white/70 underline underline-offset-4 transition-colors hover:text-white"
+      <ul
+        class="lp-fade-up mt-7 flex flex-wrap items-center justify-center gap-2.5"
+        style="--enter-delay: 240ms"
+      >
+        {
+          heroChips.map((chip) => (
+            <li class="flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-2 text-sm font-medium text-white/90 ring-1 ring-white/15 backdrop-blur-sm">
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-secondary-400" />
+              {chip}
+            </li>
+          ))
+        }
+      </ul>
+
+      <div
+        class="lp-fade-up mt-7 flex justify-center"
+        style="--enter-delay: 320ms"
+      >
+        <GoogleReviewsPill />
+      </div>
+
+      <div
+        class="lp-fade-up mt-8 flex flex-col items-center justify-center gap-5"
+        style="--enter-delay: 400ms"
+      >
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="lp-siren-glow inline-flex items-center gap-3 rounded-xl bg-red-700 px-10 py-5 text-xl font-bold text-white transition-colors hover:bg-red-800"
+        >
+          <Phone className="h-6 w-6" />
+          Call {businessConfig.phone} — Live Now
+        </a>
+        <a
+          href="#quote"
+          class="inline-flex items-center gap-1.5 text-sm font-semibold text-white/70 underline underline-offset-4 transition-colors hover:text-white"
+        >
+          Not urgent? Get a quote by morning
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+
+      {/* Stats row — homepage shell, values count up on load */}
+      <div
+        class="lp-fade-up mx-auto mt-14 grid w-full max-w-lg grid-cols-3 divide-x divide-white/20 md:mt-16"
+        style="--enter-delay: 480ms"
+      >
+        <div class="min-w-0 px-2 text-center sm:px-4">
+          <p
+            class="whitespace-nowrap text-2xl font-bold text-white sm:text-3xl md:text-4xl"
           >
-            Not urgent? Get a quote by morning
-            <ArrowRight className="h-4 w-4" />
-          </a>
+            24/7
+          </p>
+          <p
+            class="mt-1 text-[11px] font-semibold uppercase tracking-wide text-white/70 sm:text-xs sm:tracking-widest"
+          >
+            Live Answer, Every Day
+          </p>
         </div>
-
-        <ul class="mt-8 flex flex-wrap gap-2.5">
-          {
-            dispatchFacts.map((fact) => (
-              <li class="rounded-full bg-white/10 px-3.5 py-2 text-sm font-medium text-white/90 ring-1 ring-white/15">
-                {fact}
-              </li>
-            ))
-          }
-        </ul>
+        <div class="min-w-0 px-2 text-center sm:px-4">
+          <p
+            class="whitespace-nowrap text-2xl font-bold text-white sm:text-3xl md:text-4xl"
+          >
+            <span data-count-to="25" data-count-prefix="~">~25</span> min
+          </p>
+          <p
+            class="mt-1 text-[11px] font-semibold uppercase tracking-wide text-white/70 sm:text-xs sm:tracking-widest"
+          >
+            To Most of Southern NH
+          </p>
+        </div>
+        <div class="min-w-0 px-2 text-center sm:px-4">
+          <p class="text-2xl font-bold text-white sm:text-3xl md:text-4xl">
+            <span data-count-to="18">18</span>
+          </p>
+          <p
+            class="mt-1 text-[11px] font-semibold uppercase tracking-wide text-white/70 sm:text-xs sm:tracking-widest"
+          >
+            Towns on the Dispatch Map
+          </p>
+        </div>
       </div>
     </Container>
   </section>
 
-  <TrustBar tone="dark" />
+  <TrustBar />
 
   {/* Call now if */}
   <section class="section-padding bg-white">
     <Container>
-      <h2
-        class="text-center text-3xl font-bold text-foreground md:text-4xl"
-        data-reveal
-      >
-        Six Situations That Shouldn't Wait Until Morning
-      </h2>
-      <p class="mx-auto mt-4 max-w-2xl text-center text-muted" data-reveal>
-        If any of these is happening in your home or business right now, skip
-        the form and call {businessConfig.phone}.
-      </p>
-      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div data-reveal>
+        <SectionHeading
+          eyebrow="Call Now If"
+          heading="Six Problems That Shouldn't Wait Until Morning"
+          subtitle={`If any of these is happening right now, skip the form and call ${businessConfig.phone}.`}
+          align="center"
+        />
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
           callNowIf.map((item, i) => (
             <div
@@ -308,139 +366,89 @@ const heroPreload =
           ))
         }
       </div>
-      <div class="mt-12 flex justify-center">
-        <span class="relative inline-flex">
-          <span
-            class="lp-pulse-ring absolute inset-0 rounded-xl bg-accent-600/60"
-            aria-hidden="true"
-          >
-          </span>
-          <a
-            href={`tel:${businessConfig.phoneRaw}`}
-            class="relative inline-flex items-center gap-3 rounded-xl bg-accent-600 px-8 py-4 text-lg font-bold text-white shadow-lg transition-colors hover:bg-accent-700"
-          >
-            <Phone className="h-6 w-6" />
-            Emergency Line: {businessConfig.phone}
-          </a>
-        </span>
+      <div class="mt-12 flex justify-center" data-reveal>
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="lp-siren-glow inline-flex items-center gap-3 rounded-xl bg-red-700 px-8 py-4 text-lg font-bold text-white transition-colors hover:bg-red-800"
+        >
+          <Phone className="h-6 w-6" />
+          Emergency Line: {businessConfig.phone}
+        </a>
       </div>
     </Container>
   </section>
 
-  {/* What happens when you call */}
-  <section class="relative overflow-hidden section-padding bg-foreground">
-    <div
-      class="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_at_15%_20%,rgba(193,70,239,0.14),transparent)]"
-      aria-hidden="true"
-    >
+  {/* Why neighbors call us — homepage-style split section */}
+  <SplitSection
+    imageKey="outdoor-control-cabinet"
+    imagePosition="right"
+    bgColor="surface"
+    imageAspect="4/3"
+    badge={{ value: "~25", eyebrow: "Minutes out", label: "Most of Southern NH" }}
+  >
+    <div data-reveal>
+      <SectionHeading
+        eyebrow="Why Neighbors Call Us"
+        heading="No Voicemail. No Runaround. No Surprise Bill."
+      />
+      <p class="mb-6 text-base leading-relaxed text-muted md:text-lg">
+        Emergency calls go straight to a licensed electrician, not a call
+        center. You get safety steps the moment you call, an honest ETA, and
+        a price you approve before any work starts.
+      </p>
+      <div class="mb-8 space-y-4">
+        {whyChecklist.map((item) => <ChecklistItem text={item} />)}
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="lp-siren-glow inline-flex items-center gap-2 rounded-xl bg-red-700 px-7 py-3.5 font-bold text-white transition-colors hover:bg-red-800"
+        >
+          <Phone className="h-5 w-5" />
+          Call {businessConfig.phone}
+        </a>
+        <Button href="#quote" variant="outline">
+          Get My Free Quote
+          <ArrowRight slot="icon" className="h-5 w-5" />
+        </Button>
+      </div>
     </div>
-    <Container class="relative">
-      <h2
-        class="text-center text-3xl font-bold text-white md:text-4xl"
-        data-reveal
-      >
-        What Happens When You Call
-      </h2>
-      <div class="mt-14 grid items-center gap-12 lg:grid-cols-2">
-        <div class="relative" data-reveal>
-          <ImageSlot
-            imageKey="home-exterior-night-lighting"
-            aspectRatio="4/3"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            class="rounded-3xl ring-1 ring-white/15"
-          />
-          <span
-            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
-          >
-            The goal, day or night: lights back on
-          </span>
-        </div>
-        <ol class="relative flex flex-col gap-10">
-          <div
-            class="absolute bottom-5 left-5 top-5 w-px bg-white/15"
-            aria-hidden="true"
-          >
-          </div>
-          {
-            steps.map((step, i) => (
-              <li
-                class="relative flex gap-5"
-                data-reveal
-                style={`--reveal-delay: ${i * 120}ms`}
-              >
-                <span class="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary-400 text-sm font-bold text-foreground ring-4 ring-foreground">
-                  {i + 1}
-                </span>
-                <div>
-                  <div class="flex items-center gap-2.5">
-                    <step.icon className="h-5 w-5 text-secondary-400" />
-                    <h3 class="text-lg font-bold text-white">{step.title}</h3>
-                  </div>
-                  <p class="mt-2 text-sm leading-relaxed text-white/80">
-                    {step.text}
-                  </p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
-    </Container>
-  </section>
+  </SplitSection>
 
-  {/* Response stats */}
-  <section class="border-y border-white/10 bg-foreground py-14 md:py-16">
+  {/* 3-step process */}
+  <section class="section-padding bg-white">
     <Container>
-      <h2
-        class="text-center text-3xl font-bold text-white md:text-4xl"
-        data-reveal
-      >
-        Response Times We Actually Hit
-      </h2>
-      <div
-        class="mx-auto mt-12 grid max-w-5xl grid-cols-2 gap-y-10 md:grid-cols-4 md:divide-x md:divide-white/10"
-      >
-        <div class="px-4 text-center" data-reveal>
-          <p class="text-4xl font-bold text-white md:text-5xl">24/7</p>
-          <p
-            class="mt-2 text-xs font-semibold uppercase tracking-widest text-white/60"
-          >
-            Live answer, every day
-          </p>
+      <div data-reveal>
+        <SectionHeading
+          eyebrow="What Happens Next"
+          heading="You Call. We Answer. We Roll."
+          align="center"
+        />
+      </div>
+      <div class="relative grid gap-10 md:grid-cols-3 md:gap-8">
+        <div
+          class="absolute left-[18%] right-[18%] top-10 hidden border-t-2 border-dashed border-primary-200 md:block"
+          aria-hidden="true"
+        >
         </div>
-        <div class="relative px-4 text-center" data-reveal style="--reveal-delay: 100ms">
-          <span
-            class="lp-radar-ring absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-secondary-400/40"
-            aria-hidden="true"
-          >
-          </span>
-          <p class="relative text-4xl font-bold text-white md:text-5xl">
-            <span data-count-to="25" data-count-prefix="~">~25</span> min
-          </p>
-          <p
-            class="relative mt-2 text-xs font-semibold uppercase tracking-widest text-white/60"
-          >
-            To most of southern NH
-          </p>
-        </div>
-        <div class="px-4 text-center" data-reveal style="--reveal-delay: 200ms">
-          <p class="text-4xl font-bold text-white md:text-5xl">
-            <span data-count-to="18">18</span>
-          </p>
-          <p
-            class="mt-2 text-xs font-semibold uppercase tracking-widest text-white/60"
-          >
-            Towns on the dispatch map
-          </p>
-        </div>
-        <div class="px-4 text-center" data-reveal style="--reveal-delay: 300ms">
-          <p class="text-4xl font-bold text-white md:text-5xl">11 PM</p>
-          <p
-            class="mt-2 text-xs font-semibold uppercase tracking-widest text-white/60"
-          >
-            The blizzard call we still get thanked for
-          </p>
-        </div>
+        {
+          steps.map((step, i) => (
+            <div
+              class="relative rounded-2xl bg-white p-7 ring-1 ring-border shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+              data-reveal
+              style={`--reveal-delay: ${i * 120}ms`}
+            >
+              <div class="absolute -top-4 left-7 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-secondary-500 text-sm font-bold text-white shadow-badge">
+                {i + 1}
+              </div>
+              <step.icon className="h-8 w-8 text-primary-600" />
+              <h3 class="mt-4 text-lg font-bold text-foreground">
+                {step.title}
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
+            </div>
+          ))
+        }
       </div>
     </Container>
   </section>
@@ -448,10 +456,13 @@ const heroPreload =
   {/* Reviews — featured 11 PM rescue */}
   <section class="section-padding bg-surface">
     <Container>
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <h2 class="text-3xl font-bold text-foreground md:text-4xl">
-          Rescued Neighbors, In Their Own Words
-        </h2>
+      <div class="flex flex-col items-center text-center" data-reveal>
+        <SectionHeading
+          eyebrow="Google Reviews"
+          heading="Rescued Neighbors, In Their Own Words"
+          align="center"
+          class="mb-5"
+        />
         <GoogleReviewsPill variant="bordered" />
       </div>
       <div class="mt-10 grid gap-6 lg:grid-cols-3">
@@ -507,42 +518,36 @@ const heroPreload =
     </Container>
   </section>
 
-  {/* Honest work duo */}
+  {/* Work gallery */}
   <section class="section-padding bg-white">
     <Container>
-      <h2
-        class="text-center text-3xl font-bold text-foreground md:text-4xl"
-        data-reveal
-      >
-        Fixed Right at Any Hour
-      </h2>
-      <div class="mt-12 grid gap-5 md:grid-cols-2">
-        <div class="relative" data-reveal>
-          <ImageSlot
-            imageKey="outdoor-control-cabinet"
-            aspectRatio="16/10"
-            sizes="(min-width: 768px) 50vw, 100vw"
-            class="rounded-3xl shadow-card"
-          />
-          <span
-            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
-          >
-            Found it, fixed it, tested it — one visit
-          </span>
-        </div>
-        <div class="relative" data-reveal style="--reveal-delay: 120ms">
-          <ImageSlot
-            imageKey="wire-connection-work"
-            aspectRatio="16/10"
-            sizes="(min-width: 768px) 50vw, 100vw"
-            class="rounded-3xl shadow-card"
-          />
-          <span
-            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
-          >
-            Repairs done to code, not taped over
-          </span>
-        </div>
+      <div data-reveal>
+        <SectionHeading
+          eyebrow="After the Callout"
+          heading="Fixed Right at Any Hour"
+          align="center"
+        />
+      </div>
+      <div class="grid gap-5 md:grid-cols-2">
+        {
+          gallery.map((item, i) => (
+            <div
+              class="relative"
+              data-reveal
+              style={`--reveal-delay: ${i * 120}ms`}
+            >
+              <ImageSlot
+                imageKey={item.imageKey}
+                aspectRatio="16/10"
+                sizes="(min-width: 768px) 50vw, 100vw"
+                class="rounded-3xl shadow-card"
+              />
+              <span class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
+                {item.caption}
+              </span>
+            </div>
+          ))
+        }
       </div>
     </Container>
   </section>
@@ -555,32 +560,42 @@ const heroPreload =
     bgColor="surface"
   />
 
-  {/* Final CTA */}
-  <section
-    class="bg-gradient-to-br from-accent-700 via-accent-600 to-primary-800 py-16"
-  >
-    <Container>
-      <div class="flex flex-col items-center gap-6 text-center">
-        <AlertTriangle className="h-10 w-10 text-white" />
-        <h2 class="max-w-2xl text-3xl font-bold text-white md:text-4xl">
-          Electrical Problems Get Worse, Not Better
-        </h2>
-        <span class="relative inline-flex">
-          <span
-            class="lp-pulse-ring absolute inset-0 rounded-xl bg-white/50"
-            aria-hidden="true"
-          >
-          </span>
-          <a
-            href={`tel:${businessConfig.phoneRaw}`}
-            class="relative inline-flex items-center justify-center gap-3 rounded-xl bg-white px-10 py-5 text-xl font-bold text-accent-700 shadow-lg transition-all hover:-translate-y-0.5"
-          >
-            <Phone className="h-6 w-6" />
-            Call {businessConfig.phone} Now
-          </a>
+  {/* Final CTA — save the number, lights in the dark */}
+  <section class="relative overflow-hidden section-padding bg-foreground">
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(620px_at_12%_18%,rgba(239,68,68,0.16),transparent)]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(620px_at_88%_85%,rgba(59,130,246,0.18),transparent)]"
+      aria-hidden="true"
+    >
+    </div>
+    <Container class="relative">
+      <div class="flex flex-col items-center gap-6 text-center" data-reveal>
+        <span
+          class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15"
+        >
+          <Siren className="h-7 w-7 text-red-400" />
         </span>
-        <p class="text-sm text-white/85">
-          Live answer 24/7 · Licensed NH #15673 · Serving 18 southern NH towns
+        <h2 class="max-w-2xl text-3xl font-bold text-white md:text-4xl">
+          Save This Number Before You Need It
+        </h2>
+        <p class="max-w-xl text-white/80">
+          Electrical problems get worse, not better — and the night you smell
+          burning plastic is the wrong night to start googling.
+        </p>
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="lp-siren-glow inline-flex items-center gap-3 rounded-xl bg-red-700 px-10 py-5 text-xl font-bold text-white transition-colors hover:bg-red-800"
+        >
+          <Phone className="h-6 w-6" />
+          Call {businessConfig.phone} Now
+        </a>
+        <p class="text-sm text-white/70">
+          Live answer 24/7 · Licensed NH Electrician #15673 · 18 southern NH
+          towns
         </p>
         <a
           href="#quote"

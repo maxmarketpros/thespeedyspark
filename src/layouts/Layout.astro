@@ -36,8 +36,14 @@ const {
   headerVariant = "default",
 } = Astro.props as Props;
 
-const canonicalUrl =
+// Netlify serves directory-format builds at trailing-slash URLs (and 301s the
+// bare form), so canonicals must carry the slash to match the sitemap and the
+// final URL — otherwise every canonical points at a redirect.
+const rawCanonical =
   canonical || new URL(Astro.url.pathname, siteConfig.url).toString();
+const canonicalUrl = rawCanonical.endsWith("/")
+  ? rawCanonical
+  : `${rawCanonical}/`;
 const ogTitleResolved = ogTitle || title;
 const absoluteOgImage = new URL(ogImage, siteConfig.url).toString();
 

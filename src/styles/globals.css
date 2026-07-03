@@ -197,6 +197,20 @@
   }
 }
 
+@keyframes lp-siren {
+  0%,
+  100% {
+    box-shadow:
+      -14px 0 38px -2px rgba(239, 68, 68, 0.75),
+      14px 0 38px -2px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow:
+      -14px 0 38px -2px rgba(239, 68, 68, 0.3),
+      14px 0 38px -2px rgba(59, 130, 246, 0.75);
+  }
+}
+
 /* Static-safe defaults: every animated element reads correctly with the
    animation removed (charge bar full, pulse rings covered by their button,
    entrance elements visible). */
@@ -207,6 +221,15 @@
 .lp-pulse-ring,
 .lp-radar-ring {
   opacity: 0;
+}
+
+/* Police-light glow for emergency call buttons: red half-glow left, blue
+   right. Static dual glow reads as a light bar when motion is reduced;
+   the halves alternate intensity when animation is allowed. */
+.lp-siren-glow {
+  box-shadow:
+    -14px 0 38px -2px rgba(239, 68, 68, 0.55),
+    14px 0 38px -2px rgba(59, 130, 246, 0.55);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -240,5 +263,9 @@
 
   .lp-radar-ring {
     animation: lp-radar 3s ease-out infinite;
+  }
+
+  .lp-siren-glow {
+    animation: lp-siren 1.5s ease-in-out infinite;
   }
 }
