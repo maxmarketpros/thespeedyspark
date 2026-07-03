@@ -4,19 +4,34 @@ import Container from "@/components/ui/Container.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
 import Button from "@/components/ui/Button.astro";
 import ServiceCard from "@/components/ui/ServiceCard.astro";
-import { services } from "@/config/services";
+import { services as allServices } from "@/config/services";
 import { businessConfig } from "@/config/business";
 import { homepageContent } from "@/config/homepage";
+import type { ServiceConfig } from "@/types";
+
+interface Props {
+  /** Which services to render (defaults to the full aggregate list) */
+  services?: ServiceConfig[];
+  eyebrow?: string;
+  heading?: string;
+  subtitle?: string;
+}
 
 const { services: content } = homepageContent;
+const {
+  services = allServices,
+  eyebrow = content.eyebrow,
+  heading = content.heading,
+  subtitle = content.subtitle,
+} = Astro.props as Props;
 ---
 
 <section class="section-padding">
   <Container>
     <SectionHeading
-      eyebrow={content.eyebrow}
-      heading={content.heading}
-      subtitle={content.subtitle}
+      eyebrow={eyebrow}
+      heading={heading}
+      subtitle={subtitle}
       align="center"
     />
 

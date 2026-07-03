@@ -1,0 +1,136 @@
+---
+import { Phone, CheckCircle2 } from "lucide-react";
+import Container from "@/components/ui/Container.astro";
+import FormEmbed from "@/components/ui/FormEmbed.astro";
+import GoogleReviewsPill from "@/components/ui/GoogleReviewsPill.astro";
+import { businessConfig } from "@/config/business";
+import { cn } from "@/lib/utils";
+
+/**
+ * Pre-footer conversion section for the ad landing pages.
+ *
+ * Owns the page's single `id="quote"` anchor and its single FormEmbed —
+ * the LeadConnector iframe id and form_embed.js script must never render
+ * twice on one page.
+ */
+interface Props {
+  tone?: "ev" | "panel" | "emergency";
+  eyebrow: string;
+  /** Section H2 — must stay unique across the whole site */
+  heading: string;
+  /** Form-card title (rendered as h3) */
+  formHeading: string;
+  formSubheading?: string;
+  bullets: string[];
+  urgencyNote?: string;
+  /** Put the pitch/phone column first (emergency: call-first logic) */
+  swapColumns?: boolean;
+}
+
+const {
+  tone = "ev",
+  eyebrow,
+  heading,
+  formHeading,
+  formSubheading = "Free, fast, and no obligation — most quotes come back the same day.",
+  bullets,
+  urgencyNote,
+  swapColumns = false,
+} = Astro.props as Props;
+
+const toneBg = tone === "emergency" ? "bg-foreground" : "bg-primary-900";
+const toneGlow =
+  tone === "emergency"
+    ? "bg-[radial-gradient(700px_at_15%_10%,rgba(193,70,239,0.16),transparent)]"
+    : "bg-[radial-gradient(700px_at_80%_10%,rgba(99,207,251,0.12),transparent)]";
+---
+
+<section
+  id="quote"
+  class={cn(
+    "relative scroll-mt-24 overflow-hidden border-t border-white/10 section-padding",
+    toneBg,
+  )}
+>
+  {/* Tone atmosphere */}
+  <div class={cn("pointer-events-none absolute inset-0", toneGlow)} aria-hidden="true">
+  </div>
+  {
+    tone === "panel" && (
+      <div
+        class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:56px_56px]"
+        aria-hidden="true"
+      />
+    )
+  }
+
+  <Container class="relative">
+    <div class="grid items-start gap-12 lg:grid-cols-5 lg:gap-14">
+      {/* Pitch / phone column */}
+      <div class={cn("lg:col-span-2", swapColumns ? "order-1" : "order-2 lg:order-1")}>
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-secondary-300">
+          {eyebrow}
+        </p>
+        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">{heading}</h2>
+
+        <ul class="mt-6 flex flex-col gap-3">
+          {
+            bullets.map((item) => (
+              <li class="flex items-start gap-3 text-white/90">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-secondary-400" />
+                <span class="text-base font-medium">{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="mt-8 inline-flex items-center gap-3.5 rounded-xl bg-accent-600 px-7 py-4 text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-accent-700"
+        >
+          <Phone className="h-6 w-6 shrink-0" />
+          <span class="text-left">
+            <span class="block text-xs font-semibold uppercase tracking-wider text-white">
+              Faster by phone
+            </span>
+            <span class="block text-lg font-bold leading-tight">
+              {businessConfig.phone}
+            </span>
+          </span>
+        </a>
+
+        <div class="mt-6">
+          <GoogleReviewsPill variant="light" />
+        </div>
+
+        {
+          urgencyNote && (
+            <p class="mt-6 text-sm leading-relaxed text-white/60">{urgencyNote}</p>
+          )
+        }
+      </div>
+
+      {/* Form column */}
+      <div class={cn("lg:col-span-3", swapColumns ? "order-2" : "order-1 lg:order-2")}>
+        <div class="relative">
+          <span
+            class="absolute -top-3 left-8 z-10 rounded-full bg-accent-600 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-badge"
+          >
+            Free · Same-Day Reply
+          </span>
+          <div
+            class="rounded-3xl bg-gradient-to-br from-secondary-400 via-primary-600 to-accent-500 p-[2px] shadow-card-hover"
+          >
+            <div class="rounded-[calc(1.5rem-2px)] bg-white p-6 md:p-8">
+              <h3 class="text-2xl font-bold text-foreground">{formHeading}</h3>
+              <p class="mt-1.5 text-sm text-muted">{formSubheading}</p>
+              <div class="mt-4">
+                <FormEmbed />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

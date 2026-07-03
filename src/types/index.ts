@@ -20,7 +20,13 @@ export interface FeatureHighlight {
 
 export interface ServiceConfig {
   slug: string;
+  /** Category drives the base path: /residential/[slug] or /commercial/[slug] */
+  category: "residential" | "commercial";
   title: string;
+  /** Unique <title> tag; falls back to a generated one if omitted */
+  metaTitle?: string;
+  /** Unique meta description; falls back to excerpt */
+  metaDescription?: string;
   excerpt: string;
   icon: string;
   cardImage: string;
@@ -37,7 +43,9 @@ export interface ServiceConfig {
   /** H2 for the Scope/What's Included section (replaces generic "Complete Service Scope") */
   scopeHeading: string;
   features: string[];
-  faqKeys: string[];
+  /** Inline page-specific FAQs (preferred — keeps copy unique per page) */
+  faqs?: FAQItem[];
+  faqKeys?: string[];
   ctaHeading: string;
   ctaText: string;
   // SEO-focused sub-topic sections for service pages
@@ -92,6 +100,49 @@ export interface NavItem {
   label: string;
   href: string;
   children?: NavItem[];
+  /** Render dropdown children in a multi-column grid (for long lists) */
+  columns?: 2;
+}
+
+export interface ServiceAreaConfig {
+  slug: string;
+  city: string;
+  county: "Hillsborough" | "Merrimack" | "Rockingham";
+  metaTitle: string;
+  metaDescription: string;
+  h1: string;
+  heroImageKey: string;
+  featureImageKey: string;
+  /** Eyebrow + heading for the intro split section — must vary per city */
+  introEyebrow: string;
+  introHeading: string;
+  intro: string[];
+  /** Heading + short paragraph tying services to this specific town */
+  servicesHeading: string;
+  servicesSubtitle: string;
+  servicesHighlight: { title: string; description: string; icon: string; href: string }[];
+  whyHeading: string;
+  whyUs: BenefitItem[];
+  faqHeading: string;
+  faqs: FAQItem[];
+  mapEmbedSrc: string;
+  mapHeading: string;
+  /** Slugs of nearby area pages for the internal-link mesh */
+  nearbyAreas: string[];
+  ctaHeading: string;
+  ctaText: string;
+}
+
+export interface ReviewItem {
+  id: string;
+  name: string;
+  initials: string;
+  /** Cycles through brand colors for the initials avatar */
+  avatarColorIndex: number;
+  rating: number;
+  relativeDate: string;
+  text: string;
+  source: "google";
 }
 
 export interface FooterGroup {

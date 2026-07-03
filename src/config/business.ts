@@ -1,72 +1,109 @@
 export const businessConfig = {
-  phone: "(555) 123-4567",
-  phoneRaw: "+15551234567",
-  email: "info@premierservices.com",
+  phone: "(603) 661-8432",
+  phoneRaw: "+16036618432",
+  email: "thespeedysparkyllc@gmail.com",
+  // Service-area business: city-level address only (matches Google Business Profile)
   address: {
-    street: "1234 Main Street",
-    city: "Springfield",
-    state: "IL",
-    zip: "62701",
-    full: "1234 Main Street, Springfield, IL 62701",
+    street: "",
+    city: "Manchester",
+    state: "NH",
+    zip: "03103",
+    full: "Manchester, NH 03103",
   },
   hours: {
-    display: "Mon-Sat: 8 AM - 6 PM",
+    display: "Open 24/7 — Emergency Service Available",
     structured: [
-      { days: "Mo-Sa", opens: "08:00", closes: "18:00" },
+      {
+        days: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "00:00",
+        closes: "23:59",
+      },
     ],
   },
+
+  license: "NH Electrical License #15673",
+  licenseNumber: "15673",
 
   // ===== SERVICE AREAS =====
   // Primary list used in footer, structured data, etc.
   serviceAreas: [
-    "Springfield",
-    "Shelbyville",
-    "Capital City",
-    "Ogdenville",
-    "North Haverbrook",
+    "Manchester",
+    "Nashua",
+    "Concord",
+    "Bedford",
+    "Goffstown",
+    "Hooksett",
+    "Derry",
+    "Londonderry",
+    "Merrimack",
+    "Salem",
+    "Amherst",
+    "Milford",
+    "Auburn",
+    "Candia",
+    "Litchfield",
+    "Pembroke",
+    "Bow",
+    "Weare",
   ],
 
-  // Expanded city list for the Service Areas section on the homepage.
-  // Each city can optionally link to a dedicated area page in the future.
+  // Expanded city list for the Service Areas section — each links to its area page.
   serviceAreaCities: [
-    { name: "Springfield", href: "" },
-    { name: "Shelbyville", href: "" },
-    { name: "Capital City", href: "" },
-    { name: "Ogdenville", href: "" },
-    { name: "North Haverbrook", href: "" },
-    { name: "Cypress Creek", href: "" },
-    { name: "Brockway", href: "" },
-    { name: "East Springfield", href: "" },
-    { name: "West Springfield", href: "" },
-    { name: "Shelbyville Heights", href: "" },
-    { name: "Springfield Junction", href: "" },
-    { name: "Waverly", href: "" },
+    { name: "Manchester", href: "/service-areas/manchester" },
+    { name: "Nashua", href: "/service-areas/nashua" },
+    { name: "Concord", href: "/service-areas/concord" },
+    { name: "Bedford", href: "/service-areas/bedford" },
+    { name: "Goffstown", href: "/service-areas/goffstown" },
+    { name: "Hooksett", href: "/service-areas/hooksett" },
+    { name: "Derry", href: "/service-areas/derry" },
+    { name: "Londonderry", href: "/service-areas/londonderry" },
+    { name: "Merrimack", href: "/service-areas/merrimack" },
+    { name: "Salem", href: "/service-areas/salem" },
+    { name: "Amherst", href: "/service-areas/amherst" },
+    { name: "Milford", href: "/service-areas/milford" },
+    { name: "Auburn", href: "/service-areas/auburn" },
+    { name: "Candia", href: "/service-areas/candia" },
+    { name: "Litchfield", href: "/service-areas/litchfield" },
+    { name: "Pembroke", href: "/service-areas/pembroke" },
+    { name: "Bow", href: "/service-areas/bow" },
+    { name: "Weare", href: "/service-areas/weare" },
   ],
 
   // Service areas section content
-  serviceAreasHeading: "Serving Springfield & Central Illinois",
+  serviceAreasHeading: "Serving Manchester & Southern New Hampshire",
   serviceAreasSubtitle:
-    "and surrounding areas including Shelbyville, Capital City, and the greater metro region.",
+    "From our home base in Manchester we cover Hillsborough, Merrimack, and Rockingham counties — including Nashua, Concord, Bedford, Derry, and the towns in between.",
 
   // ===== MAP EMBED =====
-  // If you have a Google Business Profile, paste the full embed src URL here.
-  // To get it: Google Maps → search your business → Share → Embed a map → copy the src="" value
-  // If left empty, falls back to a generic map centered on the business address city.
+  // Google Business Profile embed for The Speedy Sparky LLC
   googleBusinessMapEmbed:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3320.355408359939!2d-117.85053459999999!3d33.6738603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80dce7a447c59297%3A0x47ae50923ef7bc34!2sMax%20Market%20Pros!5e0!3m2!1sen!2sus!4v1775504357479!5m2!1sen!2sus",
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d744209.6946675767!2d-71.33261999999999!3d43.229010450000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ebb8bf1c99700ad%3A0x94865dea9fd8561d!2sThe%20Speedy%20Sparky%20LLC!5e0!3m2!1sen!2sus!4v1783033638291!5m2!1sen!2sus",
 
   // ===== FORM EMBED =====
-  // Paste your iframe embed URL here (e.g. from Jobber, HouseCall Pro, GoHighLevel, Jotform, etc.)
-  // This is used on the contact page and the "Get a Quote" section across all pages.
-  // Leave empty to show a styled placeholder.
-  formEmbedUrl: "",
-  formEmbedHeight: "600px",
+  // LeadConnector (GoHighLevel) quote form — rendered by FormEmbed.astro
+  formEmbedUrl:
+    "https://api.leadconnectorhq.com/widget/form/OFBgoeScR3kXURnO4052",
+  formEmbedHeight: "683px",
+  formEmbedId: "inline-OFBgoeScR3kXURnO4052",
+  formEmbedTitle: "WebSite Form Template",
 
-  coordinates: { lat: 39.7817, lng: -89.6501 },
-  yearEstablished: 2009,
-  yearsExperience: "15+",
-  projectsCompleted: "250+",
-  ownerName: "John Smith",
+  // ===== REVIEWS =====
+  googleRating: "5.0",
+  googleReviewCount: 46,
+  googleReviewsUrl: "https://maps.app.goo.gl/g6UYc5JTeihgRC9RA",
+
+  coordinates: { lat: 42.9956, lng: -71.4548 },
+  yearEstablished: 2023,
+  yearsExperience: "10+",
+  ownerName: "Aubrey Taylor",
 } as const;
 
 // Helper: returns the map embed URL — Google Business embed if set, otherwise a generic city map
@@ -76,5 +113,5 @@ export function getMapEmbedUrl(): string {
   }
   // Fallback: generic Google Maps embed centered on the business city
   const { city, state } = businessConfig.address;
-  return `https://www.google.com/maps/embed/v1/place?key=&q=${encodeURIComponent(`${city}, ${state}`)}`;
+  return `https://maps.google.com/maps?q=${encodeURIComponent(`${city}, ${state}`)}&output=embed`;
 }

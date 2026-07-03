@@ -1,0 +1,75 @@
+---
+import { PenLine, ExternalLink } from "lucide-react";
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import Button from "@/components/ui/Button.astro";
+import ReviewCard from "@/components/ui/ReviewCard.astro";
+import { businessConfig } from "@/config/business";
+import { cn } from "@/lib/utils";
+import type { ReviewItem } from "@/types";
+
+interface Props {
+  reviews: ReviewItem[];
+  eyebrow?: string;
+  heading?: string;
+  subtitle?: string;
+  showButtons?: boolean;
+  bgColor?: "white" | "surface";
+  class?: string;
+}
+
+const {
+  reviews,
+  eyebrow,
+  heading,
+  subtitle,
+  showButtons = true,
+  bgColor = "surface",
+  class: className,
+} = Astro.props as Props;
+---
+
+<section
+  class={cn(
+    "section-padding",
+    bgColor === "surface" ? "bg-surface" : "bg-white",
+    className,
+  )}
+>
+  <Container>
+    {
+      heading && (
+        <SectionHeading
+          eyebrow={eyebrow}
+          heading={heading}
+          subtitle={subtitle}
+          align="center"
+        />
+      )
+    }
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {reviews.map((review) => <ReviewCard review={review} />)}
+    </div>
+
+    {
+      showButtons && (
+        <div class="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Button href={businessConfig.googleReviewsUrl} target="_blank" size="lg">
+            Leave a Review
+            <PenLine slot="icon" className="h-5 w-5" />
+          </Button>
+          <Button
+            href={businessConfig.googleReviewsUrl}
+            target="_blank"
+            variant="outline"
+            size="lg"
+          >
+            See All {businessConfig.googleReviewCount} Google Reviews
+            <ExternalLink slot="icon" className="h-5 w-5" />
+          </Button>
+        </div>
+      )
+    }
+  </Container>
+</section>

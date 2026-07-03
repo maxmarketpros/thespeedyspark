@@ -1,0 +1,143 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import ServiceGrid from "@/components/sections/ServiceGrid.astro";
+import CTASection from "@/components/sections/CTASection.astro";
+import QuoteSection from "@/components/sections/QuoteSection.astro";
+import FAQSection from "@/components/sections/FAQSection.astro";
+import BenefitGrid from "@/components/sections/BenefitGrid.astro";
+import { commercialServices } from "@/config/commercial-services";
+import { businessConfig } from "@/config/business";
+import { generatePageMetadata } from "@/lib/metadata";
+import { generateBreadcrumbSchema } from "@/lib/structured-data";
+
+const meta = generatePageMetadata({
+  title: "Commercial Electrician in Manchester, NH | The Speedy Sparky",
+  description:
+    "Commercial electrical contractor for offices, restaurants, retail & light industrial across southern NH. Build-outs, lighting, panels, maintenance — 24/7.",
+  path: "/commercial",
+});
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", href: "/" },
+  { name: "Commercial Services", href: "/commercial" },
+]);
+
+const commercialBenefits = [
+  {
+    title: "Downtime-Aware Scheduling",
+    description:
+      "Nights, weekends, and phased work plans so your business never has to close for electrical work.",
+    icon: "CalendarClock",
+  },
+  {
+    title: "Documentation That Passes Audits",
+    description:
+      "Panel schedules, as-builts, and inspection records delivered with every project — your facilities file stays current.",
+    icon: "FileCheck",
+  },
+  {
+    title: "Insured & Compliance-Ready",
+    description:
+      "Full liability coverage with certificates of insurance issued on request, plus NH permit and inspection handling.",
+    icon: "ShieldCheck",
+  },
+  {
+    title: "One Number for Emergencies",
+    description:
+      "A tripped main at open time or a dark dining room on a Friday night gets a live answer, 24/7.",
+    icon: "PhoneCall",
+  },
+];
+
+const commercialFaqs = [
+  {
+    id: "faq-comm-index-1",
+    question: "What types of commercial properties do you service?",
+    answer:
+      "Offices and professional suites, restaurants and cafes, retail storefronts, medical and dental practices, warehouses, multifamily buildings, and light industrial spaces across Manchester and southern New Hampshire.",
+  },
+  {
+    id: "faq-comm-index-2",
+    question: "Can you work around our business hours?",
+    answer:
+      "Yes — a large share of our commercial work happens after close or before open. We build the schedule around your operating hours and keep work areas safe and contained during business hours when daytime work is unavoidable.",
+  },
+  {
+    id: "faq-comm-index-3",
+    question: "Do you handle three-phase and 277/480V systems?",
+    answer:
+      "We do. From three-phase panel work and motor circuits to 277V lighting retrofits, we service the systems commercial buildings in NH actually run on.",
+  },
+  {
+    id: "faq-comm-index-4",
+    question: "Do you offer maintenance contracts?",
+    answer:
+      "Yes — scheduled preventative maintenance with thermal scans, panel torque checks, exit and emergency lighting tests, and a documented report after every visit. It's the cheapest insurance a facility can buy.",
+  },
+];
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  ogImage={meta.ogImage}
+  ogTitle={meta.ogTitle}
+>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  <PageHero
+    heading="Commercial Electrician in Manchester, NH"
+    subtitle="Electrical work that keeps your doors open — build-outs, lighting, panels, EV charging, and 24/7 emergency response for southern New Hampshire businesses."
+    imageKey="rooftop-hvac-electrical"
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Commercial" }]}
+    primaryCta={{ label: "Request a Commercial Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
+  />
+
+  <BenefitGrid
+    benefits={commercialBenefits}
+    eyebrow="Built for Business"
+    heading="What Working With Us Looks Like"
+    subtitle="Facility managers and owners across the Millyard, Elm Street, and South Willow corridors count on the same four things."
+    primaryCta={{ label: "Request a Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
+  />
+
+  <ServiceGrid
+    services={commercialServices}
+    eyebrow="Commercial Capabilities"
+    heading="Eleven Ways We Keep Businesses Powered"
+    subtitle="From tenant fit-ups to preventative maintenance programs — click any service for scope, process, and FAQs."
+  />
+
+  <FAQSection
+    eyebrow="Business FAQ"
+    heading="Commercial Electrical Questions"
+    items={commercialFaqs}
+    bgColor="surface"
+  />
+
+  <CTASection
+    heading="Let's Talk About Your Facility"
+    text="Send the scope or just describe the problem — we'll come walk the site and put a real number on it."
+    primaryCta={{ label: "Request a Commercial Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
+  />
+
+  <QuoteSection />
+</Layout>

@@ -1,0 +1,71 @@
+---
+import { Phone } from "lucide-react";
+import { businessConfig } from "@/config/business";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  /** "emergency" = single pulsing call button on the near-black bar */
+  variant?: "default" | "emergency";
+  /** Adds a secondary "Free Quote" button linking to #quote */
+  showQuote?: boolean;
+}
+
+const { variant = "default", showQuote = false } = Astro.props as Props;
+const emergency = variant === "emergency";
+---
+
+{/* Mobile-only persistent call CTA for ad landing pages */}
+<div
+  class={cn(
+    "fixed inset-x-0 bottom-0 z-[9998] border-t p-3 backdrop-blur-sm lg:hidden",
+    emergency
+      ? "border-white/10 bg-foreground/95"
+      : "border-primary-800 bg-primary-700/95",
+  )}
+  style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom))"
+>
+  {
+    emergency ? (
+      <div class="relative">
+        <span
+          class="lp-pulse-ring absolute inset-0 rounded-xl bg-accent-600/70"
+          aria-hidden="true"
+        />
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="relative flex w-full items-center justify-center gap-2.5 rounded-xl bg-accent-600 py-3.5 text-base font-bold text-white shadow-lg transition-colors active:bg-accent-700"
+        >
+          <Phone className="h-5 w-5" />
+          Tap to Call — {businessConfig.phone}
+        </a>
+      </div>
+    ) : showQuote ? (
+      <div class="flex gap-2.5">
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="flex flex-[1.4] items-center justify-center gap-2 rounded-xl bg-accent-600 py-3.5 text-base font-bold text-white shadow-lg transition-colors active:bg-accent-700"
+        >
+          <Phone className="h-5 w-5" />
+          Call Now
+        </a>
+        <a
+          href="#quote"
+          class="flex flex-1 items-center justify-center rounded-xl bg-white/10 py-3.5 text-base font-bold text-white ring-1 ring-inset ring-white/30 transition-colors active:bg-white/20"
+        >
+          Free Quote
+        </a>
+      </div>
+    ) : (
+      <a
+        href={`tel:${businessConfig.phoneRaw}`}
+        class="flex w-full items-center justify-center gap-2.5 rounded-xl bg-accent-600 py-3.5 text-base font-bold text-white shadow-lg transition-colors active:bg-accent-700"
+      >
+        <Phone className="h-5 w-5" />
+        Tap to Call — {businessConfig.phone}
+      </a>
+    )
+  }
+</div>
+
+{/* Spacer so page content isn't hidden behind the fixed bar on mobile */}
+<div class="h-20 lg:hidden" aria-hidden="true"></div>

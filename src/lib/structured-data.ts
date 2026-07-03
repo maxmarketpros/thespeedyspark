@@ -1,11 +1,29 @@
 import { siteConfig } from "@/config/site";
 import { businessConfig } from "@/config/business";
-import type { ServiceConfig, FAQItem } from "@/types";
+import type { ServiceAreaConfig, ServiceConfig, FAQItem } from "@/types";
+
+/** Base path for a service page, e.g. /residential/lighting-installation */
+export function serviceBasePath(service: Pick<ServiceConfig, "category" | "slug">): string {
+  return `/${service.category}/${service.slug}`;
+}
 
 export function generateLocalBusinessSchema() {
+  const address: Record<string, string> = {
+    "@type": "PostalAddress",
+    addressLocality: businessConfig.address.city,
+    addressRegion: businessConfig.address.state,
+    addressCountry: "US",
+  };
+  if (businessConfig.address.street) {
+    address.streetAddress = businessConfig.address.street;
+  }
+  if (businessConfig.address.zip) {
+    address.postalCode = businessConfig.address.zip;
+  }
+
   return {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "Electrician",
     "@id": `${siteConfig.url}/#business`,
     name: siteConfig.name,
     description: siteConfig.description,
@@ -13,16 +31,9 @@ export function generateLocalBusinessSchema() {
     telephone: businessConfig.phone,
     email: businessConfig.email,
     image: `${siteConfig.url}${siteConfig.ogImage}`,
-    logo: `${siteConfig.url}/images/logo.svg`,
+    logo: `${siteConfig.url}/images/logo.png`,
     priceRange: "$$",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: businessConfig.address.street,
-      addressLocality: businessConfig.address.city,
-      addressRegion: businessConfig.address.state,
-      postalCode: businessConfig.address.zip,
-      addressCountry: "US",
-    },
+    address,
     geo: {
       "@type": "GeoCoordinates",
       latitude: businessConfig.coordinates.lat,
@@ -30,25 +41,29 @@ export function generateLocalBusinessSchema() {
     },
     openingHoursSpecification: businessConfig.hours.structured.map((h) => ({
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: h.days.split("-").map((d) => {
-        const map: Record<string, string> = {
-          Mo: "Monday",
-          Tu: "Tuesday",
-          We: "Wednesday",
-          Th: "Thursday",
-          Fr: "Friday",
-          Sa: "Saturday",
-          Su: "Sunday",
-        };
-        return map[d] || d;
-      }),
+      dayOfWeek: [...h.days],
       opens: h.opens,
       closes: h.closes,
     })),
     areaServed: businessConfig.serviceAreas.map((area) => ({
       "@type": "City",
-      name: area,
+      name: `${area}, NH`,
     })),
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: businessConfig.googleRating,
+      reviewCount: businessConfig.googleReviewCount,
+      bestRating: "5",
+    },
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "license",
+      name: businessConfig.license,
+    },
+    founder: {
+      "@type": "Person",
+      name: businessConfig.ownerName,
+    },
     sameAs: Object.values(siteConfig.social).filter(Boolean),
   };
 }
@@ -71,14 +86,14 @@ export function generateServiceSchema(service: ServiceConfig) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: service.title,
-    description: service.excerpt,
+    description: service.metaDescription || service.excerpt,
     serviceType: service.title,
     provider: { "@id": `${siteConfig.url}/#business` },
     areaServed: businessConfig.serviceAreas.map((area) => ({
       "@type": "City",
-      name: area,
+      name: `${area}, NH`,
     })),
-    url: `${siteConfig.url}/services/${service.slug}`,
+    url: `${siteConfig.url}${serviceBasePath(service)}`,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: `${service.title} Features`,
@@ -88,6 +103,44 @@ export function generateServiceSchema(service: ServiceConfig) {
         itemOffered: { "@type": "Service", name: feature },
       })),
     },
+  };
+}
+
+/** Service schema scoped to a single service-area city page */
+export function generateAreaServiceSchema(area: ServiceAreaConfig) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `Electrician Services in ${area.city}, NH`,
+    description: area.metaDescription,
+    serviceType: "Electrical Services",
+    provider: { "@id": `${siteConfig.url}/#business` },
+    areaServed: {
+      "@type": "City",
+      name: `${area.city}, NH`,
+    },
+    url: `${siteConfig.url}/service-areas/${area.slug}`,
+  };
+}
+
+/** Standalone landing-page service schema (EV chargers, panels, emergency) */
+export function generateLandingServiceSchema(options: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: options.name,
+    description: options.description,
+    serviceType: options.name,
+    provider: { "@id": `${siteConfig.url}/#business` },
+    areaServed: businessConfig.serviceAreas.map((area) => ({
+      "@type": "City",
+      name: `${area}, NH`,
+    })),
+    url: `${siteConfig.url}${options.path}`,
   };
 }
 

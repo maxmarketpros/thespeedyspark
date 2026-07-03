@@ -27,6 +27,8 @@ export function generatePageMetadata({
     description,
     canonical,
     ogImage: ogImage || siteConfig.ogImage,
-    ogTitle: `${title} | ${siteConfig.name}`,
+    ogTitle: title.includes(siteConfig.name)
+      ? title
+      : `${title} | ${siteConfig.name}`,
   };
 }

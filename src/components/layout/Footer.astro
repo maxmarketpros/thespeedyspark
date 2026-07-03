@@ -1,5 +1,5 @@
 ---
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Star, ShieldCheck, BadgeCheck } from "lucide-react";
 import Container from "@/components/ui/Container.astro";
 import { siteConfig } from "@/config/site";
 import { businessConfig } from "@/config/business";
@@ -10,23 +10,63 @@ const currentYear = new Date().getFullYear();
 
 <footer class="bg-foreground text-white">
   <Container>
-    <div class="grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-12">
       {/* Brand Column */}
-      <div class="lg:col-span-1">
-        <a href="/" class="text-xl font-bold">{siteConfig.name}</a>
+      <div class="md:col-span-2 lg:col-span-3">
+        <a href="/" class="inline-flex items-center gap-3">
+          <img
+            src="/images/logo-white.png"
+            alt="The Speedy Sparky LLC logo"
+            width="64"
+            height="62"
+            class="h-14 w-auto"
+            loading="lazy"
+          />
+          <span class="text-lg font-bold leading-tight">The Speedy Sparky</span>
+        </a>
         <p class="mt-4 text-sm leading-relaxed text-white/75">
-          {siteConfig.description}
+          Owner-operated electrician serving Manchester and southern New
+          Hampshire around the clock — from panel upgrades and EV chargers to
+          middle-of-the-night emergency repairs.
         </p>
+        <ul class="mt-5 space-y-2 text-sm text-white/85">
+          <li class="flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 shrink-0 text-secondary-400" />
+            {businessConfig.license} · Fully Insured
+          </li>
+          <li class="flex items-center gap-2">
+            <Star className="h-4 w-4 shrink-0 text-star" />
+            <a
+              href={businessConfig.googleReviewsUrl}
+              target="_blank"
+              rel="noopener"
+              class="transition-colors hover:text-white"
+            >
+              {businessConfig.googleRating}★ on Google ({businessConfig.googleReviewCount} reviews)
+            </a>
+          </li>
+          <li class="flex items-center gap-2">
+            <BadgeCheck className="h-4 w-4 shrink-0 text-secondary-400" />
+            <a
+              href={siteConfig.social.bbb}
+              target="_blank"
+              rel="noopener"
+              class="transition-colors hover:text-white"
+            >
+              BBB A-Rated &amp; Accredited
+            </a>
+          </li>
+        </ul>
       </div>
 
       {/* Nav Groups */}
       {
         footerGroups.map((group) => (
-          <div>
+          <div class="lg:col-span-2">
             <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-white/70">
               {group.title}
             </h3>
-            <ul class="space-y-3">
+            <ul class="space-y-2.5">
               {group.links.map((link) => (
                 <li>
                   <a
@@ -42,8 +82,8 @@ const currentYear = new Date().getFullYear();
         ))
       }
 
-      {/* Contact Column */}
-      <div>
+      {/* Contact + Service Areas Column */}
+      <div class="md:col-span-2 lg:col-span-3">
         <h3
           class="mb-4 text-sm font-semibold uppercase tracking-wider text-white/70"
         >
@@ -71,31 +111,53 @@ const currentYear = new Date().getFullYear();
           <li>
             <span class="flex items-start gap-2 text-sm text-white/75">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-              {businessConfig.address.full}
+              {businessConfig.address.full.replace(/ \d{5}$/, "")}
+            </span>
+          </li>
+          <li>
+            <span class="flex items-start gap-2 text-sm text-white/75">
+              <Clock className="mt-0.5 h-4 w-4 shrink-0" />
+              {businessConfig.hours.display}
             </span>
           </li>
         </ul>
 
-        {
-          businessConfig.serviceAreas.length > 0 && (
-            <div class="mt-6">
-              <h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-white/70">
-                Service Areas
-              </h4>
-              <p class="text-sm text-white/75">
-                {businessConfig.serviceAreas.join(" · ")}
-              </p>
-            </div>
-          )
-        }
+        <div class="mt-6">
+          <h4
+            class="mb-3 text-xs font-semibold uppercase tracking-wider text-white/70"
+          >
+            <a href="/service-areas" class="transition-colors hover:text-white">
+              Service Areas
+            </a>
+          </h4>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-2">
+            {
+              businessConfig.serviceAreaCities.map((city) => (
+                <li>
+                  <a
+                    href={city.href}
+                    class="text-sm text-white/75 transition-colors hover:text-white"
+                  >
+                    {city.name}, NH
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
     </div>
 
     {/* Bottom Bar */}
-    <div class="border-t border-white/10 py-6">
-      <p class="text-center text-xs text-white/70">
+    <div
+      class="flex flex-col items-center justify-between gap-2 border-t border-white/10 py-6 sm:flex-row"
+    >
+      <p class="text-xs text-white/70">
         &copy; {currentYear}
         {siteConfig.name}. All rights reserved.
+      </p>
+      <p class="text-xs text-white/70">
+        {businessConfig.license} · Licensed &amp; Insured in New Hampshire
       </p>
     </div>
   </Container>

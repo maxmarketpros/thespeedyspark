@@ -1,0 +1,128 @@
+---
+import { MapPin, ArrowRight } from "lucide-react";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import CTASection from "@/components/sections/CTASection.astro";
+import QuoteSection from "@/components/sections/QuoteSection.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import Container from "@/components/ui/Container.astro";
+import MapEmbed from "@/components/ui/MapEmbed.astro";
+import { serviceAreas } from "@/config/service-areas";
+import { businessConfig } from "@/config/business";
+import { generatePageMetadata } from "@/lib/metadata";
+import { generateBreadcrumbSchema } from "@/lib/structured-data";
+
+const meta = generatePageMetadata({
+  title: "Service Areas | Electrician for Southern NH | The Speedy Sparky",
+  description:
+    "The Speedy Sparky serves 18 New Hampshire towns from Manchester — Nashua, Concord, Bedford, Derry, Salem & more. Find your town and call your local electrician.",
+  path: "/service-areas",
+});
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", href: "/" },
+  { name: "Service Areas", href: "/service-areas" },
+]);
+
+const byCounty = ["Hillsborough", "Merrimack", "Rockingham"].map((county) => ({
+  county,
+  areas: serviceAreas.filter((a) => a.county === county),
+}));
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  ogImage={meta.ogImage}
+  ogTitle={meta.ogTitle}
+>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  <PageHero
+    heading="Electrician Service Areas Across Southern New Hampshire"
+    subtitle="Based in Manchester, on the road everywhere from Concord to Salem. Find your town below — every one gets the same 24/7 response."
+    imageKey="solar-roof-aerial"
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Service Areas" }]}
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
+  />
+
+  {/* Towns grouped by county */}
+  <section class="section-padding">
+    <Container>
+      <SectionHeading
+        eyebrow="18 Towns, 3 Counties"
+        heading="Pick Your Town, Meet Your Electrician"
+        subtitle="Every town page covers local housing quirks, permits, response times, and the services neighbors there call us for most."
+        align="center"
+      />
+
+      <div class="space-y-12">
+        {
+          byCounty.map((group) => (
+            <div>
+              <h3 class="mb-5 flex items-center gap-2 text-lg font-bold uppercase tracking-wider text-primary-700">
+                <MapPin className="h-5 w-5" />
+                {group.county} County
+              </h3>
+              <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {group.areas.map((area) => (
+                  <a
+                    href={`/service-areas/${area.slug}`}
+                    class="group flex flex-col rounded-2xl border border-border bg-white p-6 shadow-card transition-all hover:-translate-y-1 hover:border-primary-200 hover:shadow-card-hover"
+                  >
+                    <h4 class="text-xl font-bold text-foreground group-hover:text-primary-700">
+                      {area.city}, NH
+                    </h4>
+                    <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                      {area.metaDescription}
+                    </p>
+                    <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary-700">
+                      {area.city} Electrician
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  {/* Coverage map */}
+  <section class="section-padding bg-surface">
+    <Container>
+      <SectionHeading
+        eyebrow="Coverage Map"
+        heading="One Base in Manchester, Reach Across Three Counties"
+        subtitle="Most of our service area is within a 25-minute drive — which is why 'Speedy' isn't just a name."
+        align="center"
+      />
+      <div class="overflow-hidden rounded-2xl shadow-card-hover">
+        <MapEmbed class="h-[420px] w-full md:h-[500px]" />
+      </div>
+    </Container>
+  </section>
+
+  <CTASection
+    heading="On the Edge of the Map? Call Anyway."
+    text="Town lines don't stop us — if you're near our coverage area, there's a good chance we can help or point you to someone who can."
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
+  />
+
+  <QuoteSection />
+</Layout>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
-import { siteConfig } from "@/config/site";
 import { businessConfig } from "@/config/business";
 import { mainNav } from "@/config/navigation";
 import { cn } from "@/lib/utils";
@@ -40,7 +39,7 @@ function Button({
   };
   const classes = cn(
     "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
-    "bg-primary-500 text-white hover:bg-primary-600 shadow-sm hover:shadow-md",
+    "bg-primary-600 text-white hover:bg-primary-700 shadow-sm hover:shadow-md",
     sizes[size],
     className
   );
@@ -55,6 +54,28 @@ function Button({
     <button type="button" onClick={onClick} className={classes}>
       {children}
     </button>
+  );
+}
+
+function Logo({ light }: { light: boolean }) {
+  return (
+    <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label="The Speedy Sparky LLC — Home">
+      <img
+        src={light ? "/images/logo-white.png" : "/images/logo.png"}
+        alt="The Speedy Sparky LLC logo"
+        width={56}
+        height={54}
+        className="h-12 w-auto md:h-14"
+      />
+      <span
+        className={cn(
+          "text-lg font-bold leading-tight tracking-tight transition-colors md:text-xl",
+          light ? "text-white" : "text-foreground"
+        )}
+      >
+        The Speedy Sparky
+      </span>
+    </a>
   );
 }
 
@@ -110,12 +131,19 @@ function MobileMenu({
                 </button>
                 {openDropdown === item.label && (
                   <div className="ml-4 flex flex-col gap-1 border-l-2 border-primary-100 pl-4">
+                    <a
+                      href={item.href}
+                      onClick={onClose}
+                      className="py-2 text-base font-semibold text-primary-600 transition-colors hover:text-primary-700"
+                    >
+                      View All {item.label}
+                    </a>
                     {item.children.map((child) => (
                       <a
                         key={child.href}
                         href={child.href}
                         onClick={onClose}
-                        className="py-2 text-base text-muted transition-colors hover:text-primary-500"
+                        className="py-2 text-base text-muted transition-colors hover:text-primary-600"
                       >
                         {child.label}
                       </a>
@@ -127,7 +155,7 @@ function MobileMenu({
               <a
                 href={item.href}
                 onClick={onClose}
-                className="block py-3 text-lg font-medium text-foreground transition-colors hover:text-primary-500"
+                className="block py-3 text-lg font-medium text-foreground transition-colors hover:text-primary-600"
               >
                 {item.label}
               </a>
@@ -141,12 +169,12 @@ function MobileMenu({
           href={`tel:${businessConfig.phoneRaw}`}
           className="flex items-center gap-2 py-3 text-lg font-medium text-foreground"
         >
-          <Phone className="h-5 w-5 text-primary-500" />
+          <Phone className="h-5 w-5 text-primary-600" />
           {businessConfig.phone}
         </a>
 
         <Button href="/contact" className="mt-2 w-full" onClick={onClose}>
-          Get a Quote
+          Get a Free Quote
         </Button>
       </div>
     </div>,
@@ -154,10 +182,17 @@ function MobileMenu({
   );
 }
 
-export function Header() {
+interface HeaderProps {
+  /** "landing" renders a minimal conversion-focused header: logo + phone + CTA, no nav */
+  variant?: "default" | "landing";
+}
+
+export function Header({ variant = "default" }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const isLanding = variant === "landing";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -177,31 +212,48 @@ export function Header() {
     };
   }, [mobileOpen]);
 
+  // Landing pages have a light hero, so the header is always solid
+  const solid = isLanding || scrolled || mobileOpen;
+
+  if (isLanding) {
+    return (
+      <header className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 shadow-header backdrop-blur-md">
+        <Container>
+          <nav className="flex h-20 items-center justify-between">
+            <Logo light={false} />
+            <div className="flex items-center gap-3 sm:gap-5">
+              <a
+                href={`tel:${businessConfig.phoneRaw}`}
+                className="flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary-600 sm:text-base"
+              >
+                <Phone className="h-5 w-5 text-primary-600" />
+                <span className="hidden sm:inline">{businessConfig.phone}</span>
+                <span className="sm:hidden">Call Now</span>
+              </a>
+              <Button href="#quote" size="sm">
+                Get a Free Quote
+              </Button>
+            </div>
+          </nav>
+        </Container>
+      </header>
+    );
+  }
+
   return (
     <>
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-[9999] transition-all duration-300",
-          scrolled || mobileOpen
-            ? "bg-white/95 backdrop-blur-md shadow-header"
-            : "bg-transparent"
+          solid ? "bg-white/95 backdrop-blur-md shadow-header" : "bg-transparent"
         )}
       >
         <Container>
           <nav className="flex h-20 items-center justify-between">
-            {/* Logo */}
-            <a
-              href="/"
-              className={cn(
-                "text-xl font-bold tracking-tight transition-colors",
-                scrolled || mobileOpen ? "text-foreground" : "text-white"
-              )}
-            >
-              {siteConfig.name}
-            </a>
+            <Logo light={!solid} />
 
             {/* Desktop Navigation */}
-            <div className="hidden items-center gap-1 lg:flex">
+            <div className="hidden items-center lg:flex">
               {mainNav.map((item) => (
                 <div key={item.label} className="relative">
                   {item.children ? (
@@ -210,20 +262,24 @@ export function Header() {
                       onMouseEnter={() => setOpenDropdown(item.label)}
                       onMouseLeave={() => setOpenDropdown(null)}
                     >
-                      <button
+                      <a
+                        href={item.href}
                         className={cn(
-                          "flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors",
-                          scrolled
-                            ? "text-foreground-light hover:text-primary-500"
+                          "flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors",
+                          solid
+                            ? "text-foreground-light hover:text-primary-600"
                             : "text-white/90 hover:text-white"
                         )}
                       >
                         {item.label}
                         <ChevronDown className="h-3.5 w-3.5" />
-                      </button>
+                      </a>
                       <div
                         className={cn(
-                          "absolute top-full left-0 min-w-[200px] rounded-xl bg-white py-2 shadow-card-hover transition-all duration-200",
+                          "absolute top-full left-0 rounded-xl bg-white py-2 shadow-card-hover transition-all duration-200",
+                          item.columns === 2
+                            ? "grid min-w-[440px] grid-cols-2 gap-x-1 px-2"
+                            : "min-w-[220px]",
                           openDropdown === item.label
                             ? "visible translate-y-0 opacity-100"
                             : "invisible -translate-y-2 opacity-0"
@@ -233,7 +289,12 @@ export function Header() {
                           <a
                             key={child.href}
                             href={child.href}
-                            className="block px-4 py-2.5 text-sm text-foreground-light transition-colors hover:bg-surface hover:text-primary-500"
+                            className={cn(
+                              "block py-2.5 text-sm text-foreground-light transition-colors hover:bg-surface hover:text-primary-600",
+                              item.columns === 2
+                                ? "rounded-lg px-3"
+                                : "px-4"
+                            )}
                           >
                             {child.label}
                           </a>
@@ -244,9 +305,9 @@ export function Header() {
                     <a
                       href={item.href}
                       className={cn(
-                        "px-4 py-2 text-sm font-medium transition-colors",
-                        scrolled
-                          ? "text-foreground-light hover:text-primary-500"
+                        "px-3 py-2 text-sm font-medium transition-colors",
+                        solid
+                          ? "text-foreground-light hover:text-primary-600"
                           : "text-white/90 hover:text-white"
                       )}
                     >
@@ -262,9 +323,9 @@ export function Header() {
               <a
                 href={`tel:${businessConfig.phoneRaw}`}
                 className={cn(
-                  "flex items-center gap-2 text-sm font-medium transition-colors",
-                  scrolled
-                    ? "text-foreground-light hover:text-primary-500"
+                  "hidden items-center gap-2 text-sm font-medium transition-colors xl:flex",
+                  solid
+                    ? "text-foreground-light hover:text-primary-600"
                     : "text-white/90 hover:text-white"
                 )}
               >
@@ -281,7 +342,7 @@ export function Header() {
               onClick={() => setMobileOpen(!mobileOpen)}
               className={cn(
                 "lg:hidden p-2 transition-colors",
-                scrolled || mobileOpen ? "text-foreground" : "text-white"
+                solid ? "text-foreground" : "text-white"
               )}
               aria-label="Toggle menu"
             >

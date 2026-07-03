@@ -1,88 +1,87 @@
 export const homepageContent = {
   hero: {
     heading: {
-      main: "Professional Services in",
-      location: "Springfield, IL",
+      main: "Top Electrician in",
+      location: "Manchester, NH",
     },
     subtitle:
-      "Premium quality work, transparent pricing, and full project accountability across Springfield and the surrounding region.",
-    primaryCta: { label: "Get a Quote", href: "/contact" },
-    secondaryCta: { label: "Call (555) 123-4567", href: "tel:+15551234567" },
+      "Owner-operated, licensed, and on call 24/7 — The Speedy Sparky handles everything from flickering lights to full panel replacements across southern New Hampshire.",
+    primaryCta: { label: "Get a Free Quote", href: "/contact" },
+    secondaryCta: { label: "Call (603) 661-8432", href: "tel:+16036618432" },
   },
   aboutPreview: {
-    eyebrow: "About Us",
-    heading:
-      "Your Local Service Experts in Springfield, IL",
+    eyebrow: "Meet The Speedy Sparky",
+    heading: "The Electrician Manchester Calls First",
     paragraph:
-      "We are a premium service company based in Springfield, Illinois. For more than 15 years, we have helped property owners across the region turn their vision into reality with meticulous craftsmanship and transparent communication.",
+      "The Speedy Sparky LLC is led by Aubrey Taylor, a licensed New Hampshire electrician with more than a decade in the trade. From century-old Millyard-era homes with tired wiring to brand-new builds in Bedford and Hooksett, we bring the same standard to every job: show up fast, explain the work in plain English, and leave the place cleaner than we found it.",
     bullets: [
       {
-        title: "Transparent Line-Item Pricing",
+        title: "Straight Answers, Fair Prices",
         description:
-          "No hidden fees. You see exactly where your money goes before we start.",
+          "You get a clear quote and honest options before any work begins — no surprises on the invoice.",
       },
       {
-        title: "Owner-Led Accountability",
+        title: "Owner On Every Job",
         description:
-          "We lead every project in person. Direct communication at every phase.",
+          "Aubrey leads the work personally, so the person quoting your project is the one holding the tools.",
       },
       {
-        title: "Regional Expertise",
+        title: "Built for New Hampshire Homes",
         description:
-          "Built for the local climate, codes, and conditions of our service area.",
+          "Old knob-and-tube, overloaded 100-amp panels, ice-storm outages — we work on what NH actually has.",
       },
     ],
-    image: "about-preview",
-    badge: { value: "15+", label: "Years of Experience" },
+    image: "roof-crew-bright-sky",
+    badge: { value: "10+", label: "Years in the Trade" },
   },
   services: {
-    eyebrow: "Our Services",
-    heading: "Our Services in Springfield, IL",
+    eyebrow: "What We Do",
+    heading: "Electrical Services for Homes & Businesses",
     subtitle:
-      "Comprehensive solutions tailored to your needs, delivered with precision and care.",
+      "Residential and commercial electrical work across Manchester and southern New Hampshire — installed to code, backed by a 5.0-star record.",
   },
   standards: {
-    eyebrow: "Our Approach",
-    heading: "Standards Every Springfield Project Deserves",
+    eyebrow: "How We Work",
+    heading: "Why Neighbors Recommend Us 46 Times Over",
     paragraphs: [
-      "Every project is held to a relentless standard of execution covering initial planning through final completion. This isn't just a marketing promise — it forms the daily operational backbone of every project we manage.",
-      "The quality of professional work is determined long before the finishing touches. It lives in the precision of the schedule, the coordination of complex tasks, and the rigorous oversight that only an owner-led team can guarantee.",
+      "Every review we have is five stars, and that's not an accident. It comes from answering the phone at 11 pm, showing up when we said we would, and walking you through exactly what your electrical system needs — and what it doesn't.",
+      "Electrical work is one place you never want shortcuts. Every circuit we touch is tested, labeled, and inspected before we call it done, whether it's a single outlet in Rimmon Heights or a whole-building rewire on Elm Street.",
     ],
     checklist: [
-      "Documented scope of work before every phase",
-      "Daily coordination with all team members",
-      "Quality-first sequencing and critical hold points",
-      "Clean, organized work sites maintained daily",
-      "Safety protocols enforced rigorously",
-      "Inspection readiness at every checkpoint",
-      "Transparent budget tracking and updates",
-      "Owner-present milestone walkthroughs",
+      "Licensed & insured — NH Electrical License #15673",
+      "Up-front pricing agreed before work starts",
+      "Same-day and 24/7 emergency response",
+      "Every circuit tested and labeled before sign-off",
+      "Permits and inspections handled for you",
+      "Clean, tidy work areas — shoes covered, dust contained",
+      "Code-compliant work on homes old and new",
+      "Follow-up support after every project",
     ],
-    image: "standards-feature",
-    badge: { value: "250+", label: "Projects Delivered" },
+    image: "electrical-safety-testing",
+    badge: { value: "5.0", label: "Google Rating" },
   },
   process: {
-    eyebrow: "Our Process",
-    heading: "Our Service Process in Springfield, IL",
+    eyebrow: "Getting Started",
+    heading: "From First Call to Final Walkthrough",
     subtitle:
-      "A proven process refined over 15 years to deliver exceptional results, every time.",
+      "A simple, predictable process — most quotes happen within a day, and most jobs are scheduled within the week.",
   },
   testimonials: {
-    eyebrow: "Client Reviews",
-    heading: "What Our Springfield Clients Say",
+    eyebrow: "5.0 Stars on Google",
+    heading: "What Manchester Homeowners Say",
     subtitle:
-      "Don't just take our word for it. Here's what our clients have to say about working with us.",
+      "Real reviews from real neighbors — read all 46 on our Google profile.",
   },
   faq: {
     eyebrow: "FAQ",
-    heading: "Frequently Asked Questions",
+    heading: "Questions Homeowners Ask Us",
     subtitle:
-      "Answers to common questions about our services, process, and what to expect.",
+      "Quick answers about pricing, scheduling, permits, and emergency service.",
   },
   cta: {
-    heading: "Ready to Start Your Springfield Project?",
-    text: "Schedule a free consultation today and discover why hundreds of clients trust us with their most important projects.",
-    primaryCta: { label: "Get a Quote", href: "/contact" },
-    secondaryCta: { label: "Call (555) 123-4567", href: "tel:+15551234567" },
+    heading: "Need an Electrician You Can Actually Reach?",
+    text: "Call now or request a free quote — we answer around the clock, and emergencies jump the line.",
+    primaryCta: { label: "Get a Free Quote", href: "/contact" },
+    secondaryCta: { label: "Call (603) 661-8432", href: "tel:+16036618432" },
   },
 } as const;

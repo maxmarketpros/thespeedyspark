@@ -3,30 +3,30 @@ import type { ProcessStep } from "@/types";
 export const processSteps: ProcessStep[] = [
   {
     step: 1,
-    title: "Consultation",
+    title: "Call or Request a Quote",
     description:
-      "We start with a thorough discussion of your project goals, budget, and timeline. This is where we listen, assess, and begin building your custom plan.",
-    icon: "MessageSquare",
+      "Reach us by phone or the quote form — you'll talk to a real electrician, not a call center. Emergencies get dispatched immediately, day or night.",
+    icon: "PhoneCall",
   },
   {
     step: 2,
-    title: "Planning & Estimate",
+    title: "Up-Front Price, In Writing",
     description:
-      "You receive a detailed proposal with transparent line-item pricing, a clear project timeline, and a comprehensive scope of work — no surprises.",
+      "We assess the work, explain your options in plain English, and give you a firm written price before anything starts. No hourly meter, no surprises.",
     icon: "FileText",
   },
   {
     step: 3,
-    title: "Execution",
+    title: "The Work, Done Right",
     description:
-      "Our team gets to work with daily coordination, quality checkpoints, and regular progress updates. We treat your project like our own.",
-    icon: "Hammer",
+      "Licensed, code-compliant work with permits handled for you. Every circuit is tested and labeled, and your home is left as clean as we found it.",
+    icon: "Zap",
   },
   {
     step: 4,
-    title: "Final Walkthrough",
+    title: "Walkthrough & Follow-Up",
     description:
-      "We don't consider a project done until you're completely satisfied. A thorough final inspection ensures every detail meets our exacting standards.",
+      "We walk you through everything we did, answer every question, and stay reachable afterward. The job isn't finished until you'd give it five stars.",
     icon: "CheckCircle",
   },
 ];

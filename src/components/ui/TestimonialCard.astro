@@ -25,7 +25,7 @@ const { testimonial, class: className } = Astro.props as Props;
           className={cn(
             "h-4 w-4",
             i < testimonial.rating
-              ? "fill-secondary-400 text-secondary-400"
+              ? "fill-star text-star"
               : "fill-border text-border",
           )}
         />

@@ -1,0 +1,666 @@
+---
+import {
+  Phone,
+  Zap,
+  Flame,
+  AlertTriangle,
+  Gauge,
+  PlugZap,
+  Lightbulb,
+  ShieldCheck,
+  ClipboardCheck,
+  CalendarCheck,
+  ArrowRight,
+  SearchCheck,
+  Star,
+  UtilityPole,
+  FileCheck,
+} from "lucide-react";
+import Layout from "@/layouts/Layout.astro";
+import StickyCallBar from "@/components/landing/StickyCallBar.astro";
+import LandingQuoteSection from "@/components/landing/LandingQuoteSection.astro";
+import RevealInit from "@/components/landing/RevealInit.astro";
+import FAQSection from "@/components/sections/FAQSection.astro";
+import Container from "@/components/ui/Container.astro";
+import ImageSlot from "@/components/ui/ImageSlot.astro";
+import ReviewCard from "@/components/ui/ReviewCard.astro";
+import GoogleReviewsPill from "@/components/ui/GoogleReviewsPill.astro";
+import { businessConfig } from "@/config/business";
+import { panelLandingReviews } from "@/config/reviews";
+import { imageManifest } from "@/config/images";
+import { generatePageMetadata } from "@/lib/metadata";
+import {
+  generateLandingServiceSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/structured-data";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+const meta = generatePageMetadata({
+  title: "Electrical Panel Upgrades Manchester NH | The Speedy Sparky",
+  description:
+    "200-amp panel upgrades & fuse box replacements for NH homes — most done in one day. Licensed electrician, permit & inspection included. Free firm quote.",
+  path: "/electrical-panel-upgrades",
+});
+
+const serviceSchema = generateLandingServiceSchema({
+  name: "Electrical Panel Upgrades",
+  description: meta.description,
+  path: "/electrical-panel-upgrades",
+});
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", href: "/" },
+  { name: "Electrical Panel Upgrades", href: "/electrical-panel-upgrades" },
+]);
+
+const trustStrip = [
+  { icon: ShieldCheck, label: businessConfig.license, sub: "Licensed & Insured" },
+  {
+    icon: Star,
+    label: `${businessConfig.googleRating}★ on Google`,
+    sub: `${businessConfig.googleReviewCount} five-star reviews`,
+  },
+  { icon: UtilityPole, label: "Eversource Coordination", sub: "Disconnect scheduled for you" },
+  { icon: FileCheck, label: "Permit & Inspection", sub: "Included in every quote" },
+];
+
+const warningSigns = [
+  {
+    icon: Lightbulb,
+    title: "Lights Flicker or Dim",
+    text: "Especially when the dryer, microwave, or space heater kicks on — a classic overloaded-service symptom.",
+    severity: "look",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Breakers Trip Constantly",
+    text: "Resetting the same breaker every week isn't normal. It's your panel waving a flag.",
+    severity: "today",
+  },
+  {
+    icon: Flame,
+    title: "Warm Panel or Burning Smell",
+    text: "Heat and odor at the panel mean stop reading and call now — this is how electrical fires start.",
+    severity: "now",
+  },
+  {
+    icon: Gauge,
+    title: "Still on 60 or 100 Amps",
+    text: "Common in Manchester homes built before 1970 — and undersized for how we live now.",
+    severity: "look",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Fuse Box or Recalled Panel",
+    text: "Fuses, Federal Pacific, and Zinsco panels can raise insurance premiums — or void coverage entirely.",
+    severity: "today",
+  },
+  {
+    icon: PlugZap,
+    title: "Planning an EV or Heat Pump",
+    text: "Big new loads need headroom. Upgrading the panel first makes everything after it simple.",
+    severity: "look",
+  },
+];
+
+const steps = [
+  {
+    icon: SearchCheck,
+    title: "Free Assessment & Firm Quote",
+    text: "We inspect your existing service, run a load calculation, and hand you one written price.",
+  },
+  {
+    icon: CalendarCheck,
+    title: "Coordinated Install Day",
+    text: "We schedule the utility disconnect with Eversource, swap the panel, and restore power — usually the same day.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Inspected & Documented",
+    text: "Town inspection passed, every circuit labeled, and your paperwork delivered for insurance and resale.",
+  },
+];
+
+const included = [
+  "Load calculation sized to your home's real demand",
+  "New 200-amp panel with copper bus and quality breakers",
+  "New meter socket and service entrance where needed",
+  "Whole-home surge protection option at install pricing",
+  "Utility coordination — we schedule Eversource for you",
+  "Every circuit traced, tested, and labeled",
+  "Town permit and passing final inspection",
+  "Insurance-ready documentation packet",
+];
+
+const craftShots = [
+  {
+    imageKey: "panel-testing-clamp-meter",
+    caption: "Live-load testing before we call it done",
+  },
+  {
+    imageKey: "industrial-panel-multimeter",
+    caption: "Voltage verified at every leg",
+  },
+  {
+    imageKey: "circuit-testing-distribution-panel",
+    caption: "Every circuit proven, not assumed",
+  },
+];
+
+const faqs = [
+  {
+    id: "faq-panel-lp-1",
+    question: "How much does a panel upgrade cost in New Hampshire?",
+    answer:
+      "It depends on your existing service, meter location, and whether the service entrance cable needs replacing. After a quick assessment you get one firm written number — not an estimate that grows — and it's free whether or not you hire us.",
+  },
+  {
+    id: "faq-panel-lp-2",
+    question: "How long is the power off?",
+    answer:
+      "Plan on most of the workday. We coordinate the disconnect and reconnect with the utility in advance so the outage window is as short as possible, and we don't leave until everything is back on and tested.",
+  },
+  {
+    id: "faq-panel-lp-3",
+    question: "Do I need 200 amps, or is 100 enough?",
+    answer:
+      "For many smaller homes, a healthy 100-amp service is fine. But if an EV charger, heat pump, hot tub, or addition is anywhere in your future, 200 amps is the standard we recommend — the load calculation tells us for sure.",
+  },
+  {
+    id: "faq-panel-lp-4",
+    question: "Will this be permitted and inspected?",
+    answer:
+      "Always. Service changes require a permit and inspection in every town we serve, and we handle both. An unpermitted panel swap becomes your problem at sale time — we make sure it never is.",
+  },
+];
+
+const severityTag = {
+  now: { label: "Call now", class: "bg-accent-600 text-white", pulse: true },
+  today: { label: "Call today", class: "bg-accent-50 text-accent-700 ring-1 ring-accent-200", pulse: false },
+  look: { label: "Worth a look", class: "bg-surface-dark text-foreground-light", pulse: false },
+} as const;
+
+const heroImg = imageManifest["home-panel-troubleshooting"];
+const publicDir = fileURLToPath(new URL("../../public", import.meta.url));
+const heroPreload =
+  heroImg && existsSync(publicDir + heroImg.src) ? heroImg.src : undefined;
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  ogImage={meta.ogImage}
+  ogTitle={meta.ogTitle}
+  preloadImage={heroPreload}
+  headerVariant="landing"
+>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(serviceSchema)}
+  />
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  {/* Hero — dark inspection */}
+  <section class="relative isolate overflow-hidden bg-primary-900">
+    <ImageSlot
+      imageKey="home-panel-troubleshooting"
+      fill
+      priority
+      class="lp-bg-settle absolute inset-0 -z-10"
+      overlayClassName="bg-gradient-to-t from-primary-900 via-primary-900/70 to-primary-900/25 lg:bg-gradient-to-r lg:from-primary-900 lg:via-primary-900/80 lg:to-primary-900/15"
+      sizes="100vw"
+    />
+    {/* Blueprint grid, fading in from the top */}
+    <div
+      class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]"
+      aria-hidden="true"
+    >
+    </div>
+    {/* Oversized numeral watermark */}
+    <div
+      class="pointer-events-none absolute right-8 top-24 hidden select-none text-[11rem] font-bold leading-none tracking-tighter text-white/[0.06] xl:block"
+      aria-hidden="true"
+    >
+      200A
+    </div>
+
+    <div class="flex min-h-[76svh] flex-col md:min-h-[88svh]">
+      <Container class="flex flex-1 items-end pb-14 pt-32 md:pb-16">
+        <div class="max-w-3xl">
+          <p
+            class="lp-fade-up text-sm font-bold uppercase tracking-[0.2em] text-secondary-300"
+          >
+            Panel Upgrades &amp; Replacements · Manchester NH
+          </p>
+
+          <h1 class="mt-4">
+            <span class="block overflow-hidden">
+              <span
+                class="lp-line-rise block text-xl font-semibold tracking-normal text-white/85 md:text-2xl"
+              >
+                Your Whole Home Runs Through One Gray Box.
+              </span>
+            </span>
+            <span class="mt-3 block overflow-hidden">
+              <span
+                class="lp-line-rise block text-balance text-5xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl"
+                style="--enter-delay: 120ms"
+              >
+                Make Sure It's Up to the Job.
+              </span>
+            </span>
+          </h1>
+
+          <p
+            class="lp-fade-up mt-6 max-w-xl text-lg text-white/85"
+            style="--enter-delay: 240ms"
+          >
+            200-amp upgrades, fuse box retirements, and recalled-panel
+            replacements — quoted firm, installed in a day, inspected and
+            documented.
+          </p>
+
+          <div
+            class="lp-fade-up mt-8 flex flex-col gap-4 sm:flex-row sm:items-center"
+            style="--enter-delay: 360ms"
+          >
+            <a
+              href="#quote"
+              class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-lg font-bold text-primary-900 shadow-lg transition-all hover:-translate-y-0.5"
+            >
+              Get My Firm Quote
+              <ArrowRight className="h-5 w-5" />
+            </a>
+            <a
+              href={`tel:${businessConfig.phoneRaw}`}
+              class="inline-flex items-center justify-center gap-2 rounded-xl bg-accent-600 px-7 py-4 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-accent-700"
+            >
+              <Phone className="h-5 w-5" />
+              Call {businessConfig.phone}
+            </a>
+          </div>
+
+          <div class="lp-fade-up mt-6" style="--enter-delay: 460ms">
+            <GoogleReviewsPill variant="light" />
+          </div>
+        </div>
+      </Container>
+
+      {/* Embedded trust strip */}
+      <div class="border-t border-white/10 bg-primary-900/80 backdrop-blur-sm">
+        <Container>
+          <div class="grid grid-cols-2 gap-4 py-5 md:grid-cols-4">
+            {
+              trustStrip.map((item) => (
+                <div class="flex items-center gap-3">
+                  <item.icon className="h-5 w-5 shrink-0 text-secondary-300" />
+                  <div>
+                    <p class="text-sm font-bold text-white">{item.label}</p>
+                    <p class="text-xs text-white/60">{item.sub}</p>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </Container>
+      </div>
+    </div>
+  </section>
+
+  {/* Warning signs — diagnostic tickets */}
+  <section class="section-padding bg-white">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        Is Your Panel Telling You Something?
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-center text-muted" data-reveal>
+        Six signs we see every week in southern New Hampshire homes — any one
+        of them is worth a phone call.
+      </p>
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          warningSigns.map((item, i) => {
+            const tag = severityTag[item.severity as keyof typeof severityTag];
+            return (
+              <div
+                class="relative flex gap-4 rounded-2xl p-6 pr-5 ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+                data-reveal
+                style={`--reveal-delay: ${(i % 3) * 100}ms`}
+              >
+                <span
+                  class={`absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${tag.class}`}
+                >
+                  {tag.pulse && (
+                    <span class="relative flex h-1.5 w-1.5">
+                      <span class="lp-pulse-ring absolute inline-flex h-full w-full rounded-full bg-white" />
+                      <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+                    </span>
+                  )}
+                  {tag.label}
+                </span>
+                <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent-50">
+                  <item.icon className="h-6 w-6 text-accent-600" />
+                </span>
+                <div class="pt-1">
+                  <h3 class="pr-16 font-bold text-foreground">{item.title}</h3>
+                  <p class="mt-1.5 text-sm leading-relaxed text-muted">
+                    {item.text}
+                  </p>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="#quote"
+          class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-7 py-3.5 font-bold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-primary-700"
+        >
+          Check My Panel — Free Quote
+          <ArrowRight className="h-5 w-5" />
+        </a>
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="inline-flex items-center gap-2 rounded-xl border-2 border-foreground px-7 py-3.5 font-bold text-foreground transition-colors hover:bg-foreground hover:text-white"
+        >
+          <Phone className="h-5 w-5" />
+          {businessConfig.phone}
+        </a>
+      </div>
+    </Container>
+  </section>
+
+  {/* Copper stats band — diagonal top edge */}
+  <section
+    class="relative overflow-hidden bg-primary-900 pb-16 pt-24 [clip-path:polygon(0_3rem,100%_0,100%_100%,0_100%)] md:pb-20 md:pt-32"
+  >
+    <ImageSlot
+      imageKey="copper-wiring-macro"
+      fill
+      class="absolute inset-0 -z-10"
+      overlayClassName="bg-primary-900/85"
+      sizes="100vw"
+    />
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-white md:text-4xl"
+        data-reveal
+      >
+        The Numbers Behind a Panel Swap
+      </h2>
+      <div
+        class="mx-auto mt-12 grid max-w-5xl grid-cols-2 gap-y-10 md:grid-cols-4 md:divide-x md:divide-white/10"
+      >
+        <div class="px-4 text-center" data-reveal>
+          <p class="text-5xl font-bold text-white md:text-6xl">
+            <span data-count-to="200" data-count-suffix="A">200A</span>
+          </p>
+          <p
+            class="mt-2 text-xs font-semibold uppercase tracking-widest text-secondary-300"
+          >
+            Today's standard service
+          </p>
+        </div>
+        <div class="px-4 text-center" data-reveal style="--reveal-delay: 100ms">
+          <p class="text-5xl font-bold text-white md:text-6xl">1 Day</p>
+          <p
+            class="mt-2 text-xs font-semibold uppercase tracking-widest text-secondary-300"
+          >
+            Typical panel swap
+          </p>
+        </div>
+        <div class="px-4 text-center" data-reveal style="--reveal-delay: 200ms">
+          <p class="text-5xl font-bold text-white md:text-6xl">
+            <span data-count-to="46">46</span>
+          </p>
+          <p
+            class="mt-2 text-xs font-semibold uppercase tracking-widest text-secondary-300"
+          >
+            Five-star Google reviews
+          </p>
+        </div>
+        <div class="px-4 text-center" data-reveal style="--reveal-delay: 300ms">
+          <p class="text-5xl font-bold text-white md:text-6xl">
+            <span data-count-to="10" data-count-suffix="+">10+</span>
+          </p>
+          <p
+            class="mt-2 text-xs font-semibold uppercase tracking-widest text-secondary-300"
+          >
+            Years in the trade
+          </p>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {/* 3-step process — vertical timeline + assessment flat-lay */}
+  <section class="section-padding bg-surface">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        From Tired Panel to Passing Inspection in Three Steps
+      </h2>
+      <div class="mt-14 grid items-center gap-12 lg:grid-cols-2">
+        <ol class="relative flex flex-col gap-10">
+          <div
+            class="absolute bottom-5 left-5 top-5 w-px bg-border"
+            aria-hidden="true"
+          >
+          </div>
+          {
+            steps.map((step, i) => (
+              <li
+                class="relative flex gap-5"
+                data-reveal
+                style={`--reveal-delay: ${i * 120}ms`}
+              >
+                <span class="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-600 text-sm font-bold text-white ring-4 ring-surface">
+                  {i + 1}
+                </span>
+                <div>
+                  <div class="flex items-center gap-2.5">
+                    <step.icon className="h-5 w-5 text-primary-600" />
+                    <h3 class="text-lg font-bold text-foreground">
+                      {step.title}
+                    </h3>
+                  </div>
+                  <p class="mt-2 text-sm leading-relaxed text-muted">
+                    {step.text}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="relative" data-reveal style="--reveal-delay: 200ms">
+          <ImageSlot
+            imageKey="outlet-wiring-closeup"
+            aspectRatio="4/3"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="rounded-3xl shadow-card"
+          />
+          <span
+            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
+          >
+            Every quote starts with a real load calculation
+          </span>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {/* What's included */}
+  <section class="relative overflow-hidden section-padding bg-primary-900">
+    <div
+      class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:56px_56px]"
+      aria-hidden="true"
+    >
+    </div>
+    <Container class="relative">
+      <div class="grid items-center gap-12 lg:grid-cols-5">
+        <div class="lg:col-span-3">
+          <div data-reveal>
+            <h2 class="text-3xl font-bold text-white md:text-4xl">
+              Everything the Quote Covers
+            </h2>
+            <p class="mt-4 text-white/80">
+              One number, the whole scope. Here's what a Speedy Sparky panel
+              upgrade includes:
+            </p>
+          </div>
+          <ul
+            class="mt-8 grid gap-3 sm:grid-cols-2"
+            data-reveal
+            style="--reveal-delay: 120ms"
+          >
+            {
+              included.map((item) => (
+                <li class="flex items-start gap-2.5 rounded-lg bg-white/5 px-3 py-2.5 text-sm text-white/90 ring-1 ring-white/10">
+                  <Zap className="mt-0.5 h-4 w-4 shrink-0 text-secondary-400" />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="relative lg:col-span-2" data-reveal style="--reveal-delay: 240ms">
+          <ImageSlot
+            imageKey="panel-breaker-wiring"
+            aspectRatio="4/3"
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            class="rounded-3xl ring-1 ring-white/15"
+          />
+          <span
+            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
+          >
+            Copper bus, labeled circuits, torqued to spec
+          </span>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {/* Craft strip */}
+  <section class="section-padding bg-white">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        Tested to Inspection Standards. Then Ours.
+      </h2>
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+        {
+          craftShots.map((shot, i) => (
+            <div
+              class="group relative overflow-hidden rounded-2xl shadow-card"
+              data-reveal
+              style={`--reveal-delay: ${i * 120}ms`}
+            >
+              <ImageSlot
+                imageKey={shot.imageKey}
+                aspectRatio="4/3"
+                sizes="(min-width: 768px) 33vw, 100vw"
+                class="rounded-none transition-transform duration-300 group-hover:scale-105"
+              />
+              <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/80 to-transparent p-4 pt-12">
+                <p class="text-sm font-semibold text-white">{shot.caption}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  {/* Reviews */}
+  <section class="section-padding bg-surface">
+    <Container>
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <h2 class="text-3xl font-bold text-foreground md:text-4xl">
+          Panel Work Neighbors Vouch For
+        </h2>
+        <GoogleReviewsPill variant="bordered" />
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          panelLandingReviews.map((review, i) => (
+            <div data-reveal style={`--reveal-delay: ${i * 120}ms`}>
+              <ReviewCard review={review} class="h-full" />
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  {/* FAQ */}
+  <FAQSection
+    eyebrow="Panel Questions"
+    heading="Asked Before Every Upgrade"
+    items={faqs}
+    bgColor="white"
+  />
+
+  {/* Final CTA — mirrored diagonal */}
+  <section
+    class="bg-gradient-to-r from-primary-800 to-primary-600 pb-16 pt-24 [clip-path:polygon(0_0,100%_3rem,100%_100%,0_100%)] md:pt-28"
+  >
+    <Container>
+      <div class="flex flex-col items-center gap-6 text-center">
+        <h2 class="max-w-2xl text-3xl font-bold text-white md:text-4xl">
+          A 1960s Panel Wasn't Built for a 2026 Home
+        </h2>
+        <div class="flex flex-col gap-4 sm:flex-row">
+          <a
+            href="#quote"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-lg font-bold text-primary-700 shadow-lg transition-all hover:-translate-y-0.5"
+          >
+            Get My Free Quote
+            <ArrowRight className="h-5 w-5" />
+          </a>
+          <a
+            href={`tel:${businessConfig.phoneRaw}`}
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-accent-600 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-accent-700"
+          >
+            <Phone className="h-5 w-5" />
+            Call {businessConfig.phone}
+          </a>
+        </div>
+        <p class="text-sm text-white/80">
+          Licensed NH Electrician #15673 · BBB A-Rated · 46 Five-Star Reviews
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  {/* Quote form — the page's single #quote anchor */}
+  <LandingQuoteSection
+    tone="panel"
+    eyebrow="Free Panel Assessment"
+    heading="One Written Number, Not an Estimate"
+    formHeading="Get Your Panel Upgrade Quote"
+    formSubheading="Free assessment, firm number, zero pressure."
+    bullets={[
+      "Free assessment — clear photos of your panel work fine",
+      "The price you sign is the price you pay",
+      "Eversource scheduling handled start to finish",
+    ]}
+    urgencyNote="Assessment slots open this week across Manchester and southern NH."
+  />
+
+  <RevealInit />
+  <StickyCallBar showQuote />
+</Layout>

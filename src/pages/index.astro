@@ -19,11 +19,26 @@ import { siteConfig } from "@/config/site";
 import { homepageContent } from "@/config/homepage";
 import { homepageFaqKeys } from "@/config/faqs";
 import { imageManifest } from "@/config/images";
+import { services } from "@/config/services";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const content = homepageContent;
 const title = `${siteConfig.name} | ${siteConfig.tagline}`;
+
+// Curated six-service mix for the homepage grid (images distinct from the
+// other images used on this page)
+const featuredSlugs = [
+  "lighting-installation",
+  "electrical-repairs",
+  "generator-installation",
+  "smart-home-installation",
+  "outdoor-lighting",
+  "commercial-lighting",
+];
+const featuredServices = featuredSlugs
+  .map((slug) => services.find((s) => s.slug === slug))
+  .filter(Boolean) as typeof services;
 
 // Preload hero image for LCP when available
 const heroImage = imageManifest["hero-home"];
@@ -79,7 +94,7 @@ const heroPreload =
   </SplitSection>
 
   {/* Services */}
-  <ServiceGrid />
+  <ServiceGrid services={featuredServices} />
 
   {/* Standards */}
   <SplitSection
@@ -111,8 +126,8 @@ const heroPreload =
     heading={content.process.heading}
     subtitle={content.process.subtitle}
     bgColor="white"
-    primaryCta={{ label: "Get a Quote", href: "/contact" }}
-    secondaryCta={{ label: "Call (555) 123-4567", href: "tel:+15551234567" }}
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
+    secondaryCta={{ label: "Call (603) 661-8432", href: "tel:+16036618432" }}
   />
 
   {/* Testimonials */}

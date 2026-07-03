@@ -21,6 +21,8 @@ interface Props {
   ogTitle?: string;
   noindex?: boolean;
   preloadImage?: string;
+  /** "landing" renders the minimal conversion header (logo + phone + CTA) */
+  headerVariant?: "default" | "landing";
 }
 
 const {
@@ -31,6 +33,7 @@ const {
   ogTitle,
   noindex = false,
   preloadImage,
+  headerVariant = "default",
 } = Astro.props as Props;
 
 const canonicalUrl =
@@ -53,6 +56,54 @@ const websiteSchema = generateWebsiteSchema();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
 
+    {/* Google tag (gtag.js) — Google Ads AW-18295104633 */}
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=AW-18295104633"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "AW-18295104633");
+
+      // Event snippet for Click to call conversion page.
+      // The timeout fallback ensures the call still goes through even if
+      // gtag is blocked and the event_callback never fires.
+      function gtag_report_conversion(url) {
+        var navigated = false;
+        var callback = function () {
+          if (!navigated && typeof url != "undefined") {
+            navigated = true;
+            window.location = url;
+          }
+        };
+        setTimeout(callback, 1500);
+        gtag("event", "conversion", {
+          send_to: "AW-18295104633/jyLhCJn75skcEPnI5JNE",
+          value: 1.0,
+          currency: "USD",
+          event_callback: callback,
+          event_timeout: 2000,
+        });
+        return false;
+      }
+
+      // Report a conversion for EVERY tel: link on the site (header, footer,
+      // info bar, CTAs, sticky call bar) without per-element onclick attributes.
+      document.addEventListener("click", function (e) {
+        var link =
+          e.target && e.target.closest
+            ? e.target.closest('a[href^="tel:"]')
+            : null;
+        if (!link) return;
+        e.preventDefault();
+        gtag_report_conversion(link.href);
+      });
+    </script>
+
     {
       noindex ? (
         <meta name="robots" content="noindex, nofollow" />
@@ -64,7 +115,7 @@ const websiteSchema = generateWebsiteSchema();
       )
     }
 
-    <meta name="theme-color" content="#2563eb" />
+    <meta name="theme-color" content="#3268cb" />
     <meta name="color-scheme" content="light" />
     <meta name="format-detection" content="telephone=yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -73,8 +124,9 @@ const websiteSchema = generateWebsiteSchema();
     <meta name="application-name" content={siteConfig.name} />
 
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/manifest.json" />
 
     {/* DNS prefetch for lazy-loaded map embeds */}
@@ -133,7 +185,7 @@ const websiteSchema = generateWebsiteSchema();
     >
       Skip to main content
     </a>
-    <Header client:load />
+    <Header client:load variant={headerVariant} />
     <main id="main-content" class="flex-1">
       <slot />
     </main>

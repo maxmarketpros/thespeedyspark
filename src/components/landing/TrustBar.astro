@@ -1,0 +1,81 @@
+---
+import { ShieldCheck, Star, Zap, BadgeCheck } from "lucide-react";
+import Container from "@/components/ui/Container.astro";
+import { businessConfig } from "@/config/business";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  /** "dark" flows off a near-black hero (emergency LP) */
+  tone?: "light" | "dark";
+}
+
+const { tone = "light" } = Astro.props as Props;
+const dark = tone === "dark";
+
+const items = [
+  {
+    icon: ShieldCheck,
+    label: businessConfig.license,
+    sub: "Licensed & Insured",
+  },
+  {
+    icon: Star,
+    label: `${businessConfig.googleRating}★ on Google`,
+    sub: `${businessConfig.googleReviewCount} five-star reviews`,
+  },
+  {
+    icon: BadgeCheck,
+    label: "BBB A-Rated",
+    sub: "Accredited business",
+  },
+  {
+    icon: Zap,
+    label: "24/7 Availability",
+    sub: "Nights, weekends, holidays",
+  },
+];
+---
+
+<section
+  class={cn(
+    "border-y",
+    dark ? "border-white/10 bg-foreground" : "border-border bg-surface",
+  )}
+>
+  <Container>
+    <div class="grid grid-cols-2 gap-6 py-6 md:grid-cols-4 md:py-7">
+      {
+        items.map((item) => (
+          <div class="flex items-center gap-3">
+            <div
+              class={cn(
+                "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
+                dark ? "bg-white/10" : "bg-primary-100",
+              )}
+            >
+              <item.icon
+                className={cn(
+                  "h-5 w-5",
+                  dark ? "text-secondary-300" : "text-primary-700",
+                )}
+              />
+            </div>
+            <div>
+              <p
+                class={cn(
+                  "text-sm font-bold",
+                  dark ? "text-white" : "text-foreground",
+                )}
+              >
+                {item.label}
+              </p>
+              <p class={cn("text-xs", dark ? "text-white/60" : "text-muted")}>
+                {item.sub}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </Container>
+</section>

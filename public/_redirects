@@ -1,0 +1,6 @@
+# 301 redirects from the previous thespeedyspark.com site (Netlify format)
+/about-us                                      /about                                  301
+/contact-us                                    /contact                                301
+/residential-electrical-installation           /residential                            301
+/electrical-repairs-troubleshooting            /residential/electrical-repairs         301
+/custom-electrical-projects-modern-solutions   /residential/smart-home-installation    301

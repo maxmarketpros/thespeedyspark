@@ -14,15 +14,15 @@ const { value, label, light = false, class: className } = Astro.props as Props;
 <div class={cn("text-center", className)}>
   <p
     class={cn(
-      "text-3xl font-bold md:text-4xl",
-      light ? "text-white" : "text-primary-500",
+      "text-2xl font-bold sm:text-3xl md:text-4xl",
+      light ? "text-white" : "text-primary-600",
     )}
   >
     {value}
   </p>
   <p
     class={cn(
-      "mt-1 text-xs font-semibold uppercase tracking-widest",
+      "mt-1 text-[11px] font-semibold uppercase tracking-wide sm:text-xs sm:tracking-widest",
       light ? "text-white/70" : "text-muted",
     )}
   >

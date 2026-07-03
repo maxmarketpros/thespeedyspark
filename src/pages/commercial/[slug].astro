@@ -12,20 +12,21 @@ import QuoteSection from "@/components/sections/QuoteSection.astro";
 import FeatureList from "@/components/sections/FeatureList.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
 import Button from "@/components/ui/Button.astro";
-import { services } from "@/config/services";
+import { commercialServices } from "@/config/commercial-services";
 import { businessConfig } from "@/config/business";
 import { imageManifest } from "@/config/images";
 import { generatePageMetadata } from "@/lib/metadata";
 import {
   generateServiceSchema,
   generateBreadcrumbSchema,
+  serviceBasePath,
 } from "@/lib/structured-data";
 import type { ServiceConfig } from "@/types";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 export async function getStaticPaths() {
-  return services.map((service) => ({
+  return commercialServices.map((service) => ({
     params: { slug: service.slug },
     props: { service },
   }));
@@ -38,9 +39,10 @@ interface Props {
 const { service } = Astro.props as Props;
 const { city, state } = businessConfig.address;
 const cityState = `${city}, ${state}`;
+const basePath = serviceBasePath(service);
 
 const ctaProps = {
-  primary: { label: "Get a Quote", href: "/contact" },
+  primary: { label: "Request a Commercial Quote", href: "/contact" },
   secondary: {
     label: `Call ${businessConfig.phone}`,
     href: `tel:${businessConfig.phoneRaw}`,
@@ -48,18 +50,16 @@ const ctaProps = {
 };
 
 const meta = generatePageMetadata({
-  title: `${service.title} in ${cityState}`,
-  description: service.excerpt,
-  path: `/services/${service.slug}`,
+  title: service.metaTitle || `${service.title} in ${cityState}`,
+  description: service.metaDescription || service.excerpt,
+  path: basePath,
 });
-
-const featureListItems = service.featureHighlights;
 
 const serviceSchema = generateServiceSchema(service);
 const breadcrumbSchema = generateBreadcrumbSchema([
   { name: "Home", href: "/" },
-  { name: "Services", href: "/services" },
-  { name: service.title, href: `/services/${service.slug}` },
+  { name: "Commercial Services", href: "/commercial" },
+  { name: service.title, href: basePath },
 ]);
 
 const heroImg = imageManifest[service.heroImage];
@@ -94,7 +94,7 @@ const heroPreload =
     imageKey={service.heroImage}
     breadcrumbs={[
       { label: "Home", href: "/" },
-      { label: "Services", href: "/services" },
+      { label: "Commercial", href: "/commercial" },
       { label: service.title },
     ]}
     primaryCta={ctaProps.primary}
@@ -115,7 +115,7 @@ const heroPreload =
     }
     <div class="mt-6 flex flex-wrap gap-4">
       <Button href="/contact">
-        Get a Quote
+        Request a Quote
         <ArrowRight slot="icon" className="h-5 w-5" />
       </Button>
       <Button href={`tel:${businessConfig.phoneRaw}`} variant="outline">
@@ -128,7 +128,7 @@ const heroPreload =
   {/* Benefits */}
   <BenefitGrid
     benefits={service.benefits}
-    eyebrow="What Sets Us Apart"
+    eyebrow="Why Businesses Choose Us"
     heading={service.benefitsHeading}
     subtitle={service.benefitsSubtitle}
     bgColor="surface"
@@ -137,7 +137,7 @@ const heroPreload =
   />
 
   {/* Feature showcase */}
-  <FeatureList features={featureListItems} />
+  <FeatureList features={service.featureHighlights} />
 
   {/* SEO Topic Section A */}
   <TopicCardGrid
@@ -173,6 +173,7 @@ const heroPreload =
   <FAQSection
     eyebrow="Common Questions"
     heading={`${service.title} FAQ`}
+    items={service.faqs}
     faqKeys={service.faqKeys}
   />
 

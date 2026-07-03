@@ -4,16 +4,20 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   class?: string;
+  /** Override the embed URL (service-area pages pass their own city map) */
+  src?: string;
+  title?: string;
 }
 
-const { class: className } = Astro.props as Props;
-const embedUrl = getMapEmbedUrl();
+const { class: className, src, title } = Astro.props as Props;
+const embedUrl = src || getMapEmbedUrl();
 const { city, state } = businessConfig.address;
+const mapTitle = title || `Map showing ${city}, ${state} service area`;
 ---
 
 <iframe
   src={embedUrl}
-  title={`Map showing ${city}, ${state} service area`}
+  title={mapTitle}
   class={cn("w-full border-0", className)}
   allowfullscreen
   loading="lazy"

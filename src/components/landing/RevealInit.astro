@@ -1,0 +1,67 @@
+---
+/**
+ * Scroll-reveal + count-up behavior for the ad landing pages.
+ *
+ * - Elements with `data-reveal` fade/rise in when scrolled into view
+ *   (stagger with inline `style="--reveal-delay: 120ms"`).
+ * - Elements with `data-count-to="46"` (+ optional `data-count-prefix` /
+ *   `data-count-suffix`) count up from 0 when revealed. Their final value is
+ *   pre-rendered in the HTML, so no-JS visitors and crawlers see real numbers.
+ *
+ * The inline guard class keeps content visible when JS never runs; the
+ * matching CSS lives in globals.css (runtime classes are invisible to
+ * Tailwind's scanner). Reduced-motion users get everything static.
+ */
+---
+
+<script is:inline>
+  document.documentElement.classList.add("reveal-init");
+</script>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reveals = document.querySelectorAll("[data-reveal]");
+  const counters = document.querySelectorAll("[data-count-to]");
+
+  function startCount(el: Element) {
+    const target = parseFloat(el.getAttribute("data-count-to") || "0");
+    const prefix = el.getAttribute("data-count-prefix") || "";
+    const suffix = el.getAttribute("data-count-suffix") || "";
+    const duration = 900;
+    let startTime: number | undefined;
+
+    function tick(now: number) {
+      if (startTime === undefined) startTime = now;
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent =
+        prefix + Math.round(target * eased).toLocaleString("en-US") + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  if (reduce || !("IntersectionObserver" in window)) {
+    reveals.forEach((el) => el.classList.add("is-revealed"));
+    // Counters keep their pre-rendered final values.
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          if (entry.target.hasAttribute("data-reveal")) {
+            entry.target.classList.add("is-revealed");
+          }
+          if (entry.target.hasAttribute("data-count-to")) {
+            startCount(entry.target);
+          }
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
+    );
+    reveals.forEach((el) => io.observe(el));
+    counters.forEach((el) => io.observe(el));
+  }
+</script>

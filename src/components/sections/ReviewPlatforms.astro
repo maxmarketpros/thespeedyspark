@@ -1,0 +1,69 @@
+---
+import { Star, ShieldCheck } from "lucide-react";
+import Container from "@/components/ui/Container.astro";
+import GoogleLogo from "@/components/ui/GoogleLogo.astro";
+import { siteConfig } from "@/config/site";
+
+interface Props {
+  heading?: string;
+  subtitle?: string;
+}
+
+const {
+  heading = "Find Us on Your Favorite Platform",
+  subtitle = "Read what neighbors across southern New Hampshire say about working with us — or add your own experience.",
+} = Astro.props as Props;
+---
+
+<section class="section-padding-sm bg-white">
+  <Container>
+    <div class="text-center">
+      <h2 class="text-2xl font-bold text-foreground md:text-3xl">{heading}</h2>
+      <p class="mx-auto mt-3 max-w-2xl text-muted">{subtitle}</p>
+    </div>
+
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href={siteConfig.social.google}
+        target="_blank"
+        rel="noopener"
+        class="flex items-center gap-2.5 rounded-xl border border-border bg-white px-6 py-3.5 font-semibold text-foreground shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover"
+      >
+        <GoogleLogo class="h-5 w-5" />
+        Google Reviews
+      </a>
+      <a
+        href={siteConfig.social.facebook}
+        target="_blank"
+        rel="noopener"
+        class="flex items-center gap-2.5 rounded-xl border border-border bg-white px-6 py-3.5 font-semibold text-foreground shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="#1877F2"
+            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+          ></path>
+        </svg>
+        Facebook
+      </a>
+      <a
+        href={siteConfig.social.yelp}
+        target="_blank"
+        rel="noopener"
+        class="flex items-center gap-2.5 rounded-xl border border-border bg-white px-6 py-3.5 font-semibold text-foreground shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover"
+      >
+        <Star className="h-5 w-5 fill-[#FF1A1A] text-[#FF1A1A]" />
+        Yelp
+      </a>
+      <a
+        href={siteConfig.social.bbb}
+        target="_blank"
+        rel="noopener"
+        class="flex items-center gap-2.5 rounded-xl border border-border bg-white px-6 py-3.5 font-semibold text-foreground shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover"
+      >
+        <ShieldCheck className="h-5 w-5 text-[#00548B]" />
+        BBB — A Rating
+      </a>
+    </div>
+  </Container>
+</section>

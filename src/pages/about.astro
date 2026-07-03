@@ -21,13 +21,13 @@ import { fileURLToPath } from "node:url";
 const aboutHeading = `About ${siteConfig.name}`;
 
 const meta = generatePageMetadata({
-  title: aboutHeading,
+  title: "About Us | Owner-Led Manchester, NH Electrician",
   description:
-    "Learn about our story, values, and the experience that drives our commitment to quality. Over 15 years of local service.",
+    "Meet Aubrey Taylor and the story behind The Speedy Sparky — a 5.0-star, owner-operated electrician serving 18 towns across southern New Hampshire 24/7.",
   path: "/about",
 });
 
-const heroImg = imageManifest["about-hero"];
+const heroImg = imageManifest["commercial-panel-inspection"];
 const publicDir = fileURLToPath(new URL("../../public", import.meta.url));
 const heroPreload =
   heroImg && existsSync(publicDir + heroImg.src) ? heroImg.src : undefined;
@@ -61,10 +61,10 @@ const breadcrumbSchema = generateBreadcrumbSchema([
   <PageHero
     heading={aboutHeading}
     subtitle={aboutContent.hero.subtitle}
-    imageKey="about-hero"
+    imageKey="commercial-panel-inspection"
     breadcrumbs={breadcrumbs}
-    primaryCta={{ label: "Get a Quote", href: "/contact" }}
-    secondaryCta={{ label: "Call (555) 123-4567", href: "tel:+15551234567" }}
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
+    secondaryCta={{ label: "Call (603) 661-8432", href: "tel:+16036618432" }}
   />
 
   {/* Story Section */}
@@ -131,9 +131,9 @@ const breadcrumbSchema = generateBreadcrumbSchema([
   {/* Process */}
   <ProcessGrid
     eyebrow="Our Process"
-    heading="How Every Project Works"
-    subtitle="A proven four-step process refined over 15 years of delivering excellence."
-    primaryCta={{ label: "Get a Quote", href: "/contact" }}
+    heading="How Every Job Runs, Start to Finish"
+    subtitle="The same four steps whether it's a single outlet or a service upgrade — clear, predictable, and on schedule."
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
   />
 
   {/* Testimonials */}
@@ -141,9 +141,9 @@ const breadcrumbSchema = generateBreadcrumbSchema([
 
   {/* CTA */}
   <CTASection
-    heading="Ready to Work With Us?"
-    text="Start with a free consultation. No pressure, no obligation — just an honest conversation about your project."
-    primaryCta={{ label: "Get a Quote", href: "/contact" }}
+    heading="Put a Real Electrician's Number in Your Phone"
+    text="Save (603) 661-8432 — and the next time something buzzes, trips, or sparks, you'll know exactly who to call."
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
     secondaryCta={{ label: "View Our Services", href: "/services" }}
   />
 

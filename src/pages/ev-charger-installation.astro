@@ -1,0 +1,633 @@
+---
+import {
+  Phone,
+  Zap,
+  BatteryCharging,
+  Banknote,
+  Home,
+  ShieldCheck,
+  CalendarCheck,
+  Gauge,
+  Snowflake,
+  ArrowRight,
+  CheckCircle2,
+} from "lucide-react";
+import Layout from "@/layouts/Layout.astro";
+import TrustBar from "@/components/landing/TrustBar.astro";
+import StickyCallBar from "@/components/landing/StickyCallBar.astro";
+import LandingQuoteSection from "@/components/landing/LandingQuoteSection.astro";
+import RevealInit from "@/components/landing/RevealInit.astro";
+import FAQSection from "@/components/sections/FAQSection.astro";
+import Container from "@/components/ui/Container.astro";
+import ImageSlot from "@/components/ui/ImageSlot.astro";
+import ReviewCard from "@/components/ui/ReviewCard.astro";
+import GoogleReviewsPill from "@/components/ui/GoogleReviewsPill.astro";
+import { businessConfig } from "@/config/business";
+import { evLandingReviews } from "@/config/reviews";
+import { imageManifest } from "@/config/images";
+import { generatePageMetadata } from "@/lib/metadata";
+import {
+  generateLandingServiceSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/structured-data";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+const meta = generatePageMetadata({
+  title: "EV Charger Installation Manchester NH | The Speedy Sparky",
+  description:
+    "Level 2 EV charger installed at your NH home — usually in one visit. Licensed electrician, permits handled, tax-credit guidance. Free quote in minutes.",
+  path: "/ev-charger-installation",
+});
+
+const serviceSchema = generateLandingServiceSchema({
+  name: "EV Charger Installation",
+  description: meta.description,
+  path: "/ev-charger-installation",
+});
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", href: "/" },
+  { name: "EV Charger Installation", href: "/ev-charger-installation" },
+]);
+
+const heroChips = [
+  "One-morning installs",
+  "Every charger brand",
+  "Permits handled",
+  "30% tax-credit help",
+];
+
+const steps = [
+  {
+    icon: Phone,
+    title: "Tell Us About Your Car & Garage",
+    text: "A five-minute call (or the quote form below) is all we need to price most installs — photos of your panel help too.",
+  },
+  {
+    icon: CalendarCheck,
+    title: "One-Visit Install",
+    text: "Dedicated 240V circuit, wall unit mounted and wired, permit pulled — most homes are done in a single morning.",
+  },
+  {
+    icon: BatteryCharging,
+    title: "Plug In Tonight",
+    text: "We commission the charger, connect the app, and set off-peak charging schedules before we leave.",
+  },
+];
+
+const reasons = [
+  {
+    icon: Zap,
+    title: "Up to 9× Faster",
+    text: "A Level 2 charger adds 25–40 miles of range per hour versus 3–5 on a wall outlet.",
+  },
+  {
+    icon: Banknote,
+    title: "30% Federal Tax Credit",
+    text: "Hardware and installation qualify for up to $1,000 back — we give you the paperwork trail.",
+  },
+  {
+    icon: Snowflake,
+    title: "Ready for NH Winters",
+    text: "Preconditioning your battery on wall power saves range on those 5°F mornings.",
+  },
+  {
+    icon: Home,
+    title: "Adds Home Value",
+    text: "EV-ready homes stand out in the southern NH market as adoption keeps climbing.",
+  },
+  {
+    icon: Gauge,
+    title: "Panel Checked First",
+    text: "We run a proper load calculation so your electrical service safely supports charging.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Permitted & Inspected",
+    text: "Every install is permitted with your town and closed out with a passing inspection.",
+  },
+];
+
+const included = [
+  "In-person or photo-based load assessment",
+  "Dedicated 240V circuit (40–60 amp) from your panel",
+  "Charger supplied by you or sourced by us — every major brand",
+  "Clean surface or flush mounting, indoors or out",
+  "Weatherproof outdoor-rated installs available",
+  "Town permit and final inspection handled",
+  "App setup with off-peak charging schedule",
+  "Federal 30C tax-credit documentation",
+];
+
+const gallery = [
+  {
+    imageKey: "ev-charger-wall-install",
+    caption: "Dedicated 240V circuit, mounted clean",
+  },
+  {
+    imageKey: "ev-charger-unit-closeup",
+    caption: "Load-tested before we hand it over",
+  },
+  {
+    imageKey: "ev-charger-garage-mount",
+    caption: "Commissioned, app-connected, ready",
+  },
+];
+
+const faqs = [
+  {
+    id: "faq-ev-lp-1",
+    question: "How much does EV charger installation cost in NH?",
+    answer:
+      "Most straightforward installs — panel within about 25 feet of the charger location — land in a predictable range we can quote over the phone. Longer runs or panels that need work cost more, and you'll have a firm number in writing before we start either way.",
+  },
+  {
+    id: "faq-ev-lp-2",
+    question: "Which chargers do you install?",
+    answer:
+      "All of them — Tesla Wall Connector, ChargePoint, Emporia, Grizzl-E, JuiceBox, and the rest. Already own one? We'll install it. Need a recommendation? We'll match one to your vehicle and budget.",
+  },
+  {
+    id: "faq-ev-lp-3",
+    question: "What if my panel can't handle a charger?",
+    answer:
+      "We run a load calculation first. Often a smart load-management setting solves it; when a panel genuinely needs upgrading, we do that work too and quote both together so there are no surprises.",
+  },
+  {
+    id: "faq-ev-lp-4",
+    question: "How soon can you install it?",
+    answer:
+      "Usually within the week. Quotes come back same-day in most cases, and the install itself typically takes one morning.",
+  },
+];
+
+const heroImg = imageManifest["ev-charging-homeowner"];
+const publicDir = fileURLToPath(new URL("../../public", import.meta.url));
+const heroPreload =
+  heroImg && existsSync(publicDir + heroImg.src) ? heroImg.src : undefined;
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  ogImage={meta.ogImage}
+  ogTitle={meta.ogTitle}
+  preloadImage={heroPreload}
+  headerVariant="landing"
+>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(serviceSchema)}
+  />
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  {/* Hero — light "showroom" split */}
+  <section class="relative overflow-hidden bg-white pb-16 pt-28 md:pt-36 lg:pb-24">
+    <div
+      class="pointer-events-none absolute -right-40 -top-40 h-[480px] w-[480px] rounded-full bg-secondary-100/60 blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute -bottom-32 -left-32 h-[360px] w-[360px] rounded-full bg-primary-50 blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <Container class="relative">
+      <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+        {/* Copy */}
+        <div class="lg:col-span-6">
+          <span
+            class="lp-fade-up inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary-700 ring-1 ring-primary-100"
+          >
+            <Zap className="h-3.5 w-3.5" />
+            Level 2 EV Charger Installs · Southern NH
+          </span>
+
+          <h1
+            class="lp-fade-up mt-6 text-4xl font-bold leading-[1.05] tracking-tight text-foreground md:text-6xl"
+            style="--enter-delay: 80ms"
+          >
+            Charge at Home.
+            <span
+              class="block bg-gradient-to-r from-primary-600 via-secondary-500 to-secondary-400 bg-clip-text pb-1 text-transparent"
+            >
+              Wake Up Full Every Morning.
+            </span>
+          </h1>
+
+          {/* Charge bar */}
+          <div
+            class="lp-fade-up mt-5 h-1.5 w-40 overflow-hidden rounded-full bg-primary-100"
+            style="--enter-delay: 160ms"
+            aria-hidden="true"
+          >
+            <div
+              class="lp-charge-fill h-full rounded-full bg-gradient-to-r from-secondary-400 to-primary-600"
+            >
+            </div>
+          </div>
+
+          <p
+            class="lp-fade-up mt-6 max-w-xl text-lg text-muted"
+            style="--enter-delay: 240ms"
+          >
+            A licensed NH electrician installs your Level 2 charger — permit,
+            inspection, and tax-credit paperwork included. Most homes done in
+            one visit.
+          </p>
+
+          <ul
+            class="lp-fade-up mt-6 grid max-w-lg grid-cols-2 gap-2.5"
+            style="--enter-delay: 320ms"
+          >
+            {
+              heroChips.map((chip) => (
+                <li class="flex items-center gap-2 rounded-full bg-surface px-3.5 py-2 text-sm font-semibold text-foreground-light ring-1 ring-border">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-primary-600" />
+                  {chip}
+                </li>
+              ))
+            }
+          </ul>
+
+          <div
+            class="lp-fade-up mt-8 flex flex-col gap-4 sm:flex-row sm:items-center"
+            style="--enter-delay: 400ms"
+          >
+            <a
+              href="#quote"
+              class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-primary-700"
+            >
+              Get My Free Quote
+              <ArrowRight className="h-5 w-5" />
+            </a>
+            <a
+              href={`tel:${businessConfig.phoneRaw}`}
+              class="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-foreground px-7 py-4 font-bold text-foreground transition-colors hover:bg-foreground hover:text-white"
+            >
+              <Phone className="h-5 w-5" />
+              {businessConfig.phone}
+            </a>
+          </div>
+
+          <div class="lp-fade-up mt-6" style="--enter-delay: 480ms">
+            <GoogleReviewsPill variant="bordered" />
+          </div>
+        </div>
+
+        {/* Image */}
+        <div class="lp-fade-up relative lg:col-span-6" style="--enter-delay: 200ms">
+          <ImageSlot
+            imageKey="ev-charging-homeowner"
+            aspectRatio="4/3"
+            priority
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="rounded-3xl shadow-card-hover ring-1 ring-border/60"
+          />
+
+          {/* Floating stat chips */}
+          <div
+            class="lp-float absolute -left-3 top-6 flex items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-badge ring-1 ring-border backdrop-blur"
+          >
+            <span
+              class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50"
+            >
+              <BatteryCharging className="h-5 w-5 text-primary-600" />
+            </span>
+            <span>
+              <span class="block text-sm font-bold text-foreground"
+                >+25–40 mi of range</span
+              >
+              <span class="block text-xs text-muted">added every hour</span>
+            </span>
+          </div>
+          <div
+            class="lp-float absolute -right-3 bottom-8 hidden items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-badge ring-1 ring-border backdrop-blur sm:flex"
+            style="--enter-delay: 3s"
+          >
+            <span
+              class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary-100"
+            >
+              <Banknote className="h-5 w-5 text-secondary-600" />
+            </span>
+            <span>
+              <span class="block text-sm font-bold text-foreground"
+                >$1,000 federal credit</span
+              >
+              <span class="block text-xs text-muted">we handle the paperwork</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <TrustBar />
+
+  {/* Stats band */}
+  <section class="section-padding-sm bg-surface">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        The Level 2 Math, In Plain Numbers
+      </h2>
+      <div
+        class="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-y-10 md:grid-cols-4 md:divide-x md:divide-border"
+      >
+        <div class="px-4 text-center" data-reveal>
+          <p class="text-5xl font-bold text-primary-600 md:text-6xl">
+            <span data-count-to="9" data-count-suffix="×">9×</span>
+          </p>
+          <p class="mt-2 text-xs font-semibold uppercase tracking-widest text-muted">
+            Faster than a wall outlet
+          </p>
+        </div>
+        <div class="px-4 text-center" data-reveal style="--reveal-delay: 100ms">
+          <p class="whitespace-nowrap text-5xl font-bold text-primary-600 md:text-6xl">
+            25–40
+          </p>
+          <p class="mt-2 text-xs font-semibold uppercase tracking-widest text-muted">
+            Miles of range per hour
+          </p>
+        </div>
+        <div class="px-4 text-center" data-reveal style="--reveal-delay: 200ms">
+          <p class="text-5xl font-bold text-primary-600 md:text-6xl">
+            <span data-count-to="1000" data-count-prefix="$">$1,000</span>
+          </p>
+          <p class="mt-2 text-xs font-semibold uppercase tracking-widest text-muted">
+            Max federal tax credit
+          </p>
+        </div>
+        <div class="px-4 text-center" data-reveal style="--reveal-delay: 300ms">
+          <p class="text-5xl font-bold text-primary-600 md:text-6xl">1</p>
+          <p class="mt-2 text-xs font-semibold uppercase tracking-widest text-muted">
+            Morning per typical install
+          </p>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {/* 3-step process */}
+  <section class="section-padding bg-white">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        Parked Tonight, Charging Tomorrow
+      </h2>
+      <div class="relative mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+        <div
+          class="absolute left-[18%] right-[18%] top-10 hidden border-t-2 border-dashed border-primary-200 md:block"
+          aria-hidden="true"
+        >
+        </div>
+        {
+          steps.map((step, i) => (
+            <div
+              class="relative rounded-2xl bg-white p-7 ring-1 ring-border shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+              data-reveal
+              style={`--reveal-delay: ${i * 120}ms`}
+            >
+              <div class="absolute -top-4 left-7 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary-600 to-secondary-500 text-sm font-bold text-white shadow-badge">
+                {i + 1}
+              </div>
+              <step.icon className="h-8 w-8 text-primary-600" />
+              <h3 class="mt-4 text-lg font-bold text-foreground">
+                {step.title}
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  {/* Install gallery */}
+  <section class="section-padding bg-surface">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        What a Speedy Sparky Install Looks Like
+      </h2>
+      <div class="mt-12 grid gap-5 lg:grid-cols-2">
+        <div class="relative" data-reveal>
+          <ImageSlot
+            imageKey={gallery[0].imageKey}
+            aspectRatio="4/3"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="h-full rounded-3xl shadow-card"
+          />
+          <span
+            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
+          >
+            {gallery[0].caption}
+          </span>
+        </div>
+        <div class="grid gap-5">
+          {
+            gallery.slice(1).map((item, i) => (
+              <div
+                class="relative"
+                data-reveal
+                style={`--reveal-delay: ${(i + 1) * 120}ms`}
+              >
+                <ImageSlot
+                  imageKey={item.imageKey}
+                  aspectRatio="16/10"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  class="rounded-3xl shadow-card"
+                />
+                <span class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
+                  {item.caption}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {/* Why upgrade grid */}
+  <section class="section-padding bg-white">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        Six Reasons Drivers Ditch the Wall Outlet
+      </h2>
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          reasons.map((item, i) => (
+            <div
+              class="flex gap-4 rounded-2xl p-6 ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:ring-primary-200"
+              data-reveal
+              style={`--reveal-delay: ${(i % 3) * 100}ms`}
+            >
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-50">
+                <item.icon className="h-6 w-6 text-primary-600" />
+              </span>
+              <div>
+                <h3 class="font-bold text-foreground">{item.title}</h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-muted">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="#quote"
+          class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-7 py-3.5 font-bold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-primary-700"
+        >
+          Get My Free Quote
+          <ArrowRight className="h-5 w-5" />
+        </a>
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="inline-flex items-center gap-2 rounded-xl border-2 border-foreground px-7 py-3.5 font-bold text-foreground transition-colors hover:bg-foreground hover:text-white"
+        >
+          <Phone className="h-5 w-5" />
+          {businessConfig.phone}
+        </a>
+      </div>
+    </Container>
+  </section>
+
+  {/* What's included */}
+  <section class="relative overflow-hidden section-padding bg-primary-900">
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_at_80%_10%,rgba(99,207,251,0.12),transparent)]"
+      aria-hidden="true"
+    >
+    </div>
+    <Container class="relative">
+      <div class="grid items-center gap-10 lg:grid-cols-2">
+        <div data-reveal>
+          <h2 class="text-3xl font-bold text-white md:text-4xl">
+            One Price. Everything Handled.
+          </h2>
+          <p class="mt-4 text-white/80">
+            No hourly meter, no add-ons discovered halfway through. Your quote
+            covers the whole job:
+          </p>
+        </div>
+        <ul class="grid gap-3 sm:grid-cols-2" data-reveal style="--reveal-delay: 150ms">
+          {
+            included.map((item) => (
+              <li class="flex items-start gap-2.5 rounded-lg bg-white/5 px-3 py-2.5 text-sm text-white/90 ring-1 ring-white/10">
+                <Zap className="mt-0.5 h-4 w-4 shrink-0 text-secondary-400" />
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </Container>
+  </section>
+
+  {/* Reviews */}
+  <section class="section-padding bg-white">
+    <Container>
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <h2 class="text-3xl font-bold text-foreground md:text-4xl">
+          The Crew Your Neighbors Already Trust
+        </h2>
+        <GoogleReviewsPill variant="bordered" />
+      </div>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          evLandingReviews.map((review, i) => (
+            <div data-reveal style={`--reveal-delay: ${i * 120}ms`}>
+              <ReviewCard review={review} class="h-full" />
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  {/* FAQ */}
+  <FAQSection
+    eyebrow="EV Questions"
+    heading="Before You Plug In"
+    items={faqs}
+    bgColor="surface"
+  />
+
+  {/* Final CTA */}
+  <section
+    class="relative bg-gradient-to-r from-primary-700 via-primary-600 to-secondary-600 pb-16 pt-24 md:pt-28"
+  >
+    <svg
+      class="absolute inset-x-0 top-0 h-10 w-full text-surface md:h-14"
+      viewBox="0 0 1440 64"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path fill="currentColor" d="M0 0h1440v6c-340 52-1100 52-1440 0V0Z"></path>
+    </svg>
+    <Container>
+      <div class="flex flex-col items-center gap-6 text-center">
+        <h2 class="max-w-2xl text-3xl font-bold text-white md:text-4xl">
+          Stop Planning Your Day Around Public Chargers
+        </h2>
+        <div class="flex flex-col gap-4 sm:flex-row">
+          <a
+            href="#quote"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-lg font-bold text-primary-700 shadow-lg transition-all hover:-translate-y-0.5"
+          >
+            Get My Free Quote
+            <ArrowRight className="h-5 w-5" />
+          </a>
+          <a
+            href={`tel:${businessConfig.phoneRaw}`}
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-accent-600 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-accent-700"
+          >
+            <Phone className="h-5 w-5" />
+            Call {businessConfig.phone}
+          </a>
+        </div>
+        <p class="text-sm text-white/80">
+          Licensed NH Electrician #15673 · 5.0★ on Google · Serving 18 towns
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  {/* Quote form — the page's single #quote anchor */}
+  <LandingQuoteSection
+    tone="ev"
+    eyebrow="Free EV Charger Quote"
+    heading="Your Quote, Usually Same Day"
+    formHeading="Get Your EV Charger Quote"
+    formSubheading="Free, fast, and no obligation — most quotes come back the same day."
+    bullets={[
+      "Five questions, sixty seconds — that's the whole form",
+      "Photos of your panel speed up an exact price",
+      "Firm number in writing before any work starts",
+    ]}
+    urgencyNote="Booking Level 2 installs across all 18 towns we serve this week."
+  />
+
+  <RevealInit />
+  <StickyCallBar showQuote />
+</Layout>

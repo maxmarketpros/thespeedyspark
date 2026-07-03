@@ -1,0 +1,41 @@
+---
+import { Star } from "lucide-react";
+import GoogleLogo from "./GoogleLogo.astro";
+import { businessConfig } from "@/config/business";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  class?: string;
+  /** "light" = white pill for dark hero backgrounds, "bordered" = outlined for light sections */
+  variant?: "light" | "bordered";
+}
+
+const { class: className, variant = "light" } = Astro.props as Props;
+---
+
+<a
+  href={businessConfig.googleReviewsUrl}
+  target="_blank"
+  rel="noopener"
+  class={cn(
+    "inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 shadow-badge transition-transform hover:-translate-y-0.5",
+    variant === "light"
+      ? "bg-white/95 backdrop-blur-sm"
+      : "border border-border bg-white",
+    className,
+  )}
+  aria-label={`Rated ${businessConfig.googleRating} stars from ${businessConfig.googleReviewCount} Google reviews — read them on Google`}
+>
+  <GoogleLogo class="h-5 w-5 shrink-0" />
+  <span class="text-sm font-bold text-foreground">{businessConfig.googleRating}</span>
+  <span class="flex gap-0.5" aria-hidden="true">
+    {
+      Array.from({ length: 5 }).map(() => (
+        <Star className="h-3.5 w-3.5 fill-star text-star" />
+      ))
+    }
+  </span>
+  <span class="text-sm font-medium text-foreground-light">
+    {businessConfig.googleReviewCount} Google Reviews
+  </span>
+</a>

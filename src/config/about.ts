@@ -1,51 +1,51 @@
 export const aboutContent = {
   hero: {
     subtitle:
-      "Discover the story, values, and experience behind our commitment to quality.",
+      "The story behind Manchester's 5.0-star electrician — and the standards that earned every one of those reviews.",
   },
   story: {
     eyebrow: "Our Story",
-    heading: "Built on Experience. Driven by Standards.",
+    heading: "A Decade in the Trade, A Name Earned One Call at a Time",
     paragraphs: [
-      "We believe the best service professionals are the ones who have actually done the work themselves. Our company wasn't built in an office — it was forged through years of hands-on experience in the field.",
-      "Our foundational roots go deep into the core of our craft. Before becoming a leading service provider in the region, we mastered the fundamental skills that separate good work from great work.",
-      "This hands-on background gives us a unique advantage. When our team manages a project, we aren't just looking at spreadsheets. We understand the quality required because we've done the work ourselves. This translates to higher standards, better problem-solving, and a superior finished product for our clients.",
+      "The Speedy Sparky started with a simple observation: homeowners in Manchester were waiting days for callbacks on electrical problems that couldn't wait. Aubrey Taylor — a New Hampshire licensed electrician with over ten years of hands-on experience — built this company around the opposite promise. Answer fast, show up when you say you will, and do the job right the first time.",
+      "The name isn't just branding. Customers tell the story better than we can: the 11 pm phone call answered on a blizzard-cold night, the burned-out panel rebuilt in a single seven-hour push, the chandelier hung thirty feet up without a scratch on the walls. That's the standard, whether the job is a single outlet or a whole-home rewire.",
+      "Today we serve eighteen towns across Hillsborough, Merrimack, and Rockingham counties — from mill-era multifamilies in Rimmon Heights to new construction in Bedford — with the same owner-led attention on every single job.",
     ],
-    image: "about-story",
+    image: "garage-equipment-install",
   },
   values: {
-    eyebrow: "Our Values",
-    heading: "What We Stand For",
+    eyebrow: "What Guides the Work",
+    heading: "Four Promises We Make on Every Job",
     items: [
       {
-        title: "Integrity First",
+        title: "Speed Without Shortcuts",
         description:
-          "We do what we say we'll do, every time. Our reputation is built on keeping promises.",
+          "Fast response never means rushed work. Every circuit is tested, labeled, and code-compliant before we leave.",
       },
       {
-        title: "Quality Without Compromise",
+        title: "Plain-English Explanations",
         description:
-          "We never cut corners. Every project receives our full attention and highest standards.",
+          "You'll understand exactly what's wrong, what it takes to fix it, and what it costs — before we start.",
       },
       {
-        title: "Transparent Communication",
+        title: "Respect for Your Home",
         description:
-          "You'll always know where your project stands. No guessing, no chasing updates.",
+          "Drop cloths down, shoes covered, and every workspace swept clean. You shouldn't be able to tell we were there — except everything works.",
       },
       {
-        title: "Community Commitment",
+        title: "Around-the-Clock Availability",
         description:
-          "We live and work in this community. Your success is our success.",
+          "Electrical emergencies don't keep business hours, so neither do we. Nights, weekends, and holidays included.",
       },
     ],
   },
   team: {
     eyebrow: "Owner-Led",
-    heading: "Personally Invested in Every Project",
+    heading: "The Person Who Quotes Your Job Does Your Job",
     paragraphs: [
-      "Every project we take on receives direct owner involvement. This isn't a large corporation where your project gets passed between departments — you work directly with the person whose name is on the business.",
-      "This level of personal investment means faster decisions, higher accountability, and a genuine commitment to your satisfaction that you simply can't get from larger operations.",
+      "When you call The Speedy Sparky, you're not routed through a dispatcher to whichever crew is available. Aubrey leads the work personally — backed by trusted hands like Cedric on the bigger installs — so the judgment, the workmanship, and the accountability never change from one visit to the next.",
+      "That's why so many of our customers are repeat customers: condo owners on their fourth project with us, landlords who hand us the keys, families who saved our number after one late-night save.",
     ],
-    image: "about-team",
+    image: "generator-maintenance-team",
   },
 } as const;

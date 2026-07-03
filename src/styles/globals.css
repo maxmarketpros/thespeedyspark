@@ -1,33 +1,46 @@
 @import "tailwindcss";
 
 /* ===== DESIGN TOKENS ===== */
-/* To re-theme: change the primary hue (currently ~210 steel blue) */
-/* Only this section needs editing to rebrand the entire site */
+/* Brand palette sampled from The Speedy Sparky logo: */
+/* electric blue #3268cb · cyan #63cffb · magenta #c146ef · charcoal */
 
 @theme {
-  /* -- Primary palette (steel blue) -- */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a5f;
+  /* -- Primary palette (electric blue, brand anchor #3268cb at 600) -- */
+  --color-primary-50: #f0f5fe;
+  --color-primary-100: #dde9fc;
+  --color-primary-200: #c2d7f9;
+  --color-primary-300: #97bcf4;
+  --color-primary-400: #6598ea;
+  --color-primary-500: #3f78dc;
+  --color-primary-600: #3268cb;
+  --color-primary-700: #2a54a8;
+  --color-primary-800: #274689;
+  --color-primary-900: #243c6f;
 
-  /* -- Secondary palette (warm amber, optional) -- */
-  --color-secondary-50: #fffbeb;
-  --color-secondary-100: #fef3c7;
-  --color-secondary-200: #fde68a;
-  --color-secondary-300: #fcd34d;
-  --color-secondary-400: #fbbf24;
-  --color-secondary-500: #f59e0b;
-  --color-secondary-600: #d97706;
+  /* -- Secondary palette (electric cyan #63cffb at 400 — decorative / dark backgrounds only) -- */
+  --color-secondary-50: #f0faff;
+  --color-secondary-100: #e0f5fe;
+  --color-secondary-200: #b9eafd;
+  --color-secondary-300: #7ddafc;
+  --color-secondary-400: #63cffb;
+  --color-secondary-500: #38b5f0;
+  --color-secondary-600: #2094d6;
+
+  /* -- Accent palette (bolt magenta #c146ef at 500 — badges, 24/7 highlights, gradients) -- */
+  --color-accent-50: #fdf4ff;
+  --color-accent-100: #fae5ff;
+  --color-accent-200: #f5cbfe;
+  --color-accent-300: #efa5fb;
+  --color-accent-400: #e070f6;
+  --color-accent-500: #c146ef;
+  --color-accent-600: #a527d3;
+  --color-accent-700: #8a1daf;
+
+  /* -- Review stars (Google gold, decoupled from brand palettes) -- */
+  --color-star: #fbbc04;
 
   /* -- Semantic colors -- */
-  --color-foreground: #1a1a2e;
+  --color-foreground: #171a26;
   --color-foreground-light: #374151;
   --color-muted: #6b7280;
   --color-muted-light: #9ca3af;
@@ -59,8 +72,13 @@
 /* ===== BASE STYLES ===== */
 @layer base {
   html {
-    scroll-behavior: smooth;
     overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
@@ -85,5 +103,142 @@
 
   .section-padding-sm {
     @apply py-12 md:py-16;
+  }
+}
+
+/* ===== LANDING PAGE MOTION ===== */
+/* `reveal-init` / `is-revealed` are toggled at runtime by RevealInit.astro.
+   They must be plain CSS: Tailwind's scanner never sees runtime class names,
+   and without JS the `reveal-init` guard is absent so nothing stays hidden. */
+@media (prefers-reduced-motion: no-preference) {
+  html.reveal-init [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+
+  html.reveal-init [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lp-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lp-line-rise {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes lp-bg-settle {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes lp-charge {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes lp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes lp-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  80%,
+  100% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+
+@keyframes lp-radar {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* Static-safe defaults: every animated element reads correctly with the
+   animation removed (charge bar full, pulse rings covered by their button,
+   entrance elements visible). */
+.lp-charge-fill {
+  width: 100%;
+}
+
+.lp-pulse-ring,
+.lp-radar-ring {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lp-fade-up {
+    animation: lp-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--enter-delay, 0s);
+  }
+
+  .lp-line-rise {
+    animation: lp-line-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--enter-delay, 0s);
+  }
+
+  .lp-bg-settle {
+    animation: lp-bg-settle 1.4s ease-out both;
+  }
+
+  .lp-charge-fill {
+    animation: lp-charge 1s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+  }
+
+  .lp-float {
+    animation: lp-float 6s ease-in-out infinite;
+    animation-delay: var(--enter-delay, 0s);
+  }
+
+  .lp-pulse-ring {
+    animation: lp-pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation-delay: var(--enter-delay, 0s);
+  }
+
+  .lp-radar-ring {
+    animation: lp-radar 3s ease-out infinite;
   }
 }

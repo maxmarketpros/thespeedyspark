@@ -1,113 +1,67 @@
 import type { FAQItem } from "@/types";
 
+// Site-wide FAQs (homepage, contact, about). Service and service-area pages
+// carry their own inline FAQs inside their config entries.
 export const faqs: FAQItem[] = [
   {
     id: "faq-general-1",
-    question: "How do I get started with a project?",
+    question: "Do you really answer the phone 24/7?",
     answer:
-      "Getting started is simple. Contact us by phone or through our online form to schedule a free consultation. We'll discuss your project goals, assess the scope of work, and provide a detailed estimate — all before any commitment.",
+      "Yes. Electrical problems don't wait for business hours, and neither do we. Call (603) 661-8432 any time — nights, weekends, and holidays. Emergencies like burning smells, sparking panels, or total power loss jump straight to the front of the line.",
   },
   {
     id: "faq-general-2",
-    question: "What areas do you serve?",
+    question: "Which New Hampshire towns do you serve?",
     answer:
-      "We serve Springfield and the surrounding region, including Shelbyville, Capital City, Ogdenville, and North Haverbrook. If you're unsure whether your location falls within our service area, give us a call and we'll let you know.",
+      "We're based in Manchester and cover eighteen towns across Hillsborough, Merrimack, and Rockingham counties — including Nashua, Concord, Bedford, Goffstown, Hooksett, Derry, Londonderry, Merrimack, and Salem. Not sure if you're in range? Call and we'll tell you straight.",
   },
   {
     id: "faq-general-3",
-    question: "How long does a typical project take?",
+    question: "How much does an electrician cost in Manchester?",
     answer:
-      "Project timelines vary based on scope and complexity. During your initial consultation, we'll provide a realistic timeline based on your specific project. We pride ourselves on meeting deadlines and keeping you informed throughout the process.",
+      "It depends on the job, but you'll always know the price before work starts. We quote up front after seeing the work — no hourly meter running, no surprise line items. Small repairs are often same-day; larger projects get a detailed written estimate, usually within 24 hours.",
   },
   {
     id: "faq-general-4",
-    question: "Do you provide written estimates?",
+    question: "Are you licensed and insured in New Hampshire?",
     answer:
-      "Yes. Every project begins with a detailed written estimate that breaks down all costs by line item. We believe in complete transparency — you'll know exactly where every dollar goes before we begin any work.",
+      "Fully. The Speedy Sparky LLC holds New Hampshire Electrical License #15673, carries full liability insurance, and is an A-rated BBB-accredited business. Proof of license and insurance is available any time you ask.",
   },
   {
     id: "faq-general-5",
-    question: "Are you licensed and insured?",
+    question: "Do you handle permits and inspections?",
     answer:
-      "Absolutely. We are fully licensed, bonded, and insured. We carry comprehensive general liability insurance and workers' compensation coverage for every member of our team. Copies are available upon request.",
+      "Yes — we pull the electrical permits and coordinate inspections with your town's building department, whether that's Manchester, Bedford, Derry, or anywhere else we work. The job isn't done until it passes.",
   },
   {
     id: "faq-general-6",
-    question: "What kind of warranty do you offer?",
+    question: "Can you work on older homes with outdated wiring?",
     answer:
-      "We stand behind our work with a comprehensive warranty. The specific terms vary by service type, but every project includes a written warranty covering both materials and workmanship. We'll discuss the details during your consultation.",
+      "That's half of what we do. Manchester and the surrounding mill towns are full of homes with knob-and-tube remnants, aluminum branch circuits, and 60- or 100-amp services that struggle with modern loads. We diagnose what's actually there and give you safe, code-compliant options that fit your budget.",
   },
   {
     id: "faq-contact-1",
-    question: "What is the best way to reach you?",
+    question: "What's the fastest way to reach you?",
     answer:
-      "You can reach us by phone during business hours, through our online contact form, or by email. We respond to all inquiries within one business day.",
+      "Calling (603) 661-8432 is fastest — you'll usually get Aubrey directly. The quote form on this page goes straight to us too, and we respond quickly, typically the same day.",
   },
   {
     id: "faq-contact-2",
-    question: "Do you offer free consultations?",
+    question: "Are estimates really free?",
     answer:
-      "Yes, we offer complimentary consultations for all new projects. During the consultation, we'll discuss your goals, assess the work needed, and provide a no-obligation estimate.",
-  },
-
-  // ===== SERVICE ONE FAQs =====
-  {
-    id: "faq-s1-1",
-    question: "What does Service One include from start to finish?",
-    answer:
-      "Service One covers the entire lifecycle from initial assessment and planning through execution and final walkthrough. Every phase is managed by a dedicated project lead to ensure nothing is missed.",
+      "Yes — quotes are free and carry zero obligation. We'll look at the work, explain your options in plain English, and put a firm price in writing. Whether you hire us or not is entirely up to you.",
   },
   {
-    id: "faq-s1-2",
-    question: "How long does a typical Service One project take?",
+    id: "faq-contact-3",
+    question: "How soon can you get to my house?",
     answer:
-      "Most Service One projects take between 2 to 6 weeks depending on scope and complexity. During the consultation phase, we provide a detailed timeline specific to your project.",
+      "For emergencies, we dispatch immediately — most of our service area is within 25 minutes of Manchester. For routine work, most jobs get scheduled within the week, and small repairs can often be bundled into a same-week visit.",
   },
   {
-    id: "faq-s1-3",
-    question: "Do you offer a warranty on Service One work?",
+    id: "faq-contact-4",
+    question: "Do you do both residential and commercial work?",
     answer:
-      "Yes, all Service One projects include a comprehensive warranty covering both workmanship and materials. We stand behind the quality of our work and want you to have complete confidence in the results.",
-  },
-
-  // ===== SERVICE TWO FAQs =====
-  {
-    id: "faq-s2-1",
-    question: "What makes Service Two different from your other offerings?",
-    answer:
-      "Service Two is designed for projects that require specialized expertise and advanced techniques. It includes a dedicated specialist team, custom planning, and enhanced quality control measures beyond our standard offering.",
-  },
-  {
-    id: "faq-s2-2",
-    question: "Can Service Two be customized to my specific requirements?",
-    answer:
-      "Absolutely. Every Service Two engagement begins with a deep-dive consultation where we learn your exact requirements. We then build a custom scope of work tailored to your goals, timeline, and budget.",
-  },
-  {
-    id: "faq-s2-3",
-    question: "What kind of progress updates can I expect during Service Two?",
-    answer:
-      "You'll receive regular progress updates at each milestone, including photos, status reports, and budget tracking. Your dedicated project manager is also available for calls and site visits throughout the process.",
-  },
-
-  // ===== SERVICE THREE FAQs =====
-  {
-    id: "faq-s3-1",
-    question: "Is Service Three suitable for large-scale projects?",
-    answer:
-      "Yes, Service Three is specifically designed for large and complex projects. Our management framework scales to handle multiple teams, vendors, and concurrent workstreams while maintaining full accountability.",
-  },
-  {
-    id: "faq-s3-2",
-    question: "How does Service Three help control project costs?",
-    answer:
-      "We provide real-time budget tracking, proactive value engineering, and transparent reporting at every milestone. Our procurement expertise also helps secure competitive pricing from trusted suppliers.",
-  },
-  {
-    id: "faq-s3-3",
-    question: "What documentation do I receive at the end of a Service Three project?",
-    answer:
-      "You receive a comprehensive closeout package including as-built documentation, warranty information, inspection records, change order logs, and a final accounting summary.",
+      "Yes. Homes are our bread and butter, and we also handle commercial spaces — offices, restaurants, retail, and light industrial — including after-hours work so your business doesn't lose open hours.",
   },
 ];
 
@@ -127,6 +81,6 @@ export const homepageFaqKeys = [
 export const contactFaqKeys = [
   "faq-contact-1",
   "faq-contact-2",
-  "faq-general-2",
-  "faq-general-4",
+  "faq-contact-3",
+  "faq-contact-4",
 ];

@@ -4,6 +4,7 @@ import Container from "@/components/ui/Container.astro";
 import Button from "@/components/ui/Button.astro";
 import StatItem from "@/components/ui/StatItem.astro";
 import ImageSlot from "@/components/ui/ImageSlot.astro";
+import GoogleReviewsPill from "@/components/ui/GoogleReviewsPill.astro";
 import { homepageContent } from "@/config/homepage";
 import { heroStats } from "@/config/stats";
 
@@ -26,7 +27,7 @@ const { hero } = homepageContent;
     <span
       class="mb-4 inline-block rounded-full bg-white/10 px-5 py-2 text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-sm"
     >
-      Local Service Provider · Springfield, IL
+      24/7 Licensed Electrician · Manchester, NH
     </span>
 
     <h1
@@ -42,8 +43,12 @@ const { hero } = homepageContent;
       {hero.subtitle}
     </p>
 
+    <div class="mt-7 flex justify-center">
+      <GoogleReviewsPill />
+    </div>
+
     <div
-      class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+      class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row"
     >
       <Button href={hero.primaryCta.href} size="lg">
         {hero.primaryCta.label}
@@ -60,18 +65,18 @@ const { hero } = homepageContent;
       </Button>
     </div>
 
-    {/* Stats Row */}
+    {/* Stats Row — grid with divide so it can never overflow small screens */}
     <div
-      class="mx-auto mt-16 flex max-w-lg items-center justify-center gap-8 md:gap-12"
+      class="mx-auto mt-14 grid w-full max-w-lg grid-cols-3 divide-x divide-white/20 md:mt-16"
     >
       {
-        heroStats.map((stat, i) => (
-          <div class="flex items-center gap-8">
-            <StatItem value={stat.value} label={stat.label} light />
-            {i < heroStats.length - 1 && (
-              <div class="h-10 w-px bg-white/20" />
-            )}
-          </div>
+        heroStats.map((stat) => (
+          <StatItem
+            value={stat.value}
+            label={stat.label}
+            light
+            class="min-w-0 px-2 sm:px-4"
+          />
         ))
       }
     </div>

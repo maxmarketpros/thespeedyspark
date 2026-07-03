@@ -4,6 +4,9 @@ import PageHero from "@/components/sections/PageHero.astro";
 import QuoteSection from "@/components/sections/QuoteSection.astro";
 import FAQSection from "@/components/sections/FAQSection.astro";
 import CTASection from "@/components/sections/CTASection.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import Container from "@/components/ui/Container.astro";
+import MapEmbed from "@/components/ui/MapEmbed.astro";
 import { contactFaqKeys } from "@/config/faqs";
 import { businessConfig } from "@/config/business";
 import { imageManifest } from "@/config/images";
@@ -13,12 +16,12 @@ import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const meta = generatePageMetadata({
-  title: "Contact Us",
-  description: `Get in touch with our team for a free consultation. Call ${businessConfig.phone} or fill out our contact form.`,
+  title: "Contact | 24/7 Electrician in Manchester, NH",
+  description: `Reach The Speedy Sparky any hour at ${businessConfig.phone} or send the quick quote form — free estimates for homes and businesses across southern NH.`,
   path: "/contact",
 });
 
-const heroImg = imageManifest["contact-hero"];
+const heroImg = imageManifest["outlet-wiring-closeup"];
 const publicDir = fileURLToPath(new URL("../../public", import.meta.url));
 const heroPreload =
   heroImg && existsSync(publicDir + heroImg.src) ? heroImg.src : undefined;
@@ -44,18 +47,33 @@ const breadcrumbSchema = generateBreadcrumbSchema([
   />
 
   <PageHero
-    heading="Contact Us"
-    subtitle="Ready to start your project? Get in touch and let's discuss how we can help."
-    imageKey="contact-hero"
+    heading="Contact The Speedy Sparky"
+    subtitle="Call any hour — emergencies included — or send the form and get your free quote back fast, usually the same day."
+    imageKey="outlet-wiring-closeup"
     breadcrumbs={[
       { label: "Home", href: "/" },
       { label: "Contact" },
     ]}
-    primaryCta={{ label: "Get a Quote", href: "#quote" }}
-    secondaryCta={{ label: "Call (555) 123-4567", href: "tel:+15551234567" }}
+    primaryCta={{ label: "Get a Free Quote", href: "#quote" }}
+    secondaryCta={{ label: "Call (603) 661-8432", href: "tel:+16036618432" }}
   />
 
   <QuoteSection id="quote" />
+
+  {/* Find us on Google */}
+  <section class="section-padding bg-white">
+    <Container>
+      <SectionHeading
+        eyebrow="Find Us"
+        heading="Proudly Based in Manchester, New Hampshire"
+        subtitle="A service-area business covering 18 towns across Hillsborough, Merrimack, and Rockingham counties."
+        align="center"
+      />
+      <div class="overflow-hidden rounded-2xl shadow-card-hover">
+        <MapEmbed class="h-[400px] w-full md:h-[460px]" />
+      </div>
+    </Container>
+  </section>
 
   <FAQSection
     eyebrow="Questions"
@@ -67,7 +85,7 @@ const breadcrumbSchema = generateBreadcrumbSchema([
 
   <CTASection
     heading="Prefer to Talk?"
-    text={`Give us a call at ${businessConfig.phone}. We're available ${businessConfig.hours.display}.`}
+    text={`Give us a call at ${businessConfig.phone}. We're available 24/7 — real emergencies always come first.`}
     primaryCta={{
       label: `Call ${businessConfig.phone}`,
       href: `tel:${businessConfig.phoneRaw}`,

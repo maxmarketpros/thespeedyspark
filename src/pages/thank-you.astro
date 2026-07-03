@@ -1,0 +1,189 @@
+---
+import { Phone, MailCheck, PhoneCall, FileText, ArrowRight, Zap } from "lucide-react";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/ui/Container.astro";
+import GoogleReviewsPill from "@/components/ui/GoogleReviewsPill.astro";
+import ReviewCard from "@/components/ui/ReviewCard.astro";
+import { homepageReviews } from "@/config/reviews";
+import { businessConfig } from "@/config/business";
+
+const nextSteps = [
+  {
+    icon: MailCheck,
+    title: "We Read It Right Away",
+    text: "Your request lands directly with us — not a call center. Most submissions get a same-day response.",
+  },
+  {
+    icon: PhoneCall,
+    title: "A Quick Call or Text",
+    text: "Aubrey or the team will reach out to ask a couple of questions and, for most jobs, price it on the spot.",
+  },
+  {
+    icon: FileText,
+    title: "Your Firm Written Quote",
+    text: "One clear number, agreed before any work starts. No hourly meter, no surprises on the invoice.",
+  },
+];
+---
+
+<Layout
+  title="Thank You | The Speedy Sparky LLC"
+  description="Your quote request has been received. The Speedy Sparky will get back to you shortly — usually the same day."
+  noindex
+>
+  {/* Event snippet for Request quote conversion page */}
+  <script is:inline slot="head">
+    gtag("event", "conversion", {
+      send_to: "AW-18295104633/Lc_cCKLkzckcEPnI5JNE",
+    });
+  </script>
+
+  {/* Confirmation hero */}
+  <section
+    class="relative flex min-h-[70vh] items-center bg-gradient-to-br from-primary-800 via-primary-700 to-secondary-600 pt-20"
+  >
+    <Container class="py-16 text-center">
+      <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-white shadow-lg ty-pop">
+        <svg viewBox="0 0 52 52" class="h-12 w-12" aria-hidden="true">
+          <path
+            d="M14 27 L22 35 L38 17"
+            fill="none"
+            stroke="#3268cb"
+            stroke-width="5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="ty-check"></path>
+        </svg>
+      </div>
+
+      <h1 class="mx-auto mt-8 max-w-2xl text-4xl font-bold text-white md:text-5xl">
+        Got It — Your Request Is In
+      </h1>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-white/85">
+        Thanks for reaching out to The Speedy Sparky. A real local electrician
+        will get back to you shortly — usually the same day.
+      </p>
+
+      <div class="mt-8 flex justify-center">
+        <GoogleReviewsPill />
+      </div>
+
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 font-bold text-primary-700 shadow-md transition-all hover:-translate-y-0.5"
+        >
+          Back to Home
+          <ArrowRight className="h-5 w-5" />
+        </a>
+        <a
+          href="/services"
+          class="inline-flex items-center gap-2 rounded-xl border-2 border-white px-7 py-3.5 font-bold text-white transition-colors hover:bg-white hover:text-primary-700"
+        >
+          Browse Our Services
+        </a>
+      </div>
+    </Container>
+  </section>
+
+  {/* What happens next */}
+  <section class="section-padding bg-white">
+    <Container>
+      <h2 class="text-center text-3xl font-bold text-foreground md:text-4xl">
+        Here's What Happens Next
+      </h2>
+      <div class="mt-12 grid gap-8 md:grid-cols-3">
+        {
+          nextSteps.map((step, i) => (
+            <div class="relative rounded-2xl bg-surface p-7">
+              <div class="absolute -top-4 left-7 flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-sm font-bold text-white">
+                {i + 1}
+              </div>
+              <step.icon className="h-8 w-8 text-primary-600" />
+              <h3 class="mt-4 text-lg font-bold text-foreground">{step.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  {/* Urgent strip */}
+  <section class="bg-accent-600 py-10">
+    <Container>
+      <div
+        class="flex flex-col items-center justify-between gap-5 text-center md:flex-row md:text-left"
+      >
+        <div class="flex items-center gap-4">
+          <Zap className="h-9 w-9 shrink-0 text-white" />
+          <div>
+            <h2 class="text-xl font-bold text-white md:text-2xl">
+              Can't Wait? Something Sparking Right Now?
+            </h2>
+            <p class="mt-1 text-sm text-white/85">
+              Skip the queue — the emergency line is answered 24/7.
+            </p>
+          </div>
+        </div>
+        <a
+          href={`tel:${businessConfig.phoneRaw}`}
+          class="inline-flex shrink-0 items-center gap-2.5 rounded-xl bg-white px-7 py-4 text-lg font-bold text-accent-700 shadow-md transition-all hover:-translate-y-0.5"
+        >
+          <Phone className="h-5 w-5" />
+          {businessConfig.phone}
+        </a>
+      </div>
+    </Container>
+  </section>
+
+  {/* Social proof while they wait */}
+  <section class="section-padding bg-surface">
+    <Container>
+      <h2 class="text-center text-3xl font-bold text-foreground md:text-4xl">
+        While You Wait, Meet Your Neighbors
+      </h2>
+      <p class="mx-auto mt-3 max-w-xl text-center text-muted">
+        A few of the 46 five-star reviews from homeowners who filled out the
+        same form you just did.
+      </p>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        {homepageReviews.map((review) => <ReviewCard review={review} />)}
+      </div>
+    </Container>
+  </section>
+</Layout>
+
+<style>
+  .ty-pop {
+    animation: ty-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .ty-check {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: ty-draw 0.45s ease-out 0.35s forwards;
+  }
+  @keyframes ty-pop {
+    from {
+      transform: scale(0.4);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes ty-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ty-pop,
+    .ty-check {
+      animation: none;
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+  }
+</style>

@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 import ImageSlot from "./ImageSlot.astro";
 import { cn } from "@/lib/utils";
+import { serviceBasePath } from "@/lib/structured-data";
 import type { ServiceConfig } from "@/types";
 
 interface Props {
@@ -41,7 +42,7 @@ const IconComponent = (LucideIcons as any)[service.icon] || LucideIcons.Wrench;
       {service.excerpt}
     </p>
     <a
-      href={`/services/${service.slug}`}
+      href={serviceBasePath(service)}
       class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary-700 transition-colors hover:text-primary-800"
     >
       Explore Service

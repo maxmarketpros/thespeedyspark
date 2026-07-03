@@ -1,19 +1,49 @@
 ---
+import { ArrowRight, Home, Building2, PlugZap, Gauge, Zap } from "lucide-react";
 import Layout from "@/layouts/Layout.astro";
 import PageHero from "@/components/sections/PageHero.astro";
 import CTASection from "@/components/sections/CTASection.astro";
 import QuoteSection from "@/components/sections/QuoteSection.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
 import Container from "@/components/ui/Container.astro";
 import ServiceCard from "@/components/ui/ServiceCard.astro";
-import { services } from "@/config/services";
+import { residentialServices, commercialServices } from "@/config/services";
+import { businessConfig } from "@/config/business";
 import { generatePageMetadata } from "@/lib/metadata";
+import { generateBreadcrumbSchema } from "@/lib/structured-data";
 
 const meta = generatePageMetadata({
-  title: "Our Services",
+  title: "Electrical Services in Manchester, NH | The Speedy Sparky",
   description:
-    "Explore our comprehensive range of professional services. From initial consultation to final completion, we deliver quality you can trust.",
+    "Browse every electrical service we offer in southern NH — residential, commercial, EV chargers, panel upgrades & 24/7 emergency work. Licensed NH electrician.",
   path: "/services",
 });
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", href: "/" },
+  { name: "Services", href: "/services" },
+]);
+
+const highlights = [
+  {
+    title: "EV Charger Installation",
+    description: "Home Level 2 charging, installed in a day.",
+    href: "/ev-charger-installation",
+    icon: PlugZap,
+  },
+  {
+    title: "Electrical Panel Upgrades",
+    description: "Modern 200-amp service for modern loads.",
+    href: "/electrical-panel-upgrades",
+    icon: Gauge,
+  },
+  {
+    title: "Emergency Electrician",
+    description: "24/7 live answer. Fast dispatch across southern NH.",
+    href: "/emergency-electrician",
+    icon: Zap,
+  },
+];
 ---
 
 <Layout
@@ -23,28 +53,112 @@ const meta = generatePageMetadata({
   ogImage={meta.ogImage}
   ogTitle={meta.ogTitle}
 >
-  <PageHero
-    heading="Our Services"
-    subtitle="Comprehensive solutions delivered with precision, transparency, and care."
-    imageKey="service-1-hero"
-    breadcrumbs={[
-      { label: "Home", href: "/" },
-      { label: "Services" },
-    ]}
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
   />
 
-  <section class="section-padding">
+  <PageHero
+    heading="Every Electrical Service Under One Roof"
+    subtitle="Twenty-five specialties across homes and businesses — all licensed, all insured, all backed by a 5.0-star Google record."
+    imageKey="emergency-field-technician"
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Services" }]}
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
+  />
+
+  {/* Most-requested highlights */}
+  <section class="section-padding-sm bg-white">
     <Container>
+      <div class="grid gap-6 md:grid-cols-3">
+        {
+          highlights.map((item) => (
+            <a
+              href={item.href}
+              class="group flex items-start gap-4 rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50 to-white p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-card-hover"
+            >
+              <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-600">
+                <item.icon className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-foreground group-hover:text-primary-700">
+                  {item.title}
+                </h3>
+                <p class="mt-1 text-sm text-muted">{item.description}</p>
+                <span class="mt-2 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary-700">
+                  Most Requested
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  {/* Residential branch */}
+  <section class="section-padding bg-surface">
+    <Container>
+      <div class="mb-10 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+        <SectionHeading
+          eyebrow="For Your Home"
+          heading="Home Electrical Services"
+          subtitle="Repairs, lighting, rewiring, generators, smart home and more for houses, condos, and multifamilies."
+          class="mb-0"
+        />
+        <a
+          href="/residential"
+          class="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary-700 hover:text-primary-800"
+        >
+          <Home className="h-4 w-4" />
+          All Residential
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {services.map((service) => <ServiceCard service={service} />)}
+        {residentialServices.map((service) => <ServiceCard service={service} />)}
+      </div>
+    </Container>
+  </section>
+
+  {/* Commercial branch */}
+  <section class="section-padding bg-white">
+    <Container>
+      <div class="mb-10 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+        <SectionHeading
+          eyebrow="For Your Business"
+          heading="Business & Facility Services"
+          subtitle="Build-outs, lighting retrofits, three-phase panel work, EV fleets, and maintenance programs."
+          class="mb-0"
+        />
+        <a
+          href="/commercial"
+          class="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary-700 hover:text-primary-800"
+        >
+          <Building2 className="h-4 w-4" />
+          All Commercial
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {commercialServices.map((service) => <ServiceCard service={service} />)}
       </div>
     </Container>
   </section>
 
   <CTASection
-    heading="Not Sure Which Service You Need?"
-    text="Contact us for a free consultation. We'll assess your needs and recommend the best approach."
-    primaryCta={{ label: "Get a Quote", href: "/contact" }}
+    heading="Not Sure Which Service Fits?"
+    text="Describe the symptom or the project and we'll point you the right way — the quote is free either way."
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
   />
 
   <QuoteSection />

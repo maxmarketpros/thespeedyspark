@@ -1,0 +1,160 @@
+---
+import { ArrowRight, Zap, PlugZap, Gauge } from "lucide-react";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import ServiceGrid from "@/components/sections/ServiceGrid.astro";
+import CTASection from "@/components/sections/CTASection.astro";
+import QuoteSection from "@/components/sections/QuoteSection.astro";
+import FAQSection from "@/components/sections/FAQSection.astro";
+import Container from "@/components/ui/Container.astro";
+import { residentialServices } from "@/config/residential-services";
+import { businessConfig } from "@/config/business";
+import { generatePageMetadata } from "@/lib/metadata";
+import { generateBreadcrumbSchema } from "@/lib/structured-data";
+
+const meta = generatePageMetadata({
+  title: "Residential Electrician in Manchester, NH | The Speedy Sparky",
+  description:
+    "Home electrical services across Manchester & southern NH — repairs, rewiring, lighting, generators, smart home & more. Licensed, insured, 5.0-star rated.",
+  path: "/residential",
+});
+
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", href: "/" },
+  { name: "Residential Services", href: "/residential" },
+]);
+
+const featured = [
+  {
+    title: "EV Charger Installation",
+    description:
+      "Level 2 home charging installed in a day — with federal tax credit guidance included.",
+    href: "/ev-charger-installation",
+    icon: PlugZap,
+  },
+  {
+    title: "Electrical Panel Upgrades",
+    description:
+      "Replace tired 60- and 100-amp services with a modern 200-amp panel built for today's loads.",
+    href: "/electrical-panel-upgrades",
+    icon: Gauge,
+  },
+  {
+    title: "24/7 Emergency Electrician",
+    description:
+      "Sparks, burning smells, or a dead panel at 2 AM — call and we answer, any hour.",
+    href: "/emergency-electrician",
+    icon: Zap,
+  },
+];
+
+const residentialFaqs = [
+  {
+    id: "faq-res-index-1",
+    question: "What residential electrical services do you offer?",
+    answer:
+      "Everything a New Hampshire home needs: troubleshooting and repairs, whole-home rewiring, interior and landscape lighting, ceiling fans, outlets and switches, smart home devices, surge protection, standby generators, smoke and CO detectors, safety inspections, panel upgrades, and EV chargers.",
+  },
+  {
+    id: "faq-res-index-2",
+    question: "Do you work on older Manchester homes?",
+    answer:
+      "Constantly. Much of our work is in homes built before 1970 — mill-era multifamilies, North End colonials, lake cottages — where we modernize aging panels, retire knob-and-tube remnants, and bring circuits up to today's code without tearing your home apart.",
+  },
+  {
+    id: "faq-res-index-3",
+    question: "How quickly can a residential job get scheduled?",
+    answer:
+      "Small repairs are often handled same-week, and most projects are scheduled within days of quote approval. Emergencies skip the queue entirely — we run 24/7.",
+  },
+  {
+    id: "faq-res-index-4",
+    question: "Is the quote really free, even for small jobs?",
+    answer:
+      "Yes. Whether it's one dead outlet or a full rewire, you get a firm written price at no cost and no obligation before any work starts.",
+  },
+];
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  ogImage={meta.ogImage}
+  ogTitle={meta.ogTitle}
+>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  <PageHero
+    heading="Residential Electrician Services in Manchester, NH"
+    subtitle="From a single outlet to a whole-home rewire — licensed, owner-led electrical work for houses, condos, and multifamilies across southern New Hampshire."
+    imageKey="kitchen-pendant-lighting-install"
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Residential" }]}
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
+  />
+
+  {/* Featured landing-page services */}
+  <section class="section-padding-sm bg-white">
+    <Container>
+      <div class="grid gap-6 md:grid-cols-3">
+        {
+          featured.map((item) => (
+            <a
+              href={item.href}
+              class="group flex flex-col rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50 to-white p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-card-hover"
+            >
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-600">
+                <item.icon className="h-5 w-5 text-white" />
+              </div>
+              <h3 class="mt-4 text-lg font-bold text-foreground group-hover:text-primary-700">
+                {item.title}
+              </h3>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                {item.description}
+              </p>
+              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-primary-700">
+                View Details
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  {/* All residential services */}
+  <ServiceGrid
+    services={residentialServices}
+    eyebrow="Home Electrical"
+    heading="Every Home Service We Offer"
+    subtitle="Eleven specialties, one standard: tested, labeled, code-compliant work your home can rely on for decades."
+  />
+
+  <FAQSection
+    eyebrow="Homeowner FAQ"
+    heading="Residential Electrical Questions"
+    items={residentialFaqs}
+    bgColor="surface"
+  />
+
+  <CTASection
+    heading="Tell Us What Your Home Needs"
+    text="Describe the project — or the mystery breaker that keeps tripping — and we'll take it from there."
+    primaryCta={{ label: "Get a Free Quote", href: "/contact" }}
+    secondaryCta={{
+      label: `Call ${businessConfig.phone}`,
+      href: `tel:${businessConfig.phoneRaw}`,
+    }}
+  />
+
+  <QuoteSection />
+</Layout>

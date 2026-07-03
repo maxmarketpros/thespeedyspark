@@ -11,16 +11,33 @@ interface Props {
 const { class: className, height } = Astro.props as Props;
 const embedUrl = businessConfig.formEmbedUrl;
 const embedHeight = height || businessConfig.formEmbedHeight;
+const embedId = businessConfig.formEmbedId;
 ---
 
 {
   embedUrl ? (
-    <iframe
-      src={embedUrl}
-      title="Request a quote"
-      class={cn("w-full border-0 rounded-xl", className)}
-      style={`height: ${embedHeight}`}
-    />
+    <>
+      <iframe
+        src={embedUrl}
+        id={embedId}
+        title={businessConfig.formEmbedTitle}
+        class={cn("w-full rounded-xl border-0", className)}
+        style={`height: ${embedHeight}`}
+        data-layout="{'id':'INLINE'}"
+        data-trigger-type="alwaysShow"
+        data-trigger-value=""
+        data-activation-type="alwaysActivated"
+        data-activation-value=""
+        data-deactivation-type="neverDeactivate"
+        data-deactivation-value=""
+        data-form-name={businessConfig.formEmbedTitle}
+        data-height={embedHeight.replace("px", "")}
+        data-layout-iframe-id={embedId}
+        data-form-id={embedId.replace("inline-", "")}
+      />
+      <script src="https://link.msgsndr.com/js/form_embed.js" is:inline async
+      ></script>
+    </>
   ) : (
     <div
       class={cn(

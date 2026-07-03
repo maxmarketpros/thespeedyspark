@@ -1,0 +1,614 @@
+---
+import {
+  Phone,
+  Zap,
+  Flame,
+  AlertTriangle,
+  Droplets,
+  CloudLightning,
+  PowerOff,
+  Volume2,
+  PhoneCall,
+  Headset,
+  Truck,
+  ArrowRight,
+  Star,
+} from "lucide-react";
+import Layout from "@/layouts/Layout.astro";
+import TrustBar from "@/components/landing/TrustBar.astro";
+import StickyCallBar from "@/components/landing/StickyCallBar.astro";
+import LandingQuoteSection from "@/components/landing/LandingQuoteSection.astro";
+import RevealInit from "@/components/landing/RevealInit.astro";
+import FAQSection from "@/components/sections/FAQSection.astro";
+import Container from "@/components/ui/Container.astro";
+import ImageSlot from "@/components/ui/ImageSlot.astro";
+import ReviewCard from "@/components/ui/ReviewCard.astro";
+import GoogleReviewsPill from "@/components/ui/GoogleReviewsPill.astro";
+import GoogleLogo from "@/components/ui/GoogleLogo.astro";
+import { businessConfig } from "@/config/business";
+import { emergencyLandingReviews } from "@/config/reviews";
+import { imageManifest } from "@/config/images";
+import { generatePageMetadata } from "@/lib/metadata";
+import {
+  generateLandingServiceSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/structured-data";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+const meta = generatePageMetadata({
+  title: "24/7 Emergency Electrician Manchester NH | The Speedy Sparky",
+  description:
+    "Electrical emergency? We answer live 24/7 and dispatch fast across Manchester & southern NH. Sparks, outages, burning smells — call (603) 661-8432 now.",
+  path: "/emergency-electrician",
+});
+
+const serviceSchema = generateLandingServiceSchema({
+  name: "Emergency Electrician",
+  description: meta.description,
+  path: "/emergency-electrician",
+});
+const breadcrumbSchema = generateBreadcrumbSchema([
+  { name: "Home", href: "/" },
+  { name: "Emergency Electrician", href: "/emergency-electrician" },
+]);
+
+const dispatchFacts = [
+  "~25 min to most of southern NH",
+  "Up-front price before work starts",
+  "46 five-star reviews",
+];
+
+const callNowIf = [
+  {
+    icon: Flame,
+    title: "Burning Smell or Smoke",
+    text: "A fish-like or burning-plastic odor near outlets or the panel means wiring is overheating right now.",
+    urgent: true,
+  },
+  {
+    icon: Zap,
+    title: "Sparking Outlet or Switch",
+    text: "Visible sparks, scorch marks, or a hot cover plate — stop using the circuit and call.",
+    urgent: true,
+  },
+  {
+    icon: Volume2,
+    title: "Buzzing From the Panel",
+    text: "Panels should be silent. Buzzing or crackling means a failing breaker or loose connection under load.",
+    urgent: false,
+  },
+  {
+    icon: PowerOff,
+    title: "Partial or Total Power Loss",
+    text: "Half the house dark while the neighbors' lights are on points to a failing main or service issue.",
+    urgent: false,
+  },
+  {
+    icon: Droplets,
+    title: "Water Meets Electricity",
+    text: "A leak into a fixture, panel, or outlet is a shock and fire risk that can't wait until morning.",
+    urgent: false,
+  },
+  {
+    icon: CloudLightning,
+    title: "Storm or Surge Damage",
+    text: "After a nor'easter or lightning strike — downed service cables, dead circuits, fried equipment.",
+    urgent: false,
+  },
+];
+
+const steps = [
+  {
+    icon: PhoneCall,
+    title: "You Call. We Answer.",
+    text: "No voicemail maze at 2 AM — you reach a real electrician who knows what to ask.",
+  },
+  {
+    icon: Headset,
+    title: "Triage on the Phone",
+    text: "We walk you through making things safe immediately — which breaker to kill, what to unplug, when to step outside.",
+  },
+  {
+    icon: Truck,
+    title: "Fast Dispatch, Up-Front Price",
+    text: "Most of our 18-town service area is within 25 minutes of Manchester. You approve the price before repairs begin.",
+  },
+];
+
+const faqs = [
+  {
+    id: "faq-em-lp-1",
+    question: "Do you really answer at night and on holidays?",
+    answer:
+      "Yes — 24 hours a day, 365 days a year. One of our favorite reviews is from a customer we helped at 11 pm on a blizzard-cold night. Emergencies are the reason the phone is always on.",
+  },
+  {
+    id: "faq-em-lp-2",
+    question: "How fast can you get here?",
+    answer:
+      "Manchester and the surrounding towns — Bedford, Goffstown, Hooksett, Auburn — are usually reachable well within a half hour. Farther corners of our area like Salem, Milford, or Weare take a bit longer, and we'll give you an honest ETA when you call.",
+  },
+  {
+    id: "faq-em-lp-3",
+    question: "Does emergency service cost extra?",
+    answer:
+      "After-hours dispatch carries a premium, and we tell you exactly what it is on the phone — before we roll. Repairs are still priced up front once we diagnose the problem, so you approve every dollar before work starts.",
+  },
+  {
+    id: "faq-em-lp-4",
+    question: "What should I do while I wait?",
+    answer:
+      "Whatever we walked through on the phone — usually shutting off the affected breaker (or the main), unplugging anything on that circuit, and keeping people away from the area. If there's smoke or fire, get out and call 911 first, then us.",
+  },
+];
+
+const [featuredReview, ...sideReviews] = emergencyLandingReviews;
+
+const heroImg = imageManifest["emergency-field-technician"];
+const publicDir = fileURLToPath(new URL("../../public", import.meta.url));
+const heroPreload =
+  heroImg && existsSync(publicDir + heroImg.src) ? heroImg.src : undefined;
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  canonical={meta.canonical}
+  ogImage={meta.ogImage}
+  ogTitle={meta.ogTitle}
+  preloadImage={heroPreload}
+  headerVariant="landing"
+>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(serviceSchema)}
+  />
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  {/* Hero — 2 AM */}
+  <section
+    class="relative isolate flex min-h-[72svh] items-center overflow-hidden bg-foreground pt-24 md:min-h-[88svh]"
+  >
+    <ImageSlot
+      imageKey="emergency-field-technician"
+      fill
+      priority
+      class="absolute inset-0 -z-10"
+      overlayClassName="bg-gradient-to-r from-foreground/95 via-foreground/80 to-foreground/40"
+      sizes="100vw"
+    />
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-foreground to-transparent"
+      aria-hidden="true"
+    >
+    </div>
+
+    <Container class="relative pb-16 pt-6 md:pb-20">
+      <div class="lp-fade-up max-w-3xl">
+        <span
+          class="inline-flex items-center gap-2.5 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white ring-1 ring-white/20"
+        >
+          <span class="relative flex h-2 w-2">
+            <span
+              class="absolute inline-flex h-full w-full rounded-full bg-secondary-400 motion-safe:animate-ping"
+            >
+            </span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-secondary-400"></span>
+          </span>
+          Answering Live — 24/7 · Manchester &amp; Southern NH
+        </span>
+
+        <h1
+          class="mt-6 text-4xl font-bold leading-tight text-white md:text-6xl"
+        >
+          Lights Out at 2 AM?
+          <span
+            class="block bg-gradient-to-r from-secondary-300 to-secondary-400 bg-clip-text pb-1 text-transparent"
+          >
+            We Answer. We Show Up.
+          </span>
+        </h1>
+
+        <p class="mt-5 max-w-xl text-lg text-white/85">
+          Sparks, burning smells, dead panels, storm damage — a licensed
+          electrician picks up the phone and gets moving, any hour of any day.
+        </p>
+
+        <div class="mt-8 flex flex-col items-start gap-5">
+          <span class="relative inline-flex">
+            <span
+              class="lp-pulse-ring absolute inset-0 rounded-xl bg-accent-600/60"
+              aria-hidden="true"
+            >
+            </span>
+            <span
+              class="lp-pulse-ring absolute inset-0 rounded-xl bg-accent-600/60"
+              style="--enter-delay: 1s"
+              aria-hidden="true"
+            >
+            </span>
+            <a
+              href={`tel:${businessConfig.phoneRaw}`}
+              class="relative inline-flex items-center gap-3 rounded-xl bg-accent-600 px-8 py-5 text-xl font-bold text-white shadow-lg transition-colors hover:bg-accent-700"
+            >
+              <Phone className="h-6 w-6" />
+              Call {businessConfig.phone} — Live Now
+            </a>
+          </span>
+
+          <a
+            href="#quote"
+            class="inline-flex items-center gap-1.5 text-sm font-semibold text-white/70 underline underline-offset-4 transition-colors hover:text-white"
+          >
+            Not urgent? Get a quote by morning
+            <ArrowRight className="h-4 w-4" />
+          </a>
+        </div>
+
+        <ul class="mt-8 flex flex-wrap gap-2.5">
+          {
+            dispatchFacts.map((fact) => (
+              <li class="rounded-full bg-white/10 px-3.5 py-2 text-sm font-medium text-white/90 ring-1 ring-white/15">
+                {fact}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </Container>
+  </section>
+
+  <TrustBar tone="dark" />
+
+  {/* Call now if */}
+  <section class="section-padding bg-white">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        Six Situations That Shouldn't Wait Until Morning
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-center text-muted" data-reveal>
+        If any of these is happening in your home or business right now, skip
+        the form and call {businessConfig.phone}.
+      </p>
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          callNowIf.map((item, i) => (
+            <div
+              class="flex gap-4 rounded-2xl border-l-4 border-l-accent-500 bg-white p-6 shadow-card ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+              data-reveal
+              style={`--reveal-delay: ${(i % 3) * 100}ms`}
+            >
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent-50">
+                <item.icon className="h-6 w-6 text-accent-600" />
+              </span>
+              <div>
+                <h3 class="flex items-center gap-2 font-bold text-foreground">
+                  {item.title}
+                  {item.urgent && (
+                    <span class="relative flex h-2 w-2" aria-hidden="true">
+                      <span class="lp-pulse-ring absolute inline-flex h-full w-full rounded-full bg-accent-500" />
+                      <span class="relative inline-flex h-2 w-2 rounded-full bg-accent-500" />
+                    </span>
+                  )}
+                </h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-muted">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <div class="mt-12 flex justify-center">
+        <span class="relative inline-flex">
+          <span
+            class="lp-pulse-ring absolute inset-0 rounded-xl bg-accent-600/60"
+            aria-hidden="true"
+          >
+          </span>
+          <a
+            href={`tel:${businessConfig.phoneRaw}`}
+            class="relative inline-flex items-center gap-3 rounded-xl bg-accent-600 px-8 py-4 text-lg font-bold text-white shadow-lg transition-colors hover:bg-accent-700"
+          >
+            <Phone className="h-6 w-6" />
+            Emergency Line: {businessConfig.phone}
+          </a>
+        </span>
+      </div>
+    </Container>
+  </section>
+
+  {/* What happens when you call */}
+  <section class="relative overflow-hidden section-padding bg-foreground">
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_at_15%_20%,rgba(193,70,239,0.14),transparent)]"
+      aria-hidden="true"
+    >
+    </div>
+    <Container class="relative">
+      <h2
+        class="text-center text-3xl font-bold text-white md:text-4xl"
+        data-reveal
+      >
+        What Happens When You Call
+      </h2>
+      <div class="mt-14 grid items-center gap-12 lg:grid-cols-2">
+        <div class="relative" data-reveal>
+          <ImageSlot
+            imageKey="home-exterior-night-lighting"
+            aspectRatio="4/3"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="rounded-3xl ring-1 ring-white/15"
+          />
+          <span
+            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
+          >
+            The goal, day or night: lights back on
+          </span>
+        </div>
+        <ol class="relative flex flex-col gap-10">
+          <div
+            class="absolute bottom-5 left-5 top-5 w-px bg-white/15"
+            aria-hidden="true"
+          >
+          </div>
+          {
+            steps.map((step, i) => (
+              <li
+                class="relative flex gap-5"
+                data-reveal
+                style={`--reveal-delay: ${i * 120}ms`}
+              >
+                <span class="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary-400 text-sm font-bold text-foreground ring-4 ring-foreground">
+                  {i + 1}
+                </span>
+                <div>
+                  <div class="flex items-center gap-2.5">
+                    <step.icon className="h-5 w-5 text-secondary-400" />
+                    <h3 class="text-lg font-bold text-white">{step.title}</h3>
+                  </div>
+                  <p class="mt-2 text-sm leading-relaxed text-white/80">
+                    {step.text}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </Container>
+  </section>
+
+  {/* Response stats */}
+  <section class="border-y border-white/10 bg-foreground py-14 md:py-16">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-white md:text-4xl"
+        data-reveal
+      >
+        Response Times We Actually Hit
+      </h2>
+      <div
+        class="mx-auto mt-12 grid max-w-5xl grid-cols-2 gap-y-10 md:grid-cols-4 md:divide-x md:divide-white/10"
+      >
+        <div class="px-4 text-center" data-reveal>
+          <p class="text-4xl font-bold text-white md:text-5xl">24/7</p>
+          <p
+            class="mt-2 text-xs font-semibold uppercase tracking-widest text-white/60"
+          >
+            Live answer, every day
+          </p>
+        </div>
+        <div class="relative px-4 text-center" data-reveal style="--reveal-delay: 100ms">
+          <span
+            class="lp-radar-ring absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-secondary-400/40"
+            aria-hidden="true"
+          >
+          </span>
+          <p class="relative text-4xl font-bold text-white md:text-5xl">
+            <span data-count-to="25" data-count-prefix="~">~25</span> min
+          </p>
+          <p
+            class="relative mt-2 text-xs font-semibold uppercase tracking-widest text-white/60"
+          >
+            To most of southern NH
+          </p>
+        </div>
+        <div class="px-4 text-center" data-reveal style="--reveal-delay: 200ms">
+          <p class="text-4xl font-bold text-white md:text-5xl">
+            <span data-count-to="18">18</span>
+          </p>
+          <p
+            class="mt-2 text-xs font-semibold uppercase tracking-widest text-white/60"
+          >
+            Towns on the dispatch map
+          </p>
+        </div>
+        <div class="px-4 text-center" data-reveal style="--reveal-delay: 300ms">
+          <p class="text-4xl font-bold text-white md:text-5xl">11 PM</p>
+          <p
+            class="mt-2 text-xs font-semibold uppercase tracking-widest text-white/60"
+          >
+            The blizzard call we still get thanked for
+          </p>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {/* Reviews — featured 11 PM rescue */}
+  <section class="section-padding bg-surface">
+    <Container>
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <h2 class="text-3xl font-bold text-foreground md:text-4xl">
+          Rescued Neighbors, In Their Own Words
+        </h2>
+        <GoogleReviewsPill variant="bordered" />
+      </div>
+      <div class="mt-10 grid gap-6 lg:grid-cols-3">
+        {/* Featured: the 11 PM blizzard rescue */}
+        <figure
+          class="relative flex flex-col rounded-3xl bg-white p-8 shadow-card-hover lg:col-span-2"
+          data-reveal
+        >
+          <span
+            class="absolute -top-3 left-8 rounded-full bg-accent-600 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-badge"
+          >
+            11:00 PM Call
+          </span>
+          <div class="flex items-center gap-1" aria-hidden="true">
+            {
+              Array.from({ length: 5 }).map(() => (
+                <Star className="h-5 w-5 fill-star text-star" />
+              ))
+            }
+          </div>
+          <span class="sr-only">Rated {featuredReview.rating} out of 5 stars</span>
+          <blockquote class="mt-5 flex-1 text-lg leading-relaxed text-foreground-light">
+            "{featuredReview.text}"
+          </blockquote>
+          <figcaption class="mt-6 flex items-center gap-3">
+            <span
+              class="flex h-11 w-11 items-center justify-center rounded-full bg-accent-600 text-sm font-bold text-white"
+              aria-hidden="true"
+            >
+              {featuredReview.initials}
+            </span>
+            <div class="flex-1">
+              <p class="font-bold text-foreground">{featuredReview.name}</p>
+              <p class="text-xs text-muted">{featuredReview.relativeDate}</p>
+            </div>
+            <GoogleLogo class="h-6 w-6" />
+          </figcaption>
+        </figure>
+        <div class="flex flex-col gap-6">
+          {
+            sideReviews.map((review, i) => (
+              <div
+                class="flex-1"
+                data-reveal
+                style={`--reveal-delay: ${(i + 1) * 120}ms`}
+              >
+                <ReviewCard review={review} class="h-full" />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {/* Honest work duo */}
+  <section class="section-padding bg-white">
+    <Container>
+      <h2
+        class="text-center text-3xl font-bold text-foreground md:text-4xl"
+        data-reveal
+      >
+        Fixed Right at Any Hour
+      </h2>
+      <div class="mt-12 grid gap-5 md:grid-cols-2">
+        <div class="relative" data-reveal>
+          <ImageSlot
+            imageKey="outdoor-control-cabinet"
+            aspectRatio="16/10"
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="rounded-3xl shadow-card"
+          />
+          <span
+            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
+          >
+            Found it, fixed it, tested it — one visit
+          </span>
+        </div>
+        <div class="relative" data-reveal style="--reveal-delay: 120ms">
+          <ImageSlot
+            imageKey="wire-connection-work"
+            aspectRatio="16/10"
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="rounded-3xl shadow-card"
+          />
+          <span
+            class="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] rounded-lg bg-foreground/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur"
+          >
+            Repairs done to code, not taped over
+          </span>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {/* FAQ */}
+  <FAQSection
+    eyebrow="Emergency FAQ"
+    heading="The Questions People Ask at Midnight"
+    items={faqs}
+    bgColor="surface"
+  />
+
+  {/* Final CTA */}
+  <section
+    class="bg-gradient-to-br from-accent-700 via-accent-600 to-primary-800 py-16"
+  >
+    <Container>
+      <div class="flex flex-col items-center gap-6 text-center">
+        <AlertTriangle className="h-10 w-10 text-white" />
+        <h2 class="max-w-2xl text-3xl font-bold text-white md:text-4xl">
+          Electrical Problems Get Worse, Not Better
+        </h2>
+        <span class="relative inline-flex">
+          <span
+            class="lp-pulse-ring absolute inset-0 rounded-xl bg-white/50"
+            aria-hidden="true"
+          >
+          </span>
+          <a
+            href={`tel:${businessConfig.phoneRaw}`}
+            class="relative inline-flex items-center justify-center gap-3 rounded-xl bg-white px-10 py-5 text-xl font-bold text-accent-700 shadow-lg transition-all hover:-translate-y-0.5"
+          >
+            <Phone className="h-6 w-6" />
+            Call {businessConfig.phone} Now
+          </a>
+        </span>
+        <p class="text-sm text-white/85">
+          Live answer 24/7 · Licensed NH #15673 · Serving 18 southern NH towns
+        </p>
+        <a
+          href="#quote"
+          class="inline-flex items-center gap-1.5 text-sm font-semibold text-white underline underline-offset-4 hover:text-white/80"
+        >
+          Not urgent? Request a quote instead
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+    </Container>
+  </section>
+
+  {/* Quote form — the page's single #quote anchor */}
+  <LandingQuoteSection
+    tone="emergency"
+    swapColumns
+    eyebrow="The Morning Line"
+    heading="If It Can't Wait"
+    formHeading="Not Urgent? Request a Quote"
+    formSubheading="For anything that can wait until daylight — we'll get back to you fast."
+    bullets={[
+      "A live electrician answers — no call center",
+      "Safety triage starts the moment you call",
+      "Up-front pricing, approved before work begins",
+    ]}
+    urgencyNote="Form replies come first thing in the morning — emergencies always jump the line. If something is sparking, smoking, or buzzing right now, call instead."
+  />
+
+  <RevealInit />
+  <StickyCallBar variant="emergency" />
+</Layout>
