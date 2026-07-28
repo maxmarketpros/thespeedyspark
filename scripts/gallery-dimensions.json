@@ -1,0 +1,128 @@
+{
+  "wall-oven-microwave-install": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "exterior-meter-service": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "outdoor-subpanel-wiring": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "ev-charger-grizzle-install": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "ev-charger-driveway-install": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "microwave-cabinet-outlet": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "solar-gate-opener": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "basement-panel-transfer-switch": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "breaker-panel-labeled": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "service-van-driveway": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "kitchen-ceiling-light": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "gfci-outlet-install": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "exterior-camera-light": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "service-mast-meter": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "bedroom-ceiling-fan": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "storefront-wall-pack": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "circuit-directory-labels": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "van-job-site-spring": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "meter-socket-replacement": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "over-range-microwave": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  },
+  "van-ladders-loaded": {
+    "width": 1600,
+    "height": 2134,
+    "thumbWidth": 700,
+    "thumbHeight": 933
+  }
+}

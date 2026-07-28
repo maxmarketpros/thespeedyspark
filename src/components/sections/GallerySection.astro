@@ -1,0 +1,387 @@
+---
+import { Camera, Expand } from "lucide-react";
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import Button from "@/components/ui/Button.astro";
+import {
+  galleryAspectRatio,
+  galleryInitialCount,
+  galleryPhotos,
+} from "@/config/gallery";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  subtitle?: string;
+  bgColor?: "white" | "surface";
+  cta?: { label: string; href: string };
+  class?: string;
+}
+
+const {
+  eyebrow = "Our Work",
+  heading = "Recent Jobs Around New Hampshire",
+  subtitle,
+  bgColor = "white",
+  cta,
+  class: className,
+} = Astro.props as Props;
+
+const photos = galleryPhotos;
+const base = "/images/gallery";
+const hasHidden = photos.length > galleryInitialCount;
+---
+
+<section
+  id="gallery"
+  class={cn("section-padding", bgColor === "surface" && "bg-surface", className)}
+>
+  <Container>
+    <SectionHeading
+      eyebrow={eyebrow}
+      heading={heading}
+      subtitle={subtitle}
+      align="center"
+    />
+
+    <div
+      class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4"
+      data-gallery-grid
+    >
+      {
+        photos.map((photo, index) => (
+          <button
+            type="button"
+            class={cn(
+              "group relative block w-full overflow-hidden rounded-xl bg-surface-dark ring-1 ring-border transition-shadow duration-300 hover:shadow-card-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2",
+              index >= galleryInitialCount && "hidden",
+            )}
+            style={`aspect-ratio: ${galleryAspectRatio}`}
+            data-gallery-item
+            data-index={index}
+            data-extra={index >= galleryInitialCount ? "true" : undefined}
+            aria-label={`View photo: ${photo.title}`}
+          >
+            <img
+              src={`${base}/${photo.slug}-thumb.jpg`}
+              alt={photo.caption}
+              width={640}
+              height={854}
+              loading="lazy"
+              decoding="async"
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.06]"
+            />
+
+            {/* Caption scrim — always faintly present, deepens on hover */}
+            <span
+              class="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/75 via-black/25 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100"
+              aria-hidden="true"
+            />
+
+            <span class="pointer-events-none absolute inset-x-0 bottom-0 p-3 text-left md:p-4">
+              <span class="block translate-y-1 text-xs font-semibold leading-snug text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:text-sm">
+                {photo.title}
+              </span>
+            </span>
+
+            {/* Expand affordance */}
+            <span
+              class="pointer-events-none absolute right-2.5 top-2.5 flex h-8 w-8 scale-90 items-center justify-center rounded-full bg-white/90 text-foreground opacity-0 shadow-badge backdrop-blur-sm transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 md:right-3 md:top-3"
+              aria-hidden="true"
+            >
+              <Expand className="h-4 w-4" strokeWidth={2.25} />
+            </span>
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      {
+        hasHidden && (
+          <button
+            type="button"
+            data-gallery-more
+            class="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-6 py-3 text-sm font-semibold text-foreground shadow-card transition-colors hover:border-primary-300 hover:text-primary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2"
+          >
+            <Camera className="h-4 w-4" strokeWidth={2} />
+            <span data-gallery-more-label>
+              Show all {photos.length} photos
+            </span>
+          </button>
+        )
+      }
+      {cta && <Button href={cta.href} size="lg">{cta.label}</Button>}
+    </div>
+  </Container>
+
+  {/* ===== LIGHTBOX ===== */}
+  <div
+    data-lightbox
+    class="fixed inset-0 z-[120] hidden items-center justify-center bg-black/90 p-4 backdrop-blur-sm md:p-8"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Photo gallery"
+    tabindex="-1"
+  >
+    <button
+      type="button"
+      data-lightbox-close
+      class="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white md:right-6 md:top-6"
+      aria-label="Close gallery"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        class="h-5 w-5"
+        aria-hidden="true"
+      >
+        <path d="M18 6 6 18M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      data-lightbox-prev
+      class="absolute left-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white md:left-6 md:h-14 md:w-14"
+      aria-label="Previous photo"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-6 w-6"
+        aria-hidden="true"
+      >
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      data-lightbox-next
+      class="absolute right-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white md:right-6 md:h-14 md:w-14"
+      aria-label="Next photo"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-6 w-6"
+        aria-hidden="true"
+      >
+        <path d="m9 18 6-6-6-6"></path>
+      </svg>
+    </button>
+
+    <figure
+      class="flex max-h-full w-full max-w-4xl flex-col items-center gap-4"
+      data-lightbox-figure
+    >
+      <img
+        data-lightbox-image
+        src=""
+        alt=""
+        class="max-h-[70vh] w-auto max-w-full rounded-xl object-contain shadow-2xl md:max-h-[74vh]"
+      />
+      <figcaption class="max-w-2xl text-center">
+        <p
+          data-lightbox-title
+          class="text-base font-semibold text-white md:text-lg"
+        >
+        </p>
+        <p
+          data-lightbox-caption
+          class="mt-1 text-sm leading-relaxed text-white/70"
+        >
+        </p>
+        <p
+          data-lightbox-counter
+          class="mt-3 text-xs font-medium uppercase tracking-widest text-white/50"
+        >
+        </p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <script
+    type="application/json"
+    data-gallery-data
+    set:html={JSON.stringify(
+      photos.map((p) => ({
+        src: `${base}/${p.slug}.jpg`,
+        title: p.title,
+        caption: p.caption,
+      })),
+    )}
+  />
+</section>
+
+<style>
+  [data-lightbox].is-open {
+    display: flex;
+  }
+
+  [data-lightbox-figure] {
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  [data-lightbox].is-swapping [data-lightbox-figure] {
+    opacity: 0.35;
+    transform: scale(0.985);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-lightbox-figure] {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  interface GalleryEntry {
+    src: string;
+    title: string;
+    caption: string;
+  }
+
+  const section = document.getElementById("gallery");
+  const dataEl = section?.querySelector<HTMLScriptElement>("[data-gallery-data]");
+  const lightbox = section?.querySelector<HTMLElement>("[data-lightbox]");
+  const image = section?.querySelector<HTMLImageElement>("[data-lightbox-image]");
+  const titleEl = section?.querySelector<HTMLElement>("[data-lightbox-title]");
+  const captionEl = section?.querySelector<HTMLElement>("[data-lightbox-caption]");
+  const counterEl = section?.querySelector<HTMLElement>("[data-lightbox-counter]");
+  const closeBtn = section?.querySelector<HTMLElement>("[data-lightbox-close]");
+  const prevBtn = section?.querySelector<HTMLElement>("[data-lightbox-prev]");
+  const nextBtn = section?.querySelector<HTMLElement>("[data-lightbox-next]");
+
+  if (section && dataEl && lightbox && image && titleEl && captionEl && counterEl) {
+    const photos: GalleryEntry[] = JSON.parse(dataEl.textContent || "[]");
+    let current = 0;
+    let lastFocused: HTMLElement | null = null;
+
+    // Keep neighbours warm so arrow navigation feels instant
+    const preload = (index: number) => {
+      const entry = photos[(index + photos.length) % photos.length];
+      if (!entry) return;
+      const img = new Image();
+      img.src = entry.src;
+    };
+
+    const render = (index: number) => {
+      const entry = photos[index];
+      if (!entry) return;
+      current = index;
+      lightbox.classList.add("is-swapping");
+      const settle = () => lightbox.classList.remove("is-swapping");
+      image.onload = settle;
+      image.onerror = settle;
+      image.src = entry.src;
+      image.alt = entry.caption;
+      if (image.complete) settle(); // cached: no load event to wait on
+      titleEl.textContent = entry.title;
+      captionEl.textContent = entry.caption;
+      counterEl.textContent = `${index + 1} / ${photos.length}`;
+      preload(index + 1);
+      preload(index - 1);
+    };
+
+    const open = (index: number, trigger: HTMLElement) => {
+      lastFocused = trigger;
+      render(index);
+      lightbox.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      (closeBtn as HTMLElement | null)?.focus();
+    };
+
+    const close = () => {
+      lightbox.classList.remove("is-open");
+      lightbox.classList.remove("is-swapping");
+      document.body.style.overflow = "";
+      lastFocused?.focus();
+      lastFocused = null;
+    };
+
+    const step = (delta: number) =>
+      render((current + delta + photos.length) % photos.length);
+
+    section.querySelectorAll<HTMLElement>("[data-gallery-item]").forEach((tile) => {
+      tile.addEventListener("click", () =>
+        open(Number(tile.dataset.index || 0), tile),
+      );
+    });
+
+    closeBtn?.addEventListener("click", close);
+    prevBtn?.addEventListener("click", () => step(-1));
+    nextBtn?.addEventListener("click", () => step(1));
+
+    // Backdrop click closes; clicks on the photo or controls do not
+    lightbox.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      if (target === lightbox || target.hasAttribute("data-lightbox-figure")) {
+        close();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (event.key === "Escape") close();
+      else if (event.key === "ArrowRight") step(1);
+      else if (event.key === "ArrowLeft") step(-1);
+      else if (event.key === "Tab") {
+        // Simple focus trap across the four controls
+        const focusables = [closeBtn, prevBtn, nextBtn].filter(
+          Boolean,
+        ) as HTMLElement[];
+        if (!focusables.length) return;
+        const index = focusables.indexOf(document.activeElement as HTMLElement);
+        const next = event.shiftKey ? index - 1 : index + 1;
+        event.preventDefault();
+        focusables[(next + focusables.length) % focusables.length].focus();
+      }
+    });
+
+    // Swipe between photos on touch devices
+    let touchStartX = 0;
+    let touchStartY = 0;
+    lightbox.addEventListener(
+      "touchstart",
+      (event) => {
+        touchStartX = event.changedTouches[0].clientX;
+        touchStartY = event.changedTouches[0].clientY;
+      },
+      { passive: true },
+    );
+    lightbox.addEventListener(
+      "touchend",
+      (event) => {
+        const dx = event.changedTouches[0].clientX - touchStartX;
+        const dy = event.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+      },
+      { passive: true },
+    );
+
+    // "Show all photos" reveal
+    const moreBtn = section.querySelector<HTMLElement>("[data-gallery-more]");
+    moreBtn?.addEventListener("click", () => {
+      section
+        .querySelectorAll<HTMLElement>('[data-gallery-item][data-extra="true"]')
+        .forEach((tile) => tile.classList.remove("hidden"));
+      moreBtn.remove();
+    });
+  }
+</script>

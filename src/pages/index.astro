@@ -6,6 +6,7 @@ import InfoBar from "@/components/layout/InfoBar.astro";
 import SplitSection from "@/components/sections/SplitSection.astro";
 import ServiceGrid from "@/components/sections/ServiceGrid.astro";
 import ProcessGrid from "@/components/sections/ProcessGrid.astro";
+import GallerySection from "@/components/sections/GallerySection.astro";
 import TestimonialSection from "@/components/sections/TestimonialSection.astro";
 import FAQSection from "@/components/sections/FAQSection.astro";
 import CTASection from "@/components/sections/CTASection.astro";
@@ -130,12 +131,21 @@ const heroPreload =
     secondaryCta={{ label: "Call (603) 661-8432", href: "tel:+16036618432" }}
   />
 
+  {/* Gallery */}
+  <GallerySection
+    eyebrow={content.gallery.eyebrow}
+    heading={content.gallery.heading}
+    subtitle={content.gallery.subtitle}
+    bgColor="surface"
+    cta={{ label: "Get a Free Quote", href: "/contact" }}
+  />
+
   {/* Testimonials */}
   <TestimonialSection
     eyebrow={content.testimonials.eyebrow}
     heading={content.testimonials.heading}
     subtitle={content.testimonials.subtitle}
-    bgColor="surface"
+    bgColor="white"
   />
 
   {/* Service Areas */}

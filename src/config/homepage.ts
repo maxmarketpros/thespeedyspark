@@ -66,6 +66,12 @@ export const homepageContent = {
     subtitle:
       "A simple, predictable process — most quotes happen within a day, and most jobs are scheduled within the week.",
   },
+  gallery: {
+    eyebrow: "Our Work",
+    heading: "Recent Jobs Around New Hampshire",
+    subtitle:
+      "Panels, EV chargers, lighting, and service upgrades — photos from our own trucks and job sites. Tap any photo to take a closer look.",
+  },
   testimonials: {
     eyebrow: "5.0 Stars on Google",
     heading: "What Manchester Homeowners Say",
