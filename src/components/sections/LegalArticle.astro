@@ -1,0 +1,56 @@
+---
+interface Props {
+  title: string;
+  effectiveDate: string;
+}
+
+const { title, effectiveDate } = Astro.props as Props;
+---
+
+<article class="bg-white px-4 pb-20 pt-32 sm:px-6 lg:px-8 lg:pt-36">
+  <div class="mx-auto max-w-3xl">
+    <h1 class="text-4xl leading-tight md:text-5xl">{title}</h1>
+    <p class="mt-4 text-sm text-muted">Effective date: {effectiveDate}</p>
+    <div class="legal-content mt-10">
+      <slot />
+    </div>
+  </div>
+</article>
+
+<style is:global>
+  .legal-content p,
+  .legal-content li {
+    color: var(--color-foreground-light);
+    line-height: 1.8;
+  }
+
+  .legal-content p {
+    margin: 0.9rem 0;
+  }
+
+  .legal-content h2 {
+    margin: 2.5rem 0 0.75rem;
+    font-size: 1.35rem;
+    line-height: 1.3;
+  }
+
+  .legal-content ul {
+    list-style: disc;
+    margin: 0.9rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .legal-content li {
+    margin: 0.5rem 0;
+  }
+
+  .legal-content a {
+    color: var(--color-primary-600);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .legal-content a:hover {
+    color: var(--color-primary-700);
+  }
+</style>

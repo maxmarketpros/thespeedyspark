@@ -244,9 +244,10 @@ function MobileMenu({
 interface HeaderProps {
   /** "landing" renders a minimal conversion-focused header: logo + phone + CTA, no nav */
   variant?: "default" | "landing";
+  forceSolid?: boolean;
 }
 
-export function Header({ variant = "default" }: HeaderProps) {
+export function Header({ variant = "default", forceSolid = false }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -272,7 +273,7 @@ export function Header({ variant = "default" }: HeaderProps) {
   }, [mobileOpen]);
 
   // Landing pages have a light hero, so the header is always solid
-  const solid = isLanding || scrolled || mobileOpen;
+  const solid = isLanding || forceSolid || scrolled || mobileOpen;
 
   if (isLanding) {
     return (

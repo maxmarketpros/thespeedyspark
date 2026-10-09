@@ -23,6 +23,7 @@ interface Props {
   preloadImage?: string;
   /** "landing" renders the minimal conversion header (logo + phone + CTA) */
   headerVariant?: "default" | "landing";
+  solidHeader?: boolean;
 }
 
 const {
@@ -34,6 +35,7 @@ const {
   noindex = false,
   preloadImage,
   headerVariant = "default",
+  solidHeader = false,
 } = Astro.props as Props;
 
 // Netlify serves directory-format builds at trailing-slash URLs (and 301s the
@@ -191,7 +193,7 @@ const websiteSchema = generateWebsiteSchema();
     >
       Skip to main content
     </a>
-    <Header client:load variant={headerVariant} />
+    <Header client:load variant={headerVariant} forceSolid={solidHeader} />
     <main id="main-content" class="flex-1">
       <slot />
     </main>

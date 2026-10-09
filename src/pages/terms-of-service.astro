@@ -1,0 +1,83 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import LegalArticle from "@/components/sections/LegalArticle.astro";
+import { legalEffectiveDate } from "@/config/legal";
+
+const title = "Terms of Service | The Speedy Sparky LLC";
+const description = "The Speedy Sparky LLC terms for website use, electrical service inquiries, and service-related text messages.";
+---
+
+<Layout title={title} description={description} solidHeader>
+  <LegalArticle title="Terms of Service" effectiveDate={legalEffectiveDate}>
+    <p>
+      These Terms of Service ("Terms") apply to your use of the website
+      <a href="https://thespeedyspark.com/">thespeedyspark.com</a> and to
+      communications, including text messages, from The Speedy Sparky LLC
+      ("The Speedy Sparky," "we," "us," or "our"), a licensed electrical contractor
+      based in Manchester, New Hampshire. By using our website or agreeing to
+      receive messages from us, you accept these Terms.
+    </p>
+
+    <h2>Our services</h2>
+    <p>
+      We provide residential and commercial electrical services in southern New
+      Hampshire and surrounding areas. The scope, price, and conditions of any job
+      are set out in the written quote we provide for that job. If a quote and these
+      Terms conflict, the quote controls for that job.
+    </p>
+
+    <h2>Use of the website</h2>
+    <p>
+      The information on our website is provided for general information. It is not
+      a quote or a guarantee of availability. You agree not to misuse the website
+      or attempt to interfere with its operation.
+    </p>
+
+    <h2>Text messaging terms (SMS)</h2>
+    <p>Program description. The Speedy Sparky LLC sends text messages to customers about the services they have requested. Messages may include quote and invoice notifications, appointment confirmations and reminders, arrival updates, and replies to your questions.</p>
+    <p>Consent. By providing your mobile phone number and agreeing to receive text messages, whether on our website, in writing, by phone, or by texting us first, you consent to receive text messages from The Speedy Sparky LLC at that number. Consent to receive text messages is not a condition of purchasing any service.</p>
+    <p>Message frequency. Message frequency varies based on your service activity, such as upcoming appointments and open quotes or invoices.</p>
+    <p>Cost. Message and data rates may apply, depending on your mobile carrier and plan.</p>
+    <p>How to opt out. You can cancel text messages at any time by replying STOP to any message. After you send STOP, we will send one message confirming that you have been unsubscribed, and you will receive no further texts from us unless you opt in again.</p>
+    <p>
+      How to get help. Reply HELP to any message, call us at
+      <a href="tel:+16036618432">(603) 661-8432</a>, or email
+      <a href="mailto:thespeedysparkyllc@gmail.com">thespeedysparkyllc@gmail.com</a>.
+    </p>
+    <p>Carriers. Mobile carriers are not liable for delayed or undelivered messages.</p>
+    <p>
+      Privacy. Your information is handled as described in our
+      <a href="/privacy-policy/">Privacy Policy</a>. No mobile information will be shared
+      with third parties or affiliates for marketing or promotional purposes.
+    </p>
+
+    <h2>Quotes, payment, and changes to work</h2>
+    <p>
+      Quotes are valid for the period stated on the quote. Any deposit, payment
+      schedule, and final payment terms are stated on the quote or invoice. Work
+      outside the written scope is priced and approved by the customer before it is performed.
+    </p>
+
+    <h2>Limitation of liability</h2>
+    <p>
+      To the extent permitted by law, The Speedy Sparky LLC is not liable for indirect
+      or incidental damages arising from use of the website or from text messages that
+      are delayed or not delivered. Nothing in these Terms limits any warranty stated
+      in a written quote or required by law.
+    </p>
+
+    <h2>Changes to these Terms</h2>
+    <p>We may update these Terms from time to time. The effective date at the top shows when they were last changed.</p>
+
+    <h2>Governing law</h2>
+    <p>These Terms are governed by the laws of the State of New Hampshire.</p>
+
+    <h2>Contact us</h2>
+    <p>
+      The Speedy Sparky LLC<br />
+      Manchester, New Hampshire<br />
+      Phone: <a href="tel:+16036618432">(603) 661-8432</a><br />
+      Email: <a href="mailto:thespeedysparkyllc@gmail.com">thespeedysparkyllc@gmail.com</a>
+    </p>
+  </LegalArticle>
+</Layout>
